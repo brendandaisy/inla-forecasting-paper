@@ -5,7 +5,7 @@ library(spdep)
 library(lubridate)
 library(cowplot)
 
-source("read-rsv-data.R")
+source("fetch-data/read-rsv-data.R")
 source("model-prep-and-fit.R")
 source("model-summarize-and-plot.R")
 
