@@ -3,8 +3,8 @@ library(glue)
 # note that 
 model_formula <- function(
         seasonal=c("none", "shared", "iid"),
-        temporal=c("rw1", "rw2", "ar1"),
-        spatial=c("iid", "exchangeable", "besagproper")
+        temporal=c("ar1", "rw2"),
+        spatial=c("iid", "exchangeable", "besag")
 ) {
     seasonal <- case_match(
         seasonal,
@@ -31,7 +31,7 @@ model_formula <- function(
                      group=iloc, {scaling}control.group=list(model="iid"))'),
         "exchangeable" ~ glue('f(t2, model="ar1", hyper=hyper_wk, 
                      group=iloc, control.group=list(model="exchangeable"))'),
-        "besagproper" ~ glue('f(iloc, model="besag", hyper=hyper_wk, graph=graph, scale.model=TRUE,
+        "besag" ~ glue('f(iloc, model="besag", hyper=hyper_wk, graph=graph, scale.model=TRUE,
                      group=t2, control.group=list(model="{temporal}"))'), # note the group model automatically scaled
     )
     

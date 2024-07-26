@@ -3,29 +3,26 @@ library(INLA)
 library(lubridate)
 library(cowplot)
 
-source("coord_cartesian_panels.R")
-
-plot_inla <- function(fit, plot_hyper=FALSE) {
-    plot(fit, plot.hyperparameters=plot_hyper, plot.random.effects=F, plot.fixed.effects=F, plot.lincomb=F)
-    par(mfrow=c(1, 1))
-}   
-
-inla.setOption(inla.mode="classic")
-
 # TODO 7/15: ask Spencer: is there evidence that seasonality for flu etc. follows regional
 # patterns in the US? Would be strong justification to try sep. seasonality just for 
 # each region
 
+source("src/prep-fit-data.R")
+source("src/model-formulas.R")
+source("src/fit-inla-model.R")
+source("src/sample-forecasts.R")
+
+inla.setOption(inla.mode="classic")
+
 rsv <- read_csv("data/weekly-rsv-us.csv")
 
-start_date <- ymd("2021-06-01")
-forecast_date <- ymd("2023-11-20") # when to start forecasts for this example
-
 forecast_dates <- c("2023-09-20", "2023-11-15", "2023-12-30", "2024-02-01")
+covid_interval <- interval(ymd("2020-03-01"), ymd("2021-06-01")) # period during covid to remove
+
+# new way to specify the current "base" model
 model <- model_formula("shared", temporal="ar1", spatial="exchangeable")
 
-covid_interval <- interval(ymd("2020-03-01"), ymd("2021-06-01"))
-
+# fit the model and sample predictions for each of the timepoints
 pred_quantiles <- map(forecast_dates, \(fd) {
     fit_df <- rsv |> 
         filter(!(date %within% covid_interval), date <= fd) |> 
@@ -40,16 +37,17 @@ pred_quantiles <- map(forecast_dates, \(fd) {
     list(pred=pred_summ, fit_df=fit_df, fit=fit)
 })
 
+#  Plot the retrospective forecasts compared to truth-----------------------------
 # panel_limits <- pred_quantiles |> 
 #     group_by(location) |> 
 #     summarise(ymin=0, ymax=0.75*max(`0.975`))
 
 last_date <- ymd(max(forecast_dates))
-rsv_recent <- filter(rsv, date >= (last_date-weeks(20)), date < (last_date+weeks(8)))
+rsv_sub <- filter(rsv, date >= (last_date-weeks(20)), date < (last_date+weeks(8)))
 
-recent_dates <- unique(rsv_recent$date)
+recent_dates <- unique(rsv_sub$date)
 
-gg <- ggplot(rsv_recent, aes(date)) +
+gg <- ggplot(rsv_sub, aes(date)) +
     geom_point(aes(y=count), size=0.83) +
     facet_wrap(~location, scales="free_y") +
     # coord_cartesian_panels(panel_limits=panel_limits) +
@@ -72,6 +70,7 @@ for (el in pred_quantiles) {
 }
 gg
 
+# Other plots for model outputs---------------------------------------------------
 plot_seasonal(fit_df, fit)
 
 # TODO make plot function
@@ -117,7 +116,7 @@ ggplot(weekly_inter, aes(date, mean)) +
     labs(x=NULL, y=NULL, title="**short-term interaction effect**")
     # theme_mod_output()
 
-###
+#  Old scratchwork for a single state---------------------------------------------
 fit_df_ca <- rsv |> 
     filter(date >= start_date, date < forecast_date) |> 
     prep_fit_data_rsv(ex_lam=pop_served) |> 
@@ -157,30 +156,3 @@ fit <- inla(
 
 summary(fit)
 plot_inla(fit)
-
-# TODO: this has nothing to do with posterior prediction!!!
-# the posterior covariance matrix for AR _absolutely_ has correlation all through the timeseries
-inla_rar1 <- function(x0, kappa, rho, t=1:5, n=5000) {
-    tau <- kappa / (1 - rho^2)
-    ret <- map(1:n, \(i) {
-        as.vector(arima.sim(list(order=c(1, 0, 0), ar=rho), n=4, sd=sqrt(1/tau)))
-        # accumulate(t, \(u, i) rnorm(1, rho*u, 1/sqrt(tau)), .init=x0)
-    })
-    do.call(rbind, ret) |> as_tibble()
-    # tau <- kappa / (1 - rho^2)
-    # accumulate(t, \(u, i) rnorm(1, rho*u, 1/sqrt(tau)), .init=x0)
-}
-
-u <- inla_rar1(-13, 2, 0.89, n=10000)
-summarize(u, across(everything(), ~median(.)))
-inla_rar1(2e-5, 0.339, 0.976)
-
-# fit$summary.random$t |> 
-#     as_tibble() |> 
-#     mutate(t=fit_df$t, location=fit_df$location) |> 
-#     ggplot(aes(t)) +
-#     geom_ribbon(aes(ymin=`0.025quant`, ymax=`0.975quant`), fill="gray70", col=NA, alpha=0.7) +
-#     geom_line(aes(y=mean)) +
-#     coord_cartesian(xlim=c(100, NA)) +
-#     facet_wrap(~location, scales="free_y") +
-#     theme_cowplot()
