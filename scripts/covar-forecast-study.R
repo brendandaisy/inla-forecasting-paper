@@ -1,3 +1,7 @@
+# preliminary work on showcasing how different covariance models for the----------
+# short-term temporal component have a big effect on forecasts--------------------
+
+
 library(tidyverse)
 library(INLA)
 library(sf)
