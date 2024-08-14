@@ -11,7 +11,7 @@ fit_inla_model <- function(
         q=c(0.025, 0.25, 0.5, 0.75, 0.975),
         graph=NULL, dic=FALSE
 ) {
-    # the PC priors c(u, a) give the probability that the standard deviation between weeks u is greater than a
+    # the PC priors c(u, a) give the probability a that the standard deviation between weeks exceeds u
     # increasing u increases prior beliefs that there will be large jumps between weeks
     hyper_epwk <- list(prec=list(prior="pc.prec", param=c(pc_prior_u[1], 0.01)))
     hyper_wk <- list(prec=list(prior="pc.prec", param=c(pc_prior_u[2], 0.01)))

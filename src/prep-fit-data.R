@@ -39,31 +39,33 @@ prep_fit_data_rsv <- function(rsv, weeks_ahead=4, ex_lam=pop_served) {
             ex_lam={{ex_lam}}
         )
     
-    if (weeks_ahead == 0) {
-        return(arrange(ret, t, iloc))
+    if (weeks_ahead > 0) {
+        # make a dataframe to hold group info for forecasting
+        pred_df <- expand_grid( # makes pairs of new weeks X location
+            tibble(
+                date=duration(1:weeks_ahead, "week") + max(ret$date),
+                t=1:weeks_ahead + max(ret$t),
+                epiweek=epiweek(date)
+            ),
+            distinct(ret, location, iloc)
+        )
+        
+        # go and find most recent population/ex_lam values for each state, in case they change
+        # note this assumes the prediction df follows most recent ex_lam
+        location_data <- ret |> 
+            slice_max(date) |> 
+            distinct(location, ex_lam)
+        
+        # add on most recent pop/ex_lam values, with protection against adding/deleting unintended rows
+        pred_df <- pred_df |> 
+            left_join(
+                location_data, by=c("location"), unmatched="error", relationship="many-to-one"
+            )
+        
+        ret <- bind_rows(ret, pred_df) # add to data for counts to be NAs
     }
     
-    # make a dataframe to hold group info for forecasting
-    pred_df <- expand_grid( # makes pairs of new weeks X location
-        tibble(
-            date=duration(1:weeks_ahead, "week") + max(ret$date),
-            t=1:weeks_ahead + max(ret$t),
-            epiweek=epiweek(date)
-        ),
-        distinct(ret, location, iloc)
-    )
-    
-    # go and find most recent population/ex_lam values for each state, in case they change
-    # note this assumes the prediction df follows most recent ex_lam
-    location_data <- ret |> 
-        slice_max(date) |> 
-        distinct(location, ex_lam)
-    
-    # add on most recent pop/ex_lam values, with protection against adding/deleting unintended rows
-    pred_df <- pred_df |> 
-        left_join(location_data, by=c("location"), unmatched="error", relationship="many-to-one")
-    
-    bind_rows(ret, pred_df) |> # add to data for counts to be NAs
+    ret |> 
         mutate(t2=t) |> 
         arrange(t, iloc)
 }
@@ -72,32 +74,36 @@ prep_fit_data_flu_covid <- function(flu, weeks_ahead=4, ex_lam=population) {
     ret <- flu |> 
         filter(location != "US") |> # make sure US is not in training data
         group_by(date) |> 
-        mutate(t=cur_group_id(), epiweek=epiweek(date), .after=date) |>
+        mutate(t=cur_group_id(), .after=date) |>
         ungroup() |> 
         mutate(
             iloc=as.numeric(fct_inorder(location)),
             ex_lam={{ex_lam}}
         )
     
-    pred_df <- expand_grid( # makes pairs of new weeks X location
-        tibble(
-            date=duration(1:weeks_ahead, "week") + max(ret$date),
-            t=1:weeks_ahead + max(ret$t),
-            epiweek=epiweek(date)
-        ),
-        distinct(ret, location, iloc)
-    )
+    if (weeks_ahead > 0) {
+        pred_df <- expand_grid( # makes pairs of new weeks X location
+            tibble(
+                date=duration(1:weeks_ahead, "week") + max(ret$date),
+                t=1:weeks_ahead + max(ret$t),
+                epiweek=epiweek(date)
+            ),
+            distinct(ret, location, iloc)
+        )
+        
+        location_data <- ret |> 
+            slice_max(date) |> 
+            distinct(location, ex_lam)
+        
+        pred_df <- left_join(
+            pred_df, location_data, 
+            by=c("location"), unmatched="error", relationship="many-to-one"
+        )
+        
+        ret <- bind_rows(ret, pred_df) # add to data for counts to be NAs
+    }
     
-    location_data <- ret |> 
-        slice_max(date) |> 
-        distinct(location, ex_lam)
-    
-    pred_df <- left_join(
-        pred_df, location_data, 
-        by=c("location"), unmatched="error", relationship="many-to-one"
-    )
-    
-    bind_rows(ret, pred_df) |> # add to data for counts to be NAs
+    ret |> 
         mutate(t2=t) |> 
         arrange(t, iloc)
 }
