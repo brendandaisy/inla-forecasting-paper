@@ -108,8 +108,8 @@ save_weekly_rsv <- function(hd) {
             epiweek=epiweek(date),
             epiyear=epiyear(date)
         ) |> 
-        select(-c(location, percentage_participation, season), location=location_name) |> 
-        relocate(location, date, epiweek, epiyear, population, pop_served, count, weekly_rate) |> 
+        select(-c(location, percentage_participation), location=location_name) |> 
+        relocate(location, date, epiweek, season, epiyear, population, pop_served, count, weekly_rate) |> 
         arrange(date, location) |> # can't hurt to just make sure everything is ordered this way
         write_csv("data/weekly-rsv-us.csv")
 }
