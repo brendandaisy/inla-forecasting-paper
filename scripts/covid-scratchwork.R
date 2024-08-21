@@ -25,7 +25,7 @@ fd_23_24 <- c("2023-10-01", "2023-11-15", "2023-12-30", "2024-02-01")
 
 # new way to specify the current "base" model
 model <- model_formula("shared", temporal="ar1", spatial="besagproper")
-graph <- load_us_graph(covid) |> graph2mat()
+graph <- load_us_graph(covid) |> sf2mat()
 
 # fit the model and sample predictions for each of the timepoints
 pred_quantiles <- map(fd_23_24, \(fd) {

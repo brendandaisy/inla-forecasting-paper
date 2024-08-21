@@ -17,12 +17,10 @@ load_us_graph <- function(disease_df, f="data/us-state-boundaries.shp") {
         arrange(state)
 }
 
-graph2mat <- function(graph) {
-    graph |> 
+sf2mat <- function(sf_graph) {
+    sf_graph |> 
         poly2nb() |> 
         nb2mat(style="W", zero.policy=TRUE)
-    
-    
 }
 
 # this now can work just for adding the necessary indices without adding NAs, with weeks_ahead == 0
