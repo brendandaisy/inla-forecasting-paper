@@ -1,6 +1,9 @@
 library(tidyverse)
 library(lubridate)
 
+# TODO: the current way of specifying ret_df with the forecast data is pretty 
+# unsafe, since sometimes forecast_date is used as the first date to start
+# forecasting, but also you use it as the last/only date to forecast for the coverage plots
 sample_count_predictions <- function(fit_df, fit, forecast_date, nsamp=1000) {
     nloc <- length(unique(fit_df$iloc))
     

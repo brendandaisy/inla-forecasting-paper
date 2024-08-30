@@ -29,15 +29,13 @@ us_dist_mat <- function(us_sf) {
 }
 
 rsv <- read_csv("data/weekly-rsv-us.csv") |> 
-    # filter(!(date %within% interval(ymd("2020-03-01"), ymd("2021-06-01")))) |> 
-    filter(epiweek != 53) |> # for now just remove since may not display 2021-01-02 anyway
+    filter(!(date %within% interval(ymd("2020-03-01"), ymd("2021-06-01")))) |> 
     mutate(season_week=(epiweek-40) %% 52 + 1) # epiweek 40 is start of RSV season, going off provided season column
 
 flu <- read_csv("data/weekly-flu-us.csv") |> 
-    filter(epiweek != 53) |> # for now just remove since may not display 2021-01-02 anyway
     filter(
-        location != "US" # won't need nat'l for these figures
-        # date > "2021-09-01" # No real point in looking at data before around here
+        location != "US", # won't need nat'l for these figures
+        date > "2021-09-01" # No real point in looking at data before around here
     ) |> 
     mutate(
         season=case_when(
@@ -50,7 +48,16 @@ flu <- read_csv("data/weekly-flu-us.csv") |>
     )
 
 covid <- read_csv("data/weekly-covid-us.csv") |> 
-    filter(location != "US")
+    filter(location != "US") |> 
+    mutate(
+        season=case_when( # just define as same as flu season
+            date < "2021-09-01" ~ "2020-21",
+            date >= "2021-09-01" & date < "2022-09-01" ~ "2021-22",
+            date >= "2022-09-01" & date < "2023-09-01" ~ "2022-23",
+            date >= "2023-09-01" ~ "2023-24"
+        ),
+        season_week=(epiweek-35) %% 52 + 1
+    )
 
 # distinct(flu, season, epiweek, season_week) |> filter(season_week %in% c(1, 52))
 
@@ -97,27 +104,42 @@ decompose_timeseries <- function(data, us_dist) {
     ))
 }
 
-plot_disease_summary <- function(dts, data) {
+plot_disease_summary <- function(dts, data, disease=c("RSV", "flu", "COVID-19"), col="tomato") {
     data_sub <- filter(data, season_week <= 35)
     
     p1 <- ggplot(data_sub, aes(season_week, weekly_rate, group=interaction(season, location))) +
         geom_line(alpha=0.25) +
         # geom_line(aes(col=interaction(season, location)), data=inner_join(flu_sub, frs_diff, by=c("location", "season"))) +
-        geom_line(aes(season_week, mean), filter(dts$nat_seas, season_week <= 35), col="tomato", inherit.aes=FALSE) +
-        labs(x="season week", y="weekly rate flu / 100k") +
+        geom_line(aes(season_week, mean), filter(dts$nat_seas, season_week <= 35), col=col, linewidth=1.02, inherit.aes=FALSE) +
+        labs(x="season week", y=glue("weekly rate {disease} / 100k")) +
         scale_x_continuous(breaks=seq(0, 35 , 5)) +
         theme_half_open() +
         background_grid(major="xy")
     
-    # grouping for disconnected timeseries (e.g. early RSV seasons)
-    p2 <- ggplot(dts$resid_seas, aes(date, resid_seas, group=interaction(location, season))) + 
+    
+    if (disease == "RSV") {
+        # grouping for disconnected timeseries (e.g. early RSV seasons)
+        aes1 <- aes(date, resid_seas, group=interaction(location, season))
+        aes2 <- aes(date, week_mean, group=season)
+    }
+    else {
+        aes1 <- aes(date, resid_seas, group=location)
+        aes2 <- aes(date, week_mean)
+    }
+    
+    p2 <- ggplot(dts$resid_seas, aes1) + 
         geom_line(alpha=0.25) +
-        geom_line(aes(date, week_mean, group=season), dts$resid_seas_summ, col="tomato", inherit.aes=FALSE) +
+        geom_line(aes2, dts$resid_seas_summ, col=col, linewidth=1.02, inherit.aes=FALSE) +
         # geom_line(aes(col=location), filter(flu_resid_seas, location %in% hl_states), linewidth=1.01)
-        scale_x_date(date_breaks="3 months", date_labels="%b '%y", guide=guide_axis(angle=45)) +
+        scale_x_date(date_breaks="6 months", date_labels="%b '%y", guide=guide_axis(angle=45)) +
         labs(x=NULL, y="residual rate / 100k") +
         theme_half_open() +
         background_grid(major="xy")
+    
+    corr_summ <- dts$resid_seas_corr |> 
+        filter(!is.na(r), is.finite(dist)) |> 
+        group_by(dist) |> 
+        summarise(med=median(r), l=med - 1.58*IQR(r)/sqrt(n()), u=med + 1.58*IQR(r)/sqrt(n()))
     
     # TODO 8/20: using loess is a bit disingenuous but looks nicer
     p3 <- dts$resid_seas_corr |> 
@@ -125,13 +147,26 @@ plot_disease_summary <- function(dts, data) {
         ggplot(aes(factor(dist), r)) +
         geom_point(alpha=0.25, shape=1) +
         # geom_boxplot(col="tomato", fill=NA, outlier.shape=NA, alpha=0.5) +
-        # stat_summary(aes(x=dist), fun="median", col="tomato", geom="line") +
-        # stat_boxplot(aes(x=dist, y=after_stat(lower)), geom="line", linetype="dotted", col="tomato") +
-        geom_smooth(aes(dist, r), se=FALSE, col="tomato", method="loess") +
+        geom_line(aes(dist, med), corr_summ, col=col, linewidth=1.02) +
+        geom_ribbon(aes(dist, ymin=l, ymax=u), corr_summ, linetype="dotted", col=col, fill=NA, inherit.aes=FALSE) +
+        # stat_boxplot(aes(y=after_stat(xlower)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
+        # stat_boxplot(aes(x=dist, y=after_stat(notchupper)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
+        # geom_smooth(aes(dist, r), se=FALSE, col="tomato", method="loess") +
         labs(x="neighborhood distance", y="residual correlation") +
         theme_half_open()
     
     plot_grid(p1, p2, p3, nrow=1, rel_widths=c(1, 1.4, 1), align="h", axis="b")
+}
+
+box_ribbon <- function(x) {
+    n <- length(x)
+    tibble(
+        y=median(x),
+        ymin=quantile(x, 0.1),
+        ymax=quantile(x, 0.9)
+        # ymin=y - 1.58*IQR(x)/sqrt(n),
+        # ymax=y + 1.58*IQR(x)/sqrt(n),
+    )
 }
 
 # hl_states <- c("Indiana", "Arkansas", "South Carolina", "North Carolina")
@@ -139,13 +174,17 @@ plot_disease_summary <- function(dts, data) {
 us <- load_us_graph(flu)
 us_dist <- us_dist_mat(us)
 
-# TODO leaning toward removing data from COVID years for these figs
 dts_flu <- decompose_timeseries(flu, us_dist)
-plot_disease_summary(dts_flu, flu)
+p1 <- plot_disease_summary(dts_flu, flu, "flu")
 
-# TODO ok yeah I mean missing data are straight zeros
 dts_rsv <- decompose_timeseries(rsv, us_dist)
-plot_disease_summary(dts_rsv, rsv)
+p2 <- plot_disease_summary(dts_rsv, rsv, "RSV")
+
+dts_covid <- decompose_timeseries(covid, us_dist)
+p3 <- plot_disease_summary(dts_covid, covid, "COVID-19")
+
+plot_grid(p1, p2, p3, nrow=3)
+ggsave("figs/figure-1-data-summ.pdf", width=11, height=7.5)
 
 # frs_corr |> 
 #     filter(r >= 0.85) |> 
