@@ -11,7 +11,7 @@ load_us_graph <- function(disease_df, f="data/us-state-boundaries.shp") {
     
     state_order <- fct_inorder(unique(disease_df$location))
     
-    # sort order of states to match their order of appearance in data
+    # to be safe, sort order of states to ensure they match their order of appearance in data
     us |> 
         mutate(state=factor(state, levels(state_order))) |> 
         arrange(state)
