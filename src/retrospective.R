@@ -21,6 +21,10 @@ read_data_model <- function(disease) {
     return(fetch_rsv_2021())
   } else if (disease == "flu_2021") {
     return(fetch_flu_2021())
+  } else if (disease == "rsv_2018") {
+    return(fetch_rsv_2018())
+  } else if (disease == "covid_2020") {
+    return(fetch_covid_2020())
   } else if (disease == "covid_2021") {
     return(fetch_covid_2021())
   } else if (disease == "rsv_2022") {
@@ -32,6 +36,35 @@ read_data_model <- function(disease) {
   } else {
     stop("Invalid input: please specify 'rsv_2021', 'flu_2021', 'covid_2021','rsv_2022', 'flu_2022', 'covid_2022'")
   }
+}
+
+fetch_rsv_2018 <-  function(na.rm = TRUE) { 
+  rsv <-read_csv("../data/weekly-rsv-us.csv")
+  
+  covid_interval <- interval(ymd("2020-03-01"), ymd("2021-06-01"))
+  rsv <- rsv |> 
+    #filter(date >=  as.Date("2021-09-01"))
+   filter(!(date %within% covid_interval))
+  
+  location <- read_csv("../data/location-info.csv") |>
+    select(-population) |>
+    rename(location_number = location,
+           location = location_name)
+  
+  disease <- left_join(rsv, location, by = "location")
+  return(disease)
+}
+
+fetch_covid_2020 <- function(na.rm = TRUE) { 
+  covid <- read_csv("../data/weekly-covid-us.csv")
+  
+  location <- read_csv("../data/location-info.csv") |>
+    select(-population) |>
+    rename(location_number = location,
+           location = location_name)
+  
+  disease <- left_join(covid, location, by = "location")
+  return(disease)
 }
 
 fetch_rsv_2021 <-  function(na.rm = TRUE) { 
@@ -157,7 +190,7 @@ generate_save_weekly_forecast_rsv <- function(forecast_dates, disease_df, folder
   # Fit the model and sample predictions for each of the timepoints
   pred_quantiles <- map(forecast_dates, \(fd) {
     fit_df <- disease_df |> 
-      filter(date <= fd) |> 
+      filter(date < fd) |> 
       prep_fit_data_rsv(weeks_ahead=4, ex_lam=pop_served)
     
     fit <- fit_inla_model(fit_df, fd, model, pc_prior_u=c(1, 1))
