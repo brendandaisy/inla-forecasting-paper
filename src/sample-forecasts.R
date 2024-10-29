@@ -21,13 +21,7 @@ forecast_samples <- function(
         rpois(pred_dim, lambda) # indep. Poisson for each spacetime series
     }))
     
-    ret_df |> 
-        mutate(predicted=count_samp) |> 
-        unnest(predicted) |> 
-        mutate(observed=count, sample_id=rep(1:nsamp, times=pred_dim)) |> 
-        as_forecast_sample(forecast_unit=c("date", "location"))
-    
-    # TODO makes dumb error that the count/observed are NA
+    mutate(ret_df, predicted=count_samp)
 }
 
 # A simpler quantile summary not in the FluSight format
@@ -35,11 +29,11 @@ summarize_quantiles <- function(pred_samples, nat_samps=NULL, q=c(0.025, 0.25, 0
     pred_samples |> 
         # filter(date >= forecast_date) |> 
         bind_rows(nat_samps) |> 
-        unnest(count_samp) |> 
+        unnest(predicted) |> 
         group_by(date, location) |> 
         summarize(
-            mean=mean(count_samp),
-            qs = list(value = quantile(count_samp, probs=q)), 
+            mean=mean(predicted),
+            qs=list(value=quantile(predicted, probs=q)), 
             .groups="drop"
         ) |> 
         unnest_wider(qs) |>
