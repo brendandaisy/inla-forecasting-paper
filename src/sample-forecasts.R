@@ -1,26 +1,33 @@
 library(tidyverse)
 library(lubridate)
 
-# TODO: the current way of specifying ret_df with the forecast data is pretty 
-# unsafe, since sometimes forecast_date is used as the first date to start
-# forecasting, but also you use it as the last/only date to forecast for the coverage plots
-sample_count_predictions <- function(fit_df, fit, forecast_date, nsamp=1000) {
-    nloc <- length(unique(fit_df$iloc))
+# causes error if both forecast_date and pred_idx are NULL, which makes sense since then 
+# you wouldn't be making forecasts
+forecast_samples <- function(
+        fit_df, fit, 
+        forecast_date=NULL, pred_idx=NULL, nsamp=1000
+) {
+    # nloc <- length(unique(fit_df$iloc))
+    pred_idx <- parse_number(fit$selection$names)
     
-    ret_df <- fit_df |>
-        filter(date >= forecast_date)
+    ret_df <- fit_df[pred_idx,]
     
     jsamp_fvals <- exp(inla.rjmarginal(nsamp, fit$selection)$samples)
     ex_lam <- ret_df$ex_lam
+    pred_dim <- length(ex_lam)
     
     count_samp <- list_transpose(map(1:nsamp, \(samp) { # invert list so have sampled counts for each row
         lambda <- jsamp_fvals[,samp] * ex_lam
-        rpois(length(lambda), lambda) # indep. Poisson for each spacetime series
+        rpois(pred_dim, lambda) # indep. Poisson for each spacetime series
     }))
     
     ret_df |> 
-        mutate(count_samp=count_samp) |> 
-        select(where(~!any(is.na(.x))))
+        mutate(predicted=count_samp) |> 
+        unnest(predicted) |> 
+        mutate(observed=count, sample_id=rep(1:nsamp, times=pred_dim)) |> 
+        as_forecast_sample(forecast_unit=c("date", "location"))
+    
+    # TODO makes dumb error that the count/observed are NA
 }
 
 # A simpler quantile summary not in the FluSight format
@@ -38,4 +45,11 @@ summarize_quantiles <- function(pred_samples, nat_samps=NULL, q=c(0.025, 0.25, 0
         unnest_wider(qs) |>
         pivot_longer(contains("%"), names_to="quantile") |> 
         mutate(quantile=parse_number(quantile)/100)
+}
+
+pred2forecast_quantile <- function(pred_samples, q=c(0.025, 0.25, 0.5, 0.75, 0.975)) {
+    summarize_quantiles(q=q_wis) |> 
+        left_join(flu, by=c("date", "location")) |> 
+        select(date, location, observed=count, predicted=value, quantile_level=quantile) |> 
+        as_forecast_quantile()
 }

@@ -104,17 +104,20 @@ decompose_timeseries <- function(data, us_dist) {
     ))
 }
 
-plot_disease_summary <- function(dts, data, disease=c("RSV", "flu", "COVID-19"), col="tomato") {
+plot_disease_summary <- function(dts, data, disease=c("RSV", "flu", "COVID-19"), col="tomato", highlights=list()) {
     data_sub <- filter(data, season_week <= 35)
     
     p1 <- ggplot(data_sub, aes(season_week, weekly_rate, group=interaction(season, location))) +
         geom_line(alpha=0.25) +
+        geom_line(aes(col=location), filter(data_sub, location %in% names(highlights)), alpha=0.7) +
         # geom_line(aes(col=interaction(season, location)), data=inner_join(flu_sub, frs_diff, by=c("location", "season"))) +
         geom_line(aes(season_week, mean), filter(dts$nat_seas, season_week <= 35), col=col, linewidth=1.02, inherit.aes=FALSE) +
         labs(x="season week", y=glue("weekly rate {disease} / 100k")) +
         scale_x_continuous(breaks=seq(0, 35 , 5)) +
+        scale_color_manual(values=highlights) +
         theme_half_open() +
-        background_grid(major="xy")
+        background_grid(major="xy") +
+        theme(legend.position="none")
     
     
     if (disease == "RSV") {
@@ -129,12 +132,15 @@ plot_disease_summary <- function(dts, data, disease=c("RSV", "flu", "COVID-19"),
     
     p2 <- ggplot(dts$resid_seas, aes1) + 
         geom_line(alpha=0.25) +
+        geom_line(aes(col=location), filter(dts$resid_seas, location %in% names(highlights)), alpha=0.7) +
         geom_line(aes2, dts$resid_seas_summ, col=col, linewidth=1.02, inherit.aes=FALSE) +
         # geom_line(aes(col=location), filter(flu_resid_seas, location %in% hl_states), linewidth=1.01)
         scale_x_date(date_breaks="6 months", date_labels="%b '%y", guide=guide_axis(angle=45)) +
+        scale_color_manual(values=highlights) +
         labs(x=NULL, y="residual rate / 100k") +
         theme_half_open() +
-        background_grid(major="xy")
+        background_grid(major="xy") +
+        theme(legend.position="none")
     
     corr_summ <- dts$resid_seas_corr |> 
         filter(!is.na(r), is.finite(dist)) |> 
@@ -148,26 +154,25 @@ plot_disease_summary <- function(dts, data, disease=c("RSV", "flu", "COVID-19"),
         geom_point(alpha=0.25, shape=1) +
         # geom_boxplot(col="tomato", fill=NA, outlier.shape=NA, alpha=0.5) +
         geom_line(aes(dist, med), corr_summ, col=col, linewidth=1.02) +
-        geom_ribbon(aes(dist, ymin=l, ymax=u), corr_summ, linetype="dotted", col=col, fill=NA, inherit.aes=FALSE) +
+        geom_errorbar(aes(dist, ymin=l, ymax=u), corr_summ, col=col, inherit.aes=FALSE) +
         # stat_boxplot(aes(y=after_stat(xlower)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
         # stat_boxplot(aes(x=dist, y=after_stat(notchupper)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
-        # geom_smooth(aes(dist, r), se=FALSE, col="tomato", method="loess") +
-        labs(x="neighborhood distance", y="residual correlation") +
+        labs(x="neighborhood distance", y="correlation") +
         theme_half_open()
     
     plot_grid(p1, p2, p3, nrow=1, rel_widths=c(1, 1.4, 1), align="h", axis="b")
 }
 
-box_ribbon <- function(x) {
-    n <- length(x)
-    tibble(
-        y=median(x),
-        ymin=quantile(x, 0.1),
-        ymax=quantile(x, 0.9)
-        # ymin=y - 1.58*IQR(x)/sqrt(n),
-        # ymax=y + 1.58*IQR(x)/sqrt(n),
-    )
-}
+# box_ribbon <- function(x) {
+#     n <- length(x)
+#     tibble(
+#         y=median(x),
+#         ymin=quantile(x, 0.1),
+#         ymax=quantile(x, 0.9)
+#         # ymin=y - 1.58*IQR(x)/sqrt(n),
+#         # ymax=y + 1.58*IQR(x)/sqrt(n),
+#     )
+# }
 
 # hl_states <- c("Indiana", "Arkansas", "South Carolina", "North Carolina")
 
@@ -175,7 +180,10 @@ us <- load_us_graph(flu)
 us_dist <- us_dist_mat(us)
 
 dts_flu <- decompose_timeseries(flu, us_dist)
-p1 <- plot_disease_summary(dts_flu, flu, "flu")
+p1 <- plot_disease_summary(
+    dts_flu, flu, "flu", 
+    highlights=c("Puerto Rico"="blue", "Oklahoma"="green")
+)
 
 dts_rsv <- decompose_timeseries(rsv, us_dist)
 p2 <- plot_disease_summary(dts_rsv, rsv, "RSV")

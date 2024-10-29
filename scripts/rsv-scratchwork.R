@@ -3,10 +3,6 @@ library(INLA)
 library(lubridate)
 library(cowplot)
 
-# TODO 7/15: ask Spencer: is there evidence that seasonality for flu etc. follows regional
-# patterns in the US? Would be strong justification to try sep. seasonality just for 
-# each region
-
 source("src/prep-fit-data.R")
 source("src/model-formulas.R")
 source("src/fit-inla-model.R")
