@@ -112,6 +112,6 @@ prep_fit_data <- function(
     
     ret |> 
         left_join(date_ind, by=c("date"), relationship="many-to-one") |> 
-        mutate(t2=t) |> 
+        mutate(t2=t, low=Inf, high=Inf) |> 
         arrange(t, iloc)
 }

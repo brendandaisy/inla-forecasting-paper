@@ -44,10 +44,9 @@ model_formula <- function(
                      group=t2, control.group=list(model="{temporal}"))')
     )
     
-    glue("count ~ 1 {covars} {seasonal} {weekly_main} {weekly_interaction}")
+    glue("Y ~ 1 {covars} {seasonal} {weekly_main} {weekly_interaction}")
 }
 
-# TODO: its probably more fair to let the baseline model scale its prior as well?
 baseline_rw1 <- function() {
     # 'count ~ 1 + 
     # f(t, model="rw1", group=iloc, scale.model=TRUE, control.group=list(model="iid"))'
