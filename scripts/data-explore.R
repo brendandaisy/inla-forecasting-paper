@@ -36,27 +36,27 @@ flu <- read_csv("data/weekly-flu-us.csv") |>
     filter(
         location != "US", # won't need nat'l for these figures
         date > "2021-09-01" # No real point in looking at data before around here
-    ) |> 
+    ) |>
+    filter(date >= "2021-10-07") |> # also go ahead and remove pre season dates for this fig
     mutate(
         season=case_when(
-            date < "2021-09-01" ~ "2020-21",
-            date >= "2021-09-01" & date < "2022-09-01" ~ "2021-22",
-            date >= "2022-09-01" & date < "2023-09-01" ~ "2022-23",
-            date >= "2023-09-01" ~ "2023-24"
+            date <= "2022-10-01" ~ "2021-22",
+            date > "2022-10-01" & date <= "2023-09-30" ~ "2022-23",
+            date > "2023-09-30" ~ "2023-24"
         ),
-        season_week=(epiweek-35) %% 52 + 1
+        season_week=(epiweek-40) %% 52 + 1
     )
 
 covid <- read_csv("data/weekly-covid-us.csv") |> 
     filter(location != "US") |> 
     mutate(
         season=case_when( # just define as same as flu season
-            date < "2021-09-01" ~ "2020-21",
-            date >= "2021-09-01" & date < "2022-09-01" ~ "2021-22",
-            date >= "2022-09-01" & date < "2023-09-01" ~ "2022-23",
-            date >= "2023-09-01" ~ "2023-24"
+            date < "2021-10-07" ~ "2020-21",
+            date >= "2021-10-07" & date <= "2022-10-01" ~ "2021-22",
+            date > "2022-10-07" & date <= "2023-09-30" ~ "2022-23",
+            date >= "2023-09-30" ~ "2023-24"
         ),
-        season_week=(epiweek-35) %% 52 + 1
+        season_week=(epiweek-40) %% 52 + 1
     )
 
 # distinct(flu, season, epiweek, season_week) |> filter(season_week %in% c(1, 52))
@@ -64,12 +64,6 @@ covid <- read_csv("data/weekly-covid-us.csv") |>
 ggplot(covid, aes(date, count)) +
     geom_point() +
     facet_wrap(~location, scales="free")
-
-# For Flu: want to illustrate that the US, and to a larger extent many individual states, there
-# was a much sharper peak in hospitalizations in 22-23 following lull from COVID,
-# contrary to other findings about flu severity
-# Importantly for this paper: is there structure to these differences? The southeast coastal states
-# are consistently the ones which break this pattern of the two peaks
 
 decompose_timeseries <- function(data, us_dist) {
     nat_seas <- data |> 
@@ -104,21 +98,26 @@ decompose_timeseries <- function(data, us_dist) {
     ))
 }
 
-plot_disease_summary <- function(dts, data, disease=c("RSV", "flu", "COVID-19"), col="tomato", highlights=list()) {
-    data_sub <- filter(data, season_week <= 35)
+plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza", "COVID-19"), highlights=c()) {
+    data_sub <- filter(data, season_week <= 50)
     
-    p1 <- ggplot(data_sub, aes(season_week, weekly_rate, group=interaction(season, location))) +
-        geom_line(alpha=0.25) +
-        geom_line(aes(col=location), filter(data_sub, location %in% names(highlights)), alpha=0.7) +
+    p1 <- ggplot(data, aes(season_week, weekly_rate, group=interaction(season, location))) +
+        geom_line(alpha=0.25, col="gray60") +
+        geom_line(
+            aes(col=location), filter(data_sub, location %in% names(highlights)), 
+            linewidth=1.01
+            # alpha=0.5
+        ) +
         # geom_line(aes(col=interaction(season, location)), data=inner_join(flu_sub, frs_diff, by=c("location", "season"))) +
-        geom_line(aes(season_week, mean), filter(dts$nat_seas, season_week <= 35), col=col, linewidth=1.02, inherit.aes=FALSE) +
-        labs(x="season week", y=glue("weekly rate {disease} / 100k")) +
-        scale_x_continuous(breaks=seq(0, 35 , 5)) +
+        geom_line(
+            aes(season_week, mean), filter(dts$nat_seas, season_week <= 50), 
+            col="black", linewidth=1.02, inherit.aes=FALSE
+        ) +
+        labs(x="Respiratory season week", y=paste0(disease, "\n\nAdmits per 100k")) +
+        scale_x_continuous(breaks=seq(0, 50 , 5)) +
         scale_color_manual(values=highlights) +
         theme_half_open() +
-        background_grid(major="xy") +
         theme(legend.position="none")
-    
     
     if (disease == "RSV") {
         # grouping for disconnected timeseries (e.g. early RSV seasons)
@@ -129,70 +128,82 @@ plot_disease_summary <- function(dts, data, disease=c("RSV", "flu", "COVID-19"),
         aes1 <- aes(date, resid_seas, group=location)
         aes2 <- aes(date, week_mean)
     }
-    
-    p2 <- ggplot(dts$resid_seas, aes1) + 
-        geom_line(alpha=0.25) +
-        geom_line(aes(col=location), filter(dts$resid_seas, location %in% names(highlights)), alpha=0.7) +
-        geom_line(aes2, dts$resid_seas_summ, col=col, linewidth=1.02, inherit.aes=FALSE) +
-        # geom_line(aes(col=location), filter(flu_resid_seas, location %in% hl_states), linewidth=1.01)
+
+    p2 <- ggplot(dts$resid_seas, aes1) +
+        geom_hline(yintercept=0, col="salmon2", linetype="dashed", linewidth=1.01) +
+        geom_line(alpha=0.25, col="gray60") +
+        geom_line(aes(col=location), filter(dts$resid_seas, location %in% names(highlights)), linewidth=1.01) +
+        geom_line(aes2, dts$resid_seas_summ, col="black", linewidth=1.02, inherit.aes=FALSE) +
         scale_x_date(date_breaks="6 months", date_labels="%b '%y", guide=guide_axis(angle=45)) +
         scale_color_manual(values=highlights) +
-        labs(x=NULL, y="residual rate / 100k") +
+        labs(x=NULL, y="\nResidual admit rate") +
         theme_half_open() +
-        background_grid(major="xy") +
+        # background_grid(major="xy") +
         theme(legend.position="none")
     
     corr_summ <- dts$resid_seas_corr |> 
-        filter(!is.na(r), is.finite(dist)) |> 
+        filter(!is.na(r), is.finite(dist), dist <= 8) |> 
         group_by(dist) |> 
         summarise(med=median(r), l=med - 1.58*IQR(r)/sqrt(n()), u=med + 1.58*IQR(r)/sqrt(n()))
     
-    # TODO 8/20: using loess is a bit disingenuous but looks nicer
-    p3 <- dts$resid_seas_corr |> 
-        filter(!is.na(r), is.finite(dist)) |> 
+    dts_corr <- dts$resid_seas_corr |> 
+        filter(!is.na(r), is.finite(dist), dist <= 8)
+    
+    hl_corr <- dts_corr |> 
+        filter(state_from %in% names(highlights) | state_to %in% names(highlights)) |> 
+        mutate(state=str_extract(str_c(state_from, state_to), str_c(names(highlights), collapse="|")))
+    
+    p3 <- dts_corr |> 
         ggplot(aes(factor(dist), r)) +
-        geom_point(alpha=0.25, shape=1) +
+        geom_point(alpha=0.25, shape=1, col="gray60") +
+        geom_point(aes(col=state), hl_corr) +
         # geom_boxplot(col="tomato", fill=NA, outlier.shape=NA, alpha=0.5) +
-        geom_line(aes(dist, med), corr_summ, col=col, linewidth=1.02) +
-        geom_errorbar(aes(dist, ymin=l, ymax=u), corr_summ, col=col, inherit.aes=FALSE) +
+        geom_line(aes(dist, med), corr_summ, col="black") +
+        geom_errorbar(aes(dist, ymin=l, ymax=u), corr_summ, col="black", inherit.aes=FALSE, width=0.4) +
         # stat_boxplot(aes(y=after_stat(xlower)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
         # stat_boxplot(aes(x=dist, y=after_stat(notchupper)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
-        labs(x="neighborhood distance", y="correlation") +
-        theme_half_open()
+        scale_color_manual(values=highlights) +
+        labs(x="Neighborhood distance", y="Correlation") +
+        theme_half_open() +
+        theme(legend.position="none")
     
-    plot_grid(p1, p2, p3, nrow=1, rel_widths=c(1, 1.4, 1), align="h", axis="b")
+    plot_grid(p1, p2, p3, nrow=1, rel_widths=c(0.8, 1, 0.65), align="h", axis="b", labels=labels)
 }
-
-# box_ribbon <- function(x) {
-#     n <- length(x)
-#     tibble(
-#         y=median(x),
-#         ymin=quantile(x, 0.1),
-#         ymax=quantile(x, 0.9)
-#         # ymin=y - 1.58*IQR(x)/sqrt(n),
-#         # ymax=y + 1.58*IQR(x)/sqrt(n),
-#     )
-# }
 
 # hl_states <- c("Indiana", "Arkansas", "South Carolina", "North Carolina")
 
 us <- load_us_graph(flu)
 us_dist <- us_dist_mat(us)
 
-dts_flu <- decompose_timeseries(flu, us_dist)
+dts_covid <- decompose_timeseries(covid, us_dist)
+
+# For text: find median correlation between all states that share a border
+dts_covid$resid_seas_corr |> 
+    filter(dist == 8) |> 
+    summarise(median(r))
+
 p1 <- plot_disease_summary(
-    dts_flu, flu, "flu", 
-    highlights=c("Puerto Rico"="blue", "Oklahoma"="green")
+    dts_covid, covid, c("A", "D", "G"), "COVID-19",
+    highlights=c("California"="#AB76DE")
+    # highlights=c("Kentucky"="blue4", "Michigan"="tomato")
+)
+
+dts_flu <- decompose_timeseries(flu, us_dist)
+p2 <- plot_disease_summary(
+    dts_flu, flu, c("B", "E", "H"), "Influenza",
+    highlights=c("California"="#AB76DE")
+    # highlights=c("Puerto Rico"="blue4", "Oklahoma"="tomato")
 )
 
 dts_rsv <- decompose_timeseries(rsv, us_dist)
-p2 <- plot_disease_summary(dts_rsv, rsv, "RSV")
-
-dts_covid <- decompose_timeseries(covid, us_dist)
-p3 <- plot_disease_summary(dts_covid, covid, "COVID-19")
+p3 <- plot_disease_summary(
+    dts_rsv, rsv, c("C", "G", "I"), "RSV",
+    highlights=c("California"="#AB76DE")
+    # highlights=c("Georgia"="blue4", "New Mexico"="tomato")
+)
 
 plot_grid(p1, p2, p3, nrow=3)
-ggsave("figs/figure-1-data-summ.pdf", width=11, height=7.5)
+ggsave("figs/fig1-draft6.pdf", width=11.2, height=7.5)
 
 # frs_corr |> 
 #     filter(r >= 0.85) |> 

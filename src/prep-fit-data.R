@@ -2,18 +2,19 @@ library(tidyverse)
 library(sf)
 library(spdep)
 
+# TODO: this isn't really general enough to go in the package
 load_us_graph <- function(disease_df, f="data/us-state-boundaries.shp") {
     us0 <- read_sf(f)
-    
-    us <- us0 |> 
-        filter(name %in% unique(disease_df$location)) |> 
+
+    us <- us0 |>
+        filter(name %in% unique(disease_df$location)) |>
         select(state=name, division, region)
-    
+
     state_order <- fct_inorder(unique(disease_df$location))
-    
+
     # to be safe, sort order of states to ensure they match their order of appearance in data
-    us |> 
-        mutate(state=factor(state, levels(state_order))) |> 
+    us |>
+        mutate(state=factor(state, levels(state_order))) |>
         arrange(state)
 }
 
@@ -68,25 +69,26 @@ prep_fit_data_rsv <- function(rsv, weeks_ahead=4, ex_lam=pop_served) {
         arrange(t, iloc)
 }
 
-prep_fit_data_flu_covid <- function(flu, weeks_ahead=4, ex_lam=population) {
-    ret <- flu |> 
-        filter(location != "US") |> # make sure US is not in training data
-        group_by(date) |> 
-        mutate(t=cur_group_id(), .after=date) |>
-        ungroup() |> 
+prep_fit_data <- function(
+        disease_df, forecast_date=NULL, weeks_ahead=4, ex_lam=population,
+        loc_ids=c("location") # must have a one-to-one relationship
+) {
+    ret <- disease_df |> 
         mutate(
-            iloc=as.numeric(fct_inorder(location)),
+            iloc=as.numeric(fct_inorder(.data[[loc_ids[1]]])),
             ex_lam={{ex_lam}}
         )
     
-    if (weeks_ahead > 0) {
+    if (!is.null(forecast_date)) {
+        ret <- filter(ret, date <= forecast_date)
+        
         pred_df <- expand_grid( # makes pairs of new weeks X location
             tibble(
-                date=duration(1:weeks_ahead, "week") + max(ret$date),
-                t=1:weeks_ahead + max(ret$t),
+                date=max(ret$date) + weeks(1:weeks_ahead),
+                # t=1:weeks_ahead + max(ret$t),
                 epiweek=epiweek(date)
             ),
-            distinct(ret, location, iloc)
+            distinct(ret, across(all_of(loc_ids)), iloc)
         )
         
         location_data <- ret |> 
@@ -101,7 +103,15 @@ prep_fit_data_flu_covid <- function(flu, weeks_ahead=4, ex_lam=population) {
         ret <- bind_rows(ret, pred_df) # add to data for counts to be NAs
     }
     
+    # index dates with a sequential time index, accounting for holes in the
+    # data and spacing indices properly
+    date_seq <- seq.Date(min(ret$date), max(ret$date), "1 week")
+    
+    date_ind <- tibble(t=seq_along(date_seq), date=date_seq) |> 
+        filter(date %in% unique(ret$date))
+    
     ret |> 
+        left_join(date_ind, by=c("date"), relationship="many-to-one") |> 
         mutate(t2=t) |> 
         arrange(t, iloc)
 }

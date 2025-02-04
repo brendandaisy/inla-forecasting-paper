@@ -5,9 +5,9 @@
 # graph = state adjacency graph, to be used as specified by model
 fit_inla_model <- function(
         fit_df, model,
-        forecast_date=NULL,
         pc_prior_u=c(1, 1),
         pred_idx=NULL,
+        forecast_date=NULL,
         q=c(0.025, 0.25, 0.5, 0.75, 0.975),
         graph=NULL, dic=FALSE, config=FALSE
 ) {
@@ -17,15 +17,22 @@ fit_inla_model <- function(
     hyper_wk <- list(prec=list(prior="pc.prec", param=c(pc_prior_u[2], 0.01)))
     
     mod <- as.formula(model)
+    Y <- inla.mdata(cbind(fit_df$count, fit_df$low, fit_df$high))
     
-    if (!is.null(forecast_date))
-        pred_idx <- which(fit_df$date > forecast_date)
+    if (is.null(pred_idx)) {
+        if (is.null(forecast_date)) {
+            pred_idx <- which(is.na(fit_df$count))
+            print("forecast_date and pred_idx both NULL. This may have unexpected effects if there are NAs in fit_df prior to when forecasting should begin, but is otherwise fine.")
+        } else {
+            pred_idx <- which(is.na(fit_df$count) & fit_df$date > forecast_date)
+        }
+    }
     
     fit <- inla(
-        mod, family="poisson", data=fit_df, # poisson regression link
+        mod, family="cenpoisson2", data=fit_df, # poisson regression link
         E=fit_df$ex_lam,
         quantiles=q,
-        selection=if (is.null(pred_idx)) NULL else list(Predictor=pred_idx),
+        selection=if (length(pred_idx) == 0) NULL else list(Predictor=pred_idx),
         control.fixed=list(prec=1, expand.factor.strategy="inla"),
         control.compute=list(dic=dic, mlik=FALSE, return.marginals.predictor=TRUE, config=config),
         control.predictor=list(link=1) # produce marginal fitted values with default (log) link function
@@ -33,3 +40,31 @@ fit_inla_model <- function(
     
     return(fit)
 }
+
+# fit_baseline <- function(
+#         fit_df, model=baseline_rw1(),
+#         forecast_date=NULL,
+#         pred_idx=NULL,
+#         q=c(0.025, 0.25, 0.5, 0.75, 0.975),
+#         dic=FALSE, config=FALSE
+# ) {
+#     u_emp <- sd(fit_df$count, na.rm=TRUE) # set u to empirical sd
+#     hyper_wk <- list(prec=list(prior="pc.prec", param=c(1, 0.01)))
+#     
+#     mod <- as.formula(model)
+#     
+#     if (!is.null(forecast_date))
+#         pred_idx <- which(fit_df$date > forecast_date)
+#     
+#     fit <- inla(
+#         mod, family="poisson", data=fit_df, # poisson regression link
+#         E=fit_df$ex_lam,
+#         quantiles=q,
+#         selection=if (is.null(pred_idx)) NULL else list(Predictor=pred_idx),
+#         control.compute=list(dic=dic, mlik=FALSE, return.marginals.predictor=TRUE, config=config),
+#         # control.family=list(hyper=list(prec=list(initial=Inf, fixed=TRUE))),
+#         control.predictor=list(link=1)
+#     )
+#     
+#     return(fit)
+# }
