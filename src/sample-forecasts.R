@@ -1,29 +1,33 @@
 library(tidyverse)
 library(lubridate)
 
-# causes error if both forecast_date and pred_idx are NULL, which makes sense since then 
-# you wouldn't be making forecasts
-forecast_samples <- function(fit_df, fit, nsamp=1000) {
+# response needs to be a tidyselect now, because I'm bad at programming
+forecast_samples <- function(fit_df, fit, nsamp=1000, response=count, family="poisson") {
     pred_idx <- parse_number(fit$selection$names)
     
     ret_df <- fit_df[pred_idx,]
     
-    t_forecast <- max(filter(fit_df, !is.na(count))$t) # find the t corresponding to the forecast date
+    t_forecast <- max(filter(fit_df, !is.na({{response}}))$t) # find the t corresponding to the forecast date
     ret_df$horizon <- ret_df$t - t_forecast # works for hindcasting too!
     
     jsamp_fvals <- exp(inla.rjmarginal(nsamp, fit$selection)$samples)
     ex_lam <- ret_df$ex_lam
     pred_dim <- length(ex_lam)
     
-    count_samp <- list_transpose(map(1:nsamp, \(samp) { # invert list so have sampled counts for each row
+    rfun <- switch(
+        family,
+        poisson = rpois,
+        beta = function(n, mu) 
+            rbeta(n, mu*fit$summary.hyperpar[1, "mean"], fit$summary.hyperpar[1, "mean"]*(1-mu))
+    )
+    
+    pred_samp <- list_transpose(map(1:nsamp, \(samp) { # invert list so have sampled counts for each row
         lambda <- jsamp_fvals[,samp] * ex_lam
-        rpois(pred_dim, lambda) # indep. Poisson for each spacetime series
+        rfun(pred_dim, lambda) # indep. Poisson for each spacetime series
     }))
     
-    mutate(ret_df, predicted=count_samp)
+    mutate(ret_df, predicted=pred_samp)
 }
-
-
 
 # ... passed to `fit_inla_model`
 forecast_baseline <- function(fit_df, model=baseline_rw1(), loc_sub=NULL, ...) {

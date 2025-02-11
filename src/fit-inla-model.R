@@ -1,3 +1,5 @@
+
+
 # forecast_date = the final IN of sample date, i.e. most recent date with available count data. Ignored if joint_forecast=FALSE
 # pc_prior_u = vector of length 2 controlling the scale of the seasonal and short-term effects, in that order
 # pred_idx = specific indices for which to do joint posterior prediction. Ignored if joint_forecast=TRUE
@@ -6,6 +8,8 @@
 fit_inla_model <- function(
         fit_df, model,
         pc_prior_u=c(1, 1),
+        family="poisson",
+        response=count,
         pred_idx=NULL,
         forecast_date=NULL,
         q=c(0.025, 0.25, 0.5, 0.75, 0.975),
@@ -17,19 +21,18 @@ fit_inla_model <- function(
     hyper_wk <- list(prec=list(prior="pc.prec", param=c(pc_prior_u[2], 0.01)))
     
     mod <- as.formula(model)
-    Y <- inla.mdata(cbind(fit_df$count, fit_df$low, fit_df$high))
     
     if (is.null(pred_idx)) {
         if (is.null(forecast_date)) {
-            pred_idx <- which(is.na(fit_df$count))
+            pred_idx <- which(is.na(pull(fit_df, {{response}})))
             print("forecast_date and pred_idx both NULL. This may have unexpected effects if there are NAs in fit_df prior to when forecasting should begin, but is otherwise fine.")
         } else {
-            pred_idx <- which(is.na(fit_df$count) & fit_df$date > forecast_date)
+            pred_idx <- which(is.na(pull(fit_df, {{response}})) & fit_df$date > forecast_date)
         }
     }
     
     fit <- inla(
-        mod, family="cenpoisson2", data=fit_df, # poisson regression link
+        mod, family=family, data=fit_df, # poisson regression link
         E=fit_df$ex_lam,
         quantiles=q,
         selection=if (length(pred_idx) == 0) NULL else list(Predictor=pred_idx),

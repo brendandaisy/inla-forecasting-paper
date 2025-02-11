@@ -69,9 +69,11 @@ prep_fit_data_rsv <- function(rsv, weeks_ahead=4, ex_lam=pop_served) {
         arrange(t, iloc)
 }
 
+# loc_ids which column(s) represent locations. Can include multiple one-to-one cols, if you want e.g.
+# an abbreviated and full state name in the results
 prep_fit_data <- function(
         disease_df, forecast_date=NULL, weeks_ahead=4, ex_lam=population,
-        loc_ids=c("location") # must have a one-to-one relationship
+        loc_ids=c("location")
 ) {
     ret <- disease_df |> 
         mutate(
@@ -93,11 +95,11 @@ prep_fit_data <- function(
         
         location_data <- ret |> 
             slice_max(date) |> 
-            distinct(location, ex_lam)
+            distinct(across(all_of(loc_ids)), ex_lam)
         
         pred_df <- left_join(
             pred_df, location_data, 
-            by=c("location"), unmatched="error", relationship="many-to-one"
+            by=loc_ids, unmatched="error", relationship="many-to-one"
         )
         
         ret <- bind_rows(ret, pred_df) # add to data for counts to be NAs
@@ -112,6 +114,6 @@ prep_fit_data <- function(
     
     ret |> 
         left_join(date_ind, by=c("date"), relationship="many-to-one") |> 
-        mutate(t2=t, low=Inf, high=Inf) |> 
+        mutate(t2=t) |> 
         arrange(t, iloc)
 }

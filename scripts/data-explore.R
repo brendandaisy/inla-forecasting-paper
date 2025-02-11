@@ -98,6 +98,19 @@ decompose_timeseries <- function(data, us_dist) {
     ))
 }
 
+median_cl <- function(y) {
+    n <- length(y)
+    l <- qbinom(0.05/2, size=n, prob=0.5)
+    u <- 1 + n - l
+    ys <- sort.int(c(-Inf, y, Inf), partial = c(1 + l, 1 + u))
+    print(paste0("bootstrap CI: (", ys[1 + l], ", ", ys[1 + u], ")"))
+    data.frame(
+        y = quantile(y, probs=0.5, na.rm=TRUE, type=8),
+        ymin = ys[1 + l],
+        ymax = ys[1 + u]
+    )
+}
+
 plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza", "COVID-19"), highlights=c()) {
     data_sub <- filter(data, season_week <= 50)
     
@@ -159,7 +172,8 @@ plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza"
         geom_point(aes(col=state), hl_corr) +
         # geom_boxplot(col="tomato", fill=NA, outlier.shape=NA, alpha=0.5) +
         geom_line(aes(dist, med), corr_summ, col="black") +
-        geom_errorbar(aes(dist, ymin=l, ymax=u), corr_summ, col="black", inherit.aes=FALSE, width=0.4) +
+        stat_summary(fun.data=median_cl, geom="errorbar", width=0.4) +
+        # geom_errorbar(aes(dist, ymin=l, ymax=u), corr_summ, col="black", inherit.aes=FALSE, width=0.4) +
         # stat_boxplot(aes(y=after_stat(xlower)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
         # stat_boxplot(aes(x=dist, y=after_stat(notchupper)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
         scale_color_manual(values=highlights) +
@@ -203,7 +217,7 @@ p3 <- plot_disease_summary(
 )
 
 plot_grid(p1, p2, p3, nrow=3)
-ggsave("figs/fig1-draft6.pdf", width=11.2, height=7.5)
+ggsave("figs/fig1-draft7.pdf", width=11.2, height=7.5)
 
 # frs_corr |> 
 #     filter(r >= 0.85) |> 
