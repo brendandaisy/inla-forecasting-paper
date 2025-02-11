@@ -1,0 +1,405 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(INLA)
+library(sf)
+library(spdep)
+library(lubridate)
+library (ggplot2)
+library(readr)
+library(DT)
+library(cowplot)
+library(patchwork)
+library(gt)
+
+#source("score.R")
+#source("read-disease-data.R")
+```
+
+#PIC  plots
+
+#####date
+```{r}
+date_df <- read_csv("../data/wis_season_by_model_date.csv")
+
+truth_df <- read_csv("../data/truth_df_flu.csv")
+
+truth_US <- truth_df |>
+  filter(location_name == "US") |>
+  select(date, count) |>
+  rename(reference_date = date)
+```
+
+```{r}
+PIC_date <- date_df |>
+  filter(model %in% c("UGA_flucast-INFLAenza", "FluSight-baseline", "FluSight-ensemble"))
+
+PIC_date <- PIC_date |>
+  mutate(coverage_50 = (cov_50/100),
+         coverage_95 = (cov_95/100))
+
+#add the truth column 
+truth_US_clean <- truth_US |>
+  filter(reference_date >= "2023-10-14")
+```
+
+```{r}
+# Custom colors for each model
+model_colors <- c("FluSight-baseline" = "#2b8cbe", 
+                  "FluSight-ensemble" = "coral2", 
+                  "UGA_flucast-INFLAenza" = "darkseagreen")
+
+plot_counts <- ggplot(data = truth_US_clean, aes(x = reference_date, y = count)) +
+  geom_line(color = "black") +
+  labs(x = NULL, y = "US Counts") +
+  scale_x_date(date_breaks = "1 months", date_labels = "%b '%y", guide = guide_axis(angle = 0)) +
+  theme_minimal() +
+  theme_cowplot() +
+  scale_y_continuous(labels = scales::comma)
+
+plot_counts <- plot_counts + background_grid(major = 'xy')
+
+# Generate individual plots
+plot_cov_50 <- ggplot(data = PIC_date, aes(x = reference_date, y = coverage_50, color = model)) +
+  # Add a horizontal line at y = 0
+  geom_hline(yintercept = .50, linetype = "dashed", color = "azure4", size = 1) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual(values = model_colors) +
+  labs(x = NULL, y = "Coverage 50%") +
+  scale_x_date(date_breaks = "1 months", date_labels = "%b '%y", guide = guide_axis(angle = 0)) +
+  #labs(y = "cov_50") +
+  theme_minimal() +
+  theme_cowplot() +
+  scale_y_continuous(labels = scales::percent) +
+  
+  theme(
+    legend.position = "none",
+    legend.title = element_blank(),   # Remove the legend title
+    #axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5) 
+  )
+
+plot_cov_50 <- plot_cov_50 + background_grid(major = 'xy')
+
+plot_cov_95 <- ggplot(data = PIC_date, aes(x = reference_date, y = coverage_95, color = model)) +
+  # Add a horizontal line at y = 0
+  geom_hline(yintercept = .95, linetype = "dashed", color = "azure4", size = 1) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual(values = model_colors) +
+  labs(x = NULL, y = "Coverage 95%") +
+  scale_x_date(date_breaks = "1 months", date_labels = "%b '%y", guide = guide_axis(angle = 0)) +
+  #labs(y = "cov_95") +
+  theme_minimal()+
+  theme_cowplot() +
+  scale_y_continuous(labels = scales::percent) +
+  
+  theme(
+    legend.position = "none",
+    legend.title = element_blank(),   # Remove the legend title
+    #axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5) 
+  )
+
+plot_cov_95 <- plot_cov_95 + background_grid(major = 'xy')
+
+# Stack the plots
+stacked_plots <- plot_grid(plot_counts, plot_cov_50, plot_cov_95, ncol = 1, align = "v", labels = "AUTO")
+
+# Display the stacked plots
+print(stacked_plots)
+```
+```{r}
+#ggsave("PIC_date_Flusight_counts.png", plot = stacked_plots, width = 10, height = 6, dpi = 300, bg = "white") 
+```
+
+####location
+
+```{r}
+wis_season_by_location_name <- read_csv("../data/wis_season_by_model_location_name.csv")
+```
+
+```{r}
+PIC_location <- wis_season_by_location_name |>
+  filter(model %in% c("UGA_flucast-INFLAenza", "FluSight-baseline", "FluSight-ensemble"))
+
+PIC_location <- PIC_location |>
+  mutate(coverage_50 = (cov_50/100),
+         coverage_95 = (cov_95/100))
+```
+
+```{r}
+# Custom colors for each model
+model_colors <- c("FluSight-baseline" = "#2b8cbe", 
+                  "FluSight-ensemble" = "coral2", 
+                  "UGA_flucast-INFLAenza" = "darkseagreen")
+
+# Generate individual plots
+plot_cov_50 <- ggplot(data = PIC_location, aes(x = location_name, y = coverage_50, color = model)) +
+  # Add a horizontal line at y = 0
+  geom_hline(yintercept = .50, linetype = "dashed", color = "azure4", size = 1) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual(values = model_colors) +
+  labs(x = NULL, y = "Coverage 50%") +
+  #scale_x_date(date_breaks = "1 months", date_labels = "%b '%y", guide = guide_axis(angle = 0)) +
+  #labs(y = "cov_50") +
+  theme_minimal() +
+  theme_cowplot() +
+  scale_y_continuous(labels = scales::percent) +
+  
+  theme(
+    legend.position = "none",
+    legend.title = element_blank(),   # Remove the legend title
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5) 
+  )
+
+plot_cov_50 <- plot_cov_50 + background_grid(major = 'xy')
+
+plot_cov_95 <- ggplot(data = PIC_location, aes(x = location_name, y = coverage_95, color = model)) +
+  # Add a horizontal line at y = 0
+  geom_hline(yintercept = .95, linetype = "dashed", color = "azure4", size = 1) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual(values = model_colors) +
+  labs(x = NULL, y = "Coverage 95%") +
+  #scale_x_date(date_breaks = "1 months", date_labels = "%b '%y", guide = guide_axis(angle = 0)) +
+  #labs(y = "cov_95") +
+  theme_minimal()+
+  theme_cowplot() +
+  scale_y_continuous(labels = scales::percent) +
+  
+  theme(
+    legend.position = "none",
+    legend.title = element_blank(),   # Remove the legend title
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5) 
+  )
+
+plot_cov_95 <- plot_cov_95 + background_grid(major = 'xy')
+
+# Stack the plots
+stacked_plots <- plot_grid(plot_cov_50, plot_cov_95, ncol = 1, align = "v", labels = "AUTO")
+
+# Display the stacked plots
+print(stacked_plots)
+```
+```{r}
+#ggsave("PIC_location_Flusight.png", plot = stacked_plots, width = 8, height = 10, dpi = 300, bg = "white")  
+```
+
+
+#horizons
+
+```{r}
+horizon_df <- read.csv("../data/wis_season_by_model_horizon.csv")
+```
+
+```{r}
+PIC_horizon <- horizon_df |>
+  filter(model %in% c("UGA_flucast-INFLAenza", "FluSight-baseline", "FluSight-ensemble"))
+
+PIC_horizon <- PIC_horizon |>
+  mutate(coverage_50 = (cov_50/100),
+         coverage_95 = (cov_95/100))
+```
+
+```{r}
+# Custom colors for each model
+model_colors <- c("FluSight-baseline" = "#2b8cbe", 
+                  "FluSight-ensemble" = "coral2", 
+                  "UGA_flucast-INFLAenza" = "darkseagreen")
+
+# Generate individual plots
+plot_cov_50 <- ggplot(data = PIC_horizon, aes(x = horizon, y = coverage_50, color = model)) +
+  # Add a horizontal line at y = 0
+  geom_hline(yintercept = .50, linetype = "dashed", color = "azure4", size = 1) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual(values = model_colors) +
+  labs(x = NULL, y = "Coverage 50%") +
+  #scale_x_date(date_breaks = "1 months", date_labels = "%b '%y", guide = guide_axis(angle = 0)) +
+  #labs(y = "cov_50") +
+  theme_minimal() +
+  theme_cowplot() +
+  scale_y_continuous(labels = scales::percent) +
+  
+  theme(
+    legend.position = "none",
+    legend.title = element_blank(),   # Remove the legend title
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5) 
+  )
+
+plot_cov_50 <- plot_cov_50 + background_grid(major = 'xy')
+
+plot_cov_95 <- ggplot(data = PIC_horizon, aes(x = horizon, y = coverage_95, color = model)) +
+  # Add a horizontal line at y = 0
+  geom_hline(yintercept = .95, linetype = "dashed", color = "azure4", size = 1) +
+  geom_point() +
+  geom_line() +
+  scale_color_manual(values = model_colors) +
+  labs(x = NULL, y = "Coverage 95%") +
+  #scale_x_date(date_breaks = "1 months", date_labels = "%b '%y", guide = guide_axis(angle = 0)) +
+  #labs(y = "cov_95") +
+  theme_minimal()+
+  theme_cowplot() +
+  scale_y_continuous(labels = scales::percent) +
+  
+  theme(
+    legend.position = "none",
+    legend.title = element_blank(),   # Remove the legend title
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5) 
+  )
+
+plot_cov_95 <- plot_cov_95 + background_grid(major = 'xy')
+
+# Stack the plots
+stacked_plots <- plot_grid(plot_cov_50, plot_cov_95, ncol = 1, align = "v", labels = "AUTO")
+
+# Display the stacked plots
+print(stacked_plots)
+```
+```{r}
+#ggsave("PIC_horizon_Flusight.png", plot = stacked_plots, width = 10, height = 6, dpi = 300, bg = "white")  
+```
+
+#horizon 
+
+```{r}
+truth_US <- truth_df |>
+  filter(location_name == "US") |>
+  select(date, count) |>
+  rename(reference_date = date)
+```
+
+```{r}
+# Step 2: Filter for UGA_flucast_INFLAenza model
+loc_df <- horizon_df |>
+  filter(model %in% c("UGA_flucast-INFLAenza", "FluSight-ensemble", "FluSight-baseline"))
+
+uga_diff <- loc_df %>%
+  group_by(horizon) %>%
+  mutate(diff_UGA = case_when(
+    model == "FluSight-baseline" ~ rel_wis - rel_wis[model == "FluSight-ensemble"],
+    TRUE ~ NA_real_
+  )) %>%
+  ungroup()
+
+uga_diff <- uga_diff %>%
+  filter(model == "UGA_flucast-INFLAenza") %>%
+  select(horizon, diff_UGA)
+
+#UGA_flucast-INFLAenza"
+```
+
+
+```{r}
+make_improv <- function(df, model1, model2) {
+  df <- df %>%
+    group_by(horizon) %>%
+    mutate(
+      rel_wis_model1 = ifelse(model == model1, rel_wis, NA),  # Extract rel_wis for model1
+      rel_wis_model2 = ifelse(model == model2, rel_wis, NA)   # Extract rel_wis for model2
+    ) %>%
+    fill(rel_wis_model1, rel_wis_model2, .direction = "downup") %>%  # Ensure both values are available in all rows
+    mutate(
+      improvement = (1 - rel_wis_model2 / rel_wis_model1) * 100  # Calculate relative improvement between the two models
+    ) %>%
+    ungroup()
+
+  return(df)
+}
+```
+
+```{r}
+# Step 2: Filter for UGA_flucast_INFLAenza model
+loc_df_baseline <- horizon_df |>
+  filter(model %in% c("UGA_flucast-INFLAenza", "FluSight-baseline"))
+
+loc_df_ensemble <- horizon_df |>
+  filter(model %in% c("FluSight-ensemble", "FluSight-baseline"))
+
+#do the thing 
+baseline <- make_improv(loc_df_baseline, "FluSight-baseline", "UGA_flucast-INFLAenza")
+
+baseline <- baseline |>
+  mutate(percent_baseline = improvement / 100)
+
+#do the thing 2
+ensemble <- make_improv(loc_df_ensemble, "FluSight-baseline", "FluSight-ensemble")
+
+ensemble <- ensemble |>
+  mutate(percent_ensemble = improvement / 100)
+
+#loc_df <- bind_rows(baseline, ensemble)
+```
+
+```{r}
+baseline <- baseline |>
+  filter(model == "UGA_flucast-INFLAenza") |>
+  select (model, horizon, percent_baseline) |>
+  rename(percent = percent_baseline)
+
+for_merge <- ensemble |>
+  filter(model == "FluSight-ensemble") |>
+  select (model, horizon, percent_ensemble) |>
+  rename(percent = percent_ensemble)
+
+uga_only <- rbind(baseline, for_merge)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(cowplot)
+
+custom_colors <- c(
+  "FluSight-ensemble" = "coral2",
+  "UGA_flucast-INFLAenza" = "darkseagreen"
+)
+
+
+# Create the plot
+plot <- ggplot(uga_only, aes(x = horizon, y = percent, color = model)) +
+  
+   # Add a horizontal line at y = 0
+  geom_hline(yintercept = 0, linetype = "dashed", color = "azure4", size = 1) +
+  
+  # Add points for percent_baseline and percent_ensemble
+  geom_point(size = 2.5) +
+  
+  # Add a line connecting the points for each location
+  geom_line(aes(group = horizon), color = "gray45") +
+  
+  # Format the y-axis to show percentages
+  scale_y_continuous(labels = scales::percent) +
+  
+  # Apply custom colors
+  scale_color_manual(values = custom_colors) +
+  
+  labs(x = NULL, y = "Realative Improvement", color = "Type") +
+  
+  # Use a clean minimal theme
+  theme_minimal() +
+  theme_cowplot() +
+  
+  theme(
+    legend.position = "none",
+    legend.title = element_blank(),   # Remove the legend title
+    #axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate x-axis labels for readability
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5) 
+  )
+
+# Adding background grids to the top panel plot
+plot <- plot + background_grid(major = 'xy')
+
+# Display the plot
+plot
+```
+
+```{r}
+# Save the plot with ggsave
+#ggsave("/Users/maya/Documents/Figures/figure4/horizon_supp_flusight2.png", plot = plot, width = 8, height = 6, dpi = 300, bg = "white") 
+```
