@@ -1,6 +1,8 @@
 ---
 title: "inla-forecasting-paper"
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -18,7 +20,7 @@ The core of the forecasting functionality is separated into four source files:
 
 ## Data format
 
-The functionality currently assumes input data in "long" format, containing columns `location`, `date`, `epiweek`, and `count` (the target data). Additionally, an offset term is used in the model to control for population size, so a column such as `population` containing the size of each location or group should be included. 
+The functionality currently assumes input data in "long" format, containing columns `location`, `date`, `epiweek`. The column containing the response/target data can be sepecified (default is `count`). Additionally, an offset term is used in the model to control for population size, so a column such as `population` containing the size of each location or group should be included. You can set this to 1 throughout if you don't know the population. 
 
 **Note that currently the framework is not fully generalized, and some minor changes to the code would be required to work with a new dataset.** Most of these would probably be in `prep-fit-data.R`.
 
@@ -42,23 +44,26 @@ inla.setOption(inla.mode="classic")
 flu <- read_csv("data/weekly-flu-us.csv") |> 
     filter(date >= "2021-09-01") # exclude peak COVID-19 period
 
-forecast_date <- ymd("2023-12-07") # first date where forecasting will begin
+forecast_date <- ymd("2023-12-15") # final date to include in training
 
 # load up a spatial sf object of the US states and convert to neighborhood matrix
 graph <- load_us_graph(flu) |> sf2mat()
 
 fit_df <- flu |> 
-    filter(date < forecast_date) |> # pretend we only have data before `forecast_date`
-    prep_fit_data_flu_covid(weeks_ahead=4, ex_lam=population)
+    filter(location != "US") |> 
+    prep_fit_data(forecast_date, weeks_ahead=4, ex_lam=population)
 
 model <- model_formula(seasonal="shared", temporal="ar1", spatial="besagproper")
 
-fit <- fit_inla_model(fit_df, forecast_date, model, graph=graph)
+fit <- fit_inla_model(fit_df, model, graph=graph)
     
-pred_summ <- sample_count_predictions(fit_df, fit, forecast_date, nsamp=5000) |> 
+pred_summ <- forecast_samples(fit_df, fit, nsamp=1000) |> 
     summarize_quantiles() |> 
     pivot_wider(names_from=quantile) # wide format for ribbon plots
+```
 
+Plot the results compared to truth data:
+```{r, cache=TRUE}
 # subset of flu data to compare with forecasts
 loc_sub <- c("California", "Oregon", "Washington", "Nevada")
 
@@ -76,6 +81,82 @@ pred_summ |>
     geom_ribbon(aes(ymin=`0.25`, ymax=`0.75`), fill="blue1", alpha=0.5, col=NA) +
     geom_line(aes(y=mean), col="blue4") +
     geom_point(aes(y=count), flu_sub, size=0.9) +
+    facet_wrap(~location, scales="free_y")
+```
+
+
+## Retrospective analyses
+
+Since no "future" dates are needed, first we can remake the `fit_df` to no longer include the `NA` weeks ahead.
+
+<!-- ```{r} -->
+<!-- flu_proc <- prep_fit_data_flu_covid(flu, weeks_ahead=0, ex_lam=population) -->
+<!-- ``` -->
+
+Retrospective forecasts for a sequence of dates are produced with `forecast_retro`. The function also supports passing a subset of locations to forecast. This allows producing forecasts for only the states of interest to make things a bit faster, while still fitting to data from all locations so all the information is pooled correctly.
+
+TODO :)
+
+<!-- ```{r} -->
+<!-- retro_forecast_dates <- c("2022-11-15", "2023-01-15", "2023-11-15", "2024-01-15") -->
+
+<!-- fr <- forecast_retro( -->
+<!--     flu_proc, model, retro_forecast_dates, -->
+<!--     graph=graph, loc_sub=loc_sub, nsamp=1000 -->
+<!-- ) -->
+
+<!-- plot_retro(fr, flu) -->
+<!-- ``` -->
+
+
+### Scoring
+
+### Coverage plots
+
+Coverage plots are similar to the above retrospective forecasts except predictions `horizon` dates ahead are produced for a continuous range of dates in some interval. This produces an unbroken sequence of forecasts that can then be compared to the truth data for each date. These plots tend to be a bit more confusing to read but can provide a fuller understanding of model behavior within the interval.
+
+Here we produce a short coverage plot for December 2023. The result is a continuous envelope of forecasts that were produced three weeks prior to each of the overlaid true values. 
+Additionally, we adjust the prior for the short-term effect to be sightly tighter, resulting in 
+smaller prediction intervals.
+
+TODO :)
+
+## Example using percentage data
+
+Load in some example data
+```{r}
+ili_pct <- read_csv("data/ex-percent.csv") |> 
+    select(date=week_end, location, weekly_percent) |> 
+    mutate(epiweek=epiweek(date), ex_lam=1)
+
+forecast_date <- "2025-01-01" # back a few weeks to compare to truth data
+
+model <- model_formula(
+    response="weekly_percent", seasonal="shared", temporal="ar1", spatial="exchangeable"
+)
+fit_df <- prep_fit_data(ili_pct, forecast_date, weeks_ahead=4, ex_lam=ex_lam)
+```
+
+
+```{r}
+fit <- fit_inla_model(fit_df, model, family="beta", response=weekly_percent)
+
+pred_samp <- forecast_samples(fit_df, fit, family="beta", response=weekly_percent)
+q_wis <- c(0.01, 0.025, seq(0.05, 0.95, by=0.05), 0.975, 0.99)
+pred_summ <- summarize_quantiles(pred_samp, q=q_wis)
+```
+
+```{r}
+ili_sub <- ili_pct |> 
+    filter(date > max(date) - weeks(10)) # get truth data plus some previous weeks
+
+pred_summ |> 
+    pivot_wider(names_from=quantile) |> 
+    ggplot(aes(date)) +
+    geom_ribbon(aes(ymin=`0.025`, ymax=`0.975`), fill="skyblue", alpha=0.5, col=NA) +
+    geom_ribbon(aes(ymin=`0.25`, ymax=`0.75`), fill="blue1", alpha=0.5, col=NA) +
+    geom_line(aes(y=mean), col="blue4") +
+    geom_point(aes(y=weekly_percent), ili_sub, size=0.9) +
     facet_wrap(~location, scales="free_y")
 ```
 

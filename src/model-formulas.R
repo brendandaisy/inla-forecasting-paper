@@ -1,6 +1,7 @@
 library(glue)
 
 model_formula <- function(
+        response="count",
         covars=c("location"),
         seasonal=c("none", "shared", "iid"),
         temporal=c("none", "ar1", "rw1", "rw2"),
@@ -44,7 +45,7 @@ model_formula <- function(
                      group=t2, control.group=list(model="{temporal}"))')
     )
     
-    glue("Y ~ 1 {covars} {seasonal} {weekly_main} {weekly_interaction}")
+    glue("{response} ~ 1 {covars} {seasonal} {weekly_main} {weekly_interaction}")
 }
 
 baseline_rw1 <- function() {
