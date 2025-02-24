@@ -29,6 +29,18 @@ forecast_samples <- function(fit_df, fit, nsamp=1000, response=count, family="po
     mutate(ret_df, predicted=pred_samp)
 }
 
+aggregate_forecast <- function(pred_samp, ..., fun=sum, tags=tibble(location="All")) {
+    pred_samp |> 
+        mutate(predicted=map(predicted, \(p) tibble(sample_id=seq_along(p), predicted=p))) |> 
+        unnest(predicted) |> 
+        group_by(date, horizon, ..., sample_id) |> 
+        summarise(predicted=fun(predicted), .groups="drop") |> 
+        bind_cols(tags) |> 
+        select(-sample_id) |> 
+        nest(predicted=predicted) |> 
+        mutate(predicted=map(predicted, ~.$predicted))
+}
+
 # ... passed to `fit_inla_model`
 forecast_baseline <- function(fit_df, model=baseline_rw1(), loc_sub=NULL, ...) {
     if (is.null(loc_sub))
@@ -66,9 +78,9 @@ summarize_quantiles <- function(pred_samples, ..., nat_samps=NULL, q=c(0.025, 0.
         mutate(quantile=parse_number(quantile)/100, model=model)
 }
 
-pred2forecast_quantile <- function(pred_samples, q=c(0.025, 0.25, 0.5, 0.75, 0.975)) {
-    summarize_quantiles(q=q_wis) |> 
-        left_join(flu, by=c("date", "location")) |> 
-        select(date, location, observed=count, predicted=value, quantile_level=quantile) |> 
-        as_forecast_quantile()
-}
+# pred2forecast_quantile <- function(pred_samples, q=c(0.025, 0.25, 0.5, 0.75, 0.975)) {
+#     summarize_quantiles(q=q_wis) |> 
+#         left_join(flu, by=c("date", "location")) |> 
+#         select(date, location, observed=count, predicted=value, quantile_level=quantile) |> 
+#         as_forecast_quantile()
+# }

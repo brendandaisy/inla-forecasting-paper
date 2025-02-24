@@ -381,7 +381,7 @@ p5 <- short_main_summ |>
     geom_ribbon(aes(ymin=`0.025quant`, ymax=`0.975quant`), col=NA, alpha=0.3) +
     geom_ribbon(aes(ymin=`0.25quant`, ymax=`0.75quant`), col=NA, alpha=0.5) +
     geom_line(alpha=0.8, linewidth=1.03) +
-    scale_x_date(date_breaks="3 months", date_labels="%b %y", guide=guide_axis(angle=45)) +
+    scale_x_date(date_breaks="3 months", date_labels="%b %y", guide=guide_axis(angle=45), expand=expansion(0.11)) +
     scale_color_manual(values=c("#7DC0A6", "#919FC7", "#DA8EC0")) +
     scale_fill_manual(values=c("#7DC0A6", "#919FC7", "#DA8EC0")) +
     labs(y="Short-term main effect", col=NULL, fill=NULL, x=NULL) +
@@ -424,7 +424,7 @@ plot_grid(
 
 # ggdraw(plot_grid(pfinal, legend, nrow=1, rel_widths=c(1, 0.15)))
 
-ggsave("figs/fig4-draft5.pdf", width=10.5, height=6.8)
+ggsave("figs/fig4-draft6.pdf", width=10.55, height=6.8)
 
 # getting credible intervals for seasonal min and max-----------------------------
 post_seasonal_ci <- function(post, tag) {

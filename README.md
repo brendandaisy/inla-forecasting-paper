@@ -94,7 +94,9 @@ fit <- fit_inla_model(fit_df, model, graph=graph)
     ## [1] "forecast_date and pred_idx both NULL. This may have unexpected effects if there are NAs in fit_df prior to when forecasting should begin, but is otherwise fine."
 
 ``` r
-pred_summ <- forecast_samples(fit_df, fit, nsamp=1000) |> 
+pred_samp <- forecast_samples(fit_df, fit, nsamp=1000)
+    
+pred_summ <- pred_samp |> 
     summarize_quantiles() |> 
     pivot_wider(names_from=quantile) # wide format for ribbon plots
 ```
@@ -123,6 +125,46 @@ pred_summ |>
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+### Aggregating forecasts from the joint predictive distribution
+
+Use function `aggregate_forecast` to aggregate forecasts over different
+locations. By default, this function assumes all locations are to be
+aggregated into a single group, but additional grouping variables can be
+passed to produce e.g. regional forecasts instead. In this example, just
+want national forecasts, i.e. an unweighted sum over all states’
+predictions.
+
+The optional `tags` argument can be used to label these aggregate
+forecasts
+
+``` r
+pred_samp_us <- aggregate_forecast(pred_samp, tags=tibble_row(location="US"))
+```
+
+The national predictions can simply be added to the state predictions,
+before or after summarizing, to produce national quantile forecasts:
+
+``` r
+pred_samp |> 
+    bind_rows(pred_samp_us) |> 
+    summarize_quantiles()
+```
+
+    ## # A tibble: 1,060 × 6
+    ##    date       location horizon  mean quantile value
+    ##    <date>     <chr>      <int> <dbl>    <dbl> <dbl>
+    ##  1 2023-12-16 Alabama        1 125.     0.025  63  
+    ##  2 2023-12-16 Alabama        1 125.     0.25   97  
+    ##  3 2023-12-16 Alabama        1 125.     0.5   121  
+    ##  4 2023-12-16 Alabama        1 125.     0.75  148  
+    ##  5 2023-12-16 Alabama        1 125.     0.975 216. 
+    ##  6 2023-12-16 Alaska         1  19.6    0.025   5  
+    ##  7 2023-12-16 Alaska         1  19.6    0.25   12  
+    ##  8 2023-12-16 Alaska         1  19.6    0.5    17  
+    ##  9 2023-12-16 Alaska         1  19.6    0.75   24  
+    ## 10 2023-12-16 Alaska         1  19.6    0.975  48.0
+    ## # ℹ 1,050 more rows
 
 ## Retrospective analyses
 
@@ -223,4 +265,4 @@ pred_summ |>
     facet_wrap(~location, scales="free_y")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->

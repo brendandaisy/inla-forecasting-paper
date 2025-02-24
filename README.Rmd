@@ -56,8 +56,10 @@ fit_df <- flu |>
 model <- model_formula(seasonal="shared", temporal="ar1", spatial="besagproper")
 
 fit <- fit_inla_model(fit_df, model, graph=graph)
+
+pred_samp <- forecast_samples(fit_df, fit, nsamp=1000)
     
-pred_summ <- forecast_samples(fit_df, fit, nsamp=1000) |> 
+pred_summ <- pred_samp |> 
     summarize_quantiles() |> 
     pivot_wider(names_from=quantile) # wide format for ribbon plots
 ```
@@ -82,6 +84,23 @@ pred_summ |>
     geom_line(aes(y=mean), col="blue4") +
     geom_point(aes(y=count), flu_sub, size=0.9) +
     facet_wrap(~location, scales="free_y")
+```
+
+### Aggregating forecasts from the joint predictive distribution
+
+Use function `aggregate_forecast` to aggregate forecasts over different locations. By default, this function assumes all locations are to be aggregated into a single group, but additional grouping variables can be passed to produce e.g. regional forecasts instead. In this example, just want national forecasts, i.e. an unweighted sum over all states' predictions.
+
+The optional `tags` argument can be used to label these aggregate forecasts
+
+```{r}
+pred_samp_us <- aggregate_forecast(pred_samp, tags=tibble_row(location="US"))
+```
+
+The national predictions can simply be added to the state predictions, before or after summarizing, to produce national quantile forecasts:
+```{r}
+pred_samp |> 
+    bind_rows(pred_samp_us) |> 
+    summarize_quantiles()
 ```
 
 

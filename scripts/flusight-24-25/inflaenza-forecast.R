@@ -104,7 +104,10 @@ flu |>
     geom_col() +
     facet_wrap(~abbreviation, scales="free_y")
 
-fit_df <- prep_fit_data_flusight(flu, forecast_date, weeks_ahead=4, ex_lam=pop_weighted) |> 
+fit_df <- prep_fit_data_flusight(
+    flu, forecast_date, 
+    weeks_ahead=4, ex_lam=pop_weighted, pct_reporting_weeks=0
+) |> 
     mutate(
         season_group=case_when(
             abbreviation == "PR" ~ 4,
@@ -131,17 +134,24 @@ group=t2, control.group=list(model="ar1"))'
 
 fit <- fit_inla_model(fit_df, model, graph=graph)
 
-pred_samp <- forecast_samples(fit_df, fit, nsamp=5000)
+fit_df |> 
+    mutate(med=fit$summary.fitted.values$`0.5quant`) |> 
+    filter(abbreviation == "PR") |> 
+    tail(10) |> 
+    View()
 
-pred_samp_us <- pred_samp |> 
-    mutate(predicted=map(predicted, \(p) tibble(sample_id=seq_along(p), predicted=p))) |> 
-    unnest(predicted) |> 
-    group_by(date, horizon, sample_id) |> 
-    summarise(predicted=sum(predicted), groups="drop") |> 
-    mutate(abbreviation="US", location="US") |> 
-    select(-sample_id) |> 
-    nest(predicted=predicted) |> 
-    mutate(predicted=map(predicted, ~.$predicted))
+pred_samp <- forecast_samples(fit_df, fit, nsamp=5000)
+pred_samp_us <- aggregate_forecast(pred_samp, tags=tibble_row(abbreviation="US", location="US"))
+
+# pred_samp_us <- pred_samp |> 
+#     mutate(predicted=map(predicted, \(p) tibble(sample_id=seq_along(p), predicted=p))) |> 
+#     unnest(predicted) |> 
+#     group_by(date, horizon, sample_id) |> 
+#     summarise(predicted=sum(predicted), .groups="drop") |> 
+#     mutate(abbreviation="US", location="US") |> 
+#     select(-sample_id) |> 
+#     nest(predicted=predicted) |> 
+#     mutate(predicted=map(predicted, ~.$predicted))
 
 q_wis <- c(0.01, 0.025, seq(0.05, 0.95, by=0.05), 0.975, 0.99)
 
@@ -161,7 +171,7 @@ pred_summ <- pred_samp |>
     select(reference_date, target, horizon, target_end_date, abbreviation, location, output_type, output_type_id, value)
 
 write_csv(
-    select(filter(pred_summ, abbreviation != "PR"), -abbreviation), 
+    select(pred_summ, -abbreviation), 
     paste0("flusight-predictions/FluSight-forecast-hub/model-output/UGA_flucast-INFLAenza/", reference_date, "-UGA_flucast-INFLAenza.csv")
 )
 
