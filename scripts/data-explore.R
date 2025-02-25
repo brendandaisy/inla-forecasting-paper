@@ -219,6 +219,8 @@ p3 <- plot_disease_summary(
 plot_grid(p1, p2, p3, nrow=3)
 ggsave("figs/fig1-draft7.pdf", width=11.2, height=7.5)
 
+# old stuff-----------------------------------------------------------------------
+
 # frs_corr |> 
 #     filter(r >= 0.85) |> 
 #     arrange(dist) |> 
@@ -299,9 +301,6 @@ fit <- inla(
 )
 
 plot_seasonal(fit_df, fit)
-
-
-###
 
 # fit the final flu model to the full training set
 model <- model_formula("shared", temporal="ar1", spatial="besagproper")
