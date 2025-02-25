@@ -103,6 +103,15 @@ pred_samp |>
     summarize_quantiles()
 ```
 
+The function can also produce totals while removing certain locations/groups by adding new groups to the data. For example, to produce total predictions for just the continental US:
+```{r}
+outside_loc <- c("Alaska", "Hawaii", "Puerto Rico")
+
+aggregate_forecast(pred_samp, is_continental=!(location %in% outside_loc)) |> 
+    filter(is_continental)
+```
+
+
 
 ## Retrospective analyses
 

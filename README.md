@@ -166,6 +166,25 @@ pred_samp |>
     ## 10 2023-12-16 Alaska         1  19.6    0.975  48.0
     ## # ℹ 1,050 more rows
 
+The function can also produce totals while removing certain
+locations/groups by adding new groups to the data. For example, to
+produce total predictions for just the continental US:
+
+``` r
+outside_loc <- c("Alaska", "Hawaii", "Puerto Rico")
+
+aggregate_forecast(pred_samp, is_continental=!(location %in% outside_loc)) |> 
+    filter(is_continental)
+```
+
+    ## # A tibble: 4 × 5
+    ##   date       horizon is_continental location predicted    
+    ##   <date>       <int> <lgl>          <chr>    <list>       
+    ## 1 2023-12-16       1 TRUE           All      <int [1,000]>
+    ## 2 2023-12-23       2 TRUE           All      <int [1,000]>
+    ## 3 2023-12-30       3 TRUE           All      <int [1,000]>
+    ## 4 2024-01-06       4 TRUE           All      <int [1,000]>
+
 ## Retrospective analyses
 
 Since no “future” dates are needed, first we can remake the `fit_df` to
@@ -265,4 +284,4 @@ pred_summ |>
     facet_wrap(~location, scales="free_y")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
