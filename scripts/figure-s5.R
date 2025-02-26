@@ -26,9 +26,9 @@ flu_nat <- flu |>
     summarise(mean=mean(weekly_rate), .groups="drop")
 
 flu_pr <- flu |>
-    filter(location == "Puerto Rico", season %in% c("2022-23", "2023-24")) |> 
-    group_by(epiweek, season_week) |> 
-    summarise(mean=mean(weekly_rate), .groups="drop")
+    filter(location == "Puerto Rico", season %in% c("2022-23", "2023-24"))
+    # group_by(epiweek, season_week) |> 
+    # summarise(mean=mean(weekly_rate), .groups="drop")
 
 p1 <- ggplot(flu_nat, aes(season_week, mean)) +
     geom_line(
@@ -37,7 +37,7 @@ p1 <- ggplot(flu_nat, aes(season_week, mean)) +
         col="gray50", alpha=0.1
     ) +
     geom_line(col="black", linewidth=1.1) +
-    geom_line(data=rsv_ga, col="#AB76DE", linewidth=1.1) +
+    geom_line(aes(season_week, weekly_rate, group=interaction(season, location)), rsv_ga, col="#AB76DE", linewidth=1.1) +
     annotate("text", label="Puerto Rico", x=42, y=2, col="#AB76DE", size=5) +
     labs(x="Respiratory season week", y="Flu Admits per 100k") +
     scale_x_continuous(breaks=seq(0, 50 , 5)) +
@@ -49,9 +49,9 @@ rsv_nat <- rsv |>
     summarise(mean=mean(weekly_rate), .groups="drop")
 
 rsv_ga <- rsv |>
-    filter(location == "Georgia", season %in% c("2022-23", "2023-24")) |> 
-    group_by(epiweek, season_week) |> 
-    summarise(mean=mean(weekly_rate), .groups="drop")
+    filter(location == "Georgia", season %in% c("2022-23", "2023-24"))
+    # group_by(epiweek, season_week) |> 
+    # summarise(mean=mean(weekly_rate), .groups="drop")
 
 p2 <- ggplot(rsv_nat, aes(season_week, mean)) +
     geom_line(
@@ -60,7 +60,7 @@ p2 <- ggplot(rsv_nat, aes(season_week, mean)) +
         col="gray50", alpha=0.1
     ) +
     geom_line(col="black", linewidth=1.1) +
-    geom_line(data=rsv_ga, col="salmon2", linewidth=1.1) +
+    geom_line(aes(season_week, weekly_rate, group=interaction(season, location)), rsv_ga, col="salmon2", linewidth=1.1) +
     annotate("text", label="Georgia", x=44, y=2, col="salmon2", size=5) +
     labs(x="Respiratory season week", y="RSV Admits per 100k") +
     scale_x_continuous(breaks=seq(0, 50 , 5)) +
@@ -68,4 +68,4 @@ p2 <- ggplot(rsv_nat, aes(season_week, mean)) +
     theme_half_open()
 
 plot_grid(p1, p2, labels="AUTO")
-ggsave("figs/fig-S5-v2.pdf", width=9.2, height=4.5)
+ggsave("figs/fig-S5-v3.pdf", width=9.2, height=4.5)
