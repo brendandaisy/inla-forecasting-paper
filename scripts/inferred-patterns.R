@@ -1,5 +1,8 @@
+# --------------------------------------------------------------------------------
+# Figure 4 - leveraging inferred model components to quantify seasonal and--------
+# spatiotemporal patterns of the tripledemic--------------------------------------
+# --------------------------------------------------------------------------------
 library(tidyverse)
-library(INLA)
 library(lubridate)
 library(cowplot)
 library(sf)
@@ -48,8 +51,10 @@ graph <- load_us_graph(flu) |> sf2mat()
 model <- model_formula(seasonal="shared", temporal="ar1", spatial="besagproper")
 
 fit_df_flu <- prep_fit_data(flu, weeks_ahead=0, ex_lam=population) |> 
-    mutate(location=factor(location)) # necessary to include all 52 state intercepts!
-fit_flu <- fit_inla_model(fit_df_flu, model, graph=graph, config=TRUE) # config was for trying conditional sampling
+    mutate(location=factor(location)) # necessary to include all 52 state intercepts
+
+# use config to enable sampling from the full joint posterior
+fit_flu <- fit_inla_model(fit_df_flu, model, graph=graph, config=TRUE)
 
 fit_df_rsv <- prep_fit_data(rsv, weeks_ahead=0, ex_lam=pop_served) |> 
     mutate(location=factor(location))
@@ -64,50 +69,7 @@ fit_df_covid <- prep_fit_data(covid, weeks_ahead=0, ex_lam=population) |>
     mutate(location=factor(location))
 fit_covid <- fit_inla_model(fit_df_covid, model, graph=graph, config=TRUE)
 
-#  option 1 for spatial main effects: US map--------------------------------------
-plot_loc_effect <- function(fit_df, fit, us, us_pts=NULL) {
-    loc_risk <- tibble(
-        full=unique(fit_df$location),
-        risk=fit$summary.fixed$mean[-1]
-    )
-    
-    ret <- us |> 
-        filter(!(full %in% iso_states)) |> 
-        left_join(loc_risk, by=c("full")) |> 
-        ggplot() +
-        geom_sf(aes(fill=risk), col="black") +
-        scale_fill_gradient2() +
-        theme_map()
-    
-    if (!is.null(us_pts)) {
-        us_pts <- left_join(us_pts, loc_risk, by=c("full"))
-        
-        ret <- ret +
-            geom_sf(aes(fill=risk), us_pts, shape=21, size=2.4, col="white") +
-            geom_sf_text(aes(label=abbr), us_pts, nudge_x=150000)
-    }
-    return(ret)
-}
-
-us <- us_map(regions="states")
-iso_states <- c("Alaska", "Hawaii", "Puerto Rico")
-small_states <- c("District of Columbia", "Rhode Island")
-
-us_pts <- tribble(
-    ~abbr, ~full, ~x, ~y,
-    "AK", "Alaska", 2350000, -500000,
-    "DC", "District of Columbia", 2350000, -700000,
-    "RI", "Rhode Island", 2700000, -700000,
-    "HI", "Hawaii", 2350000, -900000,
-    "PR", "Puerto Rico", 2700000, -900000
-) |> 
-    st_as_sf(crs=st_crs(us), coords=c("x", "y"))
-
-p1 <- plot_loc_effect(fit_df_flu, fit_flu, us, us_pts)
-p2 <- plot_loc_effect(fit_df_rsv, fit_rsv, us)
-p3 <- plot_loc_effect(fit_df_covid, fit_covid, us, us_pts)
-
-#  option two for spatial main effects: simple mean + CIs-------------------------
+# panel for spatial main effects--------------------------------------------------
 summ_fx <- function(fx_marg) {
     imap_dfr(fx_marg, ~{
         ci5 <- inla.hpdmarginal(0.5, .x)
@@ -201,27 +163,6 @@ p1 <- ggplot(post_loc, aes(m, fct_rev(state), col=m > 0)) +
     )
 
 #  Supp fig: association between coefficients for flu and covid-------------------
-# library(gghighlight)
-# 
-# hl_states <- c("Vermont", "Puerto Rico", "Oklahoma", "Kentucky", "Washington", "Utah")
-# 
-# post_loc |>
-#     filter(disease != "rsv") |>
-#     pivot_wider(id_cols=c(state), names_from=disease, values_from=c(m, lo95, hi95)) |>
-#     ggplot(aes(m_flu, m_covid, col=state)) +
-#     geom_hline(yintercept=0, col="gray70", linetype="dashed") +
-#     geom_vline(xintercept=0, col="gray70", linetype="dashed") +
-#     geom_linerange(aes(xmin=lo95_flu, xmax=hi95_flu)) +
-#     geom_linerange(aes(ymin=lo95_covid, ymax=hi95_covid)) +
-#     geom_point() +
-#     labs(x="Flu", y="COVID-19") +
-#     theme_half_open() +
-#     gghighlight(state %in% hl_states, max_highlight=Inf)
-#     # theme(legend.position="bottom")
-# 
-# ggsave("figs/loc-coeffs-flu-covid.pdf", width=4.1, height=4)
-
-#  version of above supplemental plot for spencer---------------------------------
 post_loc_flu_c19 <- post_loc |>
     filter(disease != "RSV") |>
     pivot_wider(id_cols=c(state), names_from=disease, values_from=c(m, lo95, hi95))
@@ -240,7 +181,7 @@ cor(post_loc_flu_c19$`m_COVID-19`, post_loc_flu_c19$m_Influenza)
 cor(post_loc_flu_rsv$m_Influenza, post_loc_flu_rsv$m_RSV)
 cor(post_loc_c19_rsv$`m_COVID-19`, post_loc_c19_rsv$m_RSV)
 
-p1 <- post_loc |>
+pp1 <- post_loc |>
     filter(disease != "RSV") |>
     pivot_wider(id_cols=c(state), names_from=disease, values_from=c(m, lo95, hi95)) |>
     ggplot(aes(m_Influenza, `m_COVID-19`)) +
@@ -255,7 +196,7 @@ p1 <- post_loc |>
     labs(x="Influenza", y="COVID-19") +
     theme_half_open()
 
-p2 <- post_loc_flu_rsv |>
+pp2 <- post_loc_flu_rsv |>
     ggplot(aes(m_Influenza, m_RSV)) +
     geom_hline(yintercept=0, col="gray70", linetype="dashed") +
     geom_vline(xintercept=0, col="gray70", linetype="dashed") +
@@ -268,7 +209,7 @@ p2 <- post_loc_flu_rsv |>
     labs(x="Influenza", y="RSV") +
     theme_half_open()
 
-p3 <- post_loc_c19_rsv |>
+pp3 <- post_loc_c19_rsv |>
     ggplot(aes(`m_COVID-19`, m_RSV)) +
     geom_hline(yintercept=0, col="gray70", linetype="dashed") +
     geom_vline(xintercept=0, col="gray70", linetype="dashed") +
@@ -281,42 +222,11 @@ p3 <- post_loc_c19_rsv |>
     labs(x="COVID-19", y="RSV") +
     theme_half_open()
 
-plot_grid(p1, p2, p3, nrow=1, rel_widths=c(1, 1, 1))
+plot_grid(pp1, pp2, pp3, nrow=1, rel_widths=c(1, 1, 1))
 ggsave("figs/loc-coeff-corr.pdf", width=8.9, height=3.1)
 
 
-#  Figure 4 drafts----------------------------------------------------------------
-# ggplot(post_loc, aes(state, m, col=disease)) +
-#     geom_hline(yintercept=0, col='gray70', size=1.3) +
-#     geom_linerange(aes(ymin = lo95, ymax = hi95), linewidth=1.08, alpha=0.6, position=position_dodge(width=1)) +
-#     # geom_linerange(aes(xmin = lo5, xmax = hi5), linewidth=2) +
-#     geom_point(size=2.1, position=position_dodge(width=1)) +
-#     facet_grid(.~region, scales="free_x", space="free_x") +
-#     labs(y="log relative risk", x=NULL) +
-#     scale_x_discrete(guide=guide_axis(angle=40)) +
-#     theme_half_open() +
-#     background_grid(major="x") +
-#     theme(
-#         legend.position="none",
-#         strip.background=element_blank(),
-#         strip.text=element_blank(),
-#         axis.text.x=element_text(size=rel(0.96)),
-#         axis.title.y=element_text(size=rel(1.05))
-#         # panel.spacing=unit(1, "pt")
-#     )
-# 
-# ggsave("figs/fig4A-draft1.pdf", width=11.4, height=4.2)
-
-# p1 <- ggplot(post_loc, aes(m, fct_rev(state), col=disease)) +
-#     geom_vline(xintercept=0, col='gray70', linetype="dashed", size=1.5) +
-#     geom_linerange(aes(xmin = lo95, xmax = hi95), linewidth=1, alpha=0.6) +
-#     # geom_linerange(aes(xmin = lo5, xmax = hi5), linewidth=2) +
-#     geom_point(size=1.5) +
-#     facet_wrap(~disease, nrow=1) +
-#     labs(x="log relative risk", y=NULL) +
-#     theme_bw() +
-#     theme(legend.position="none")
-
+# panel for seasonal effects------------------------------------------------------
 seasonal_summ <- imap_dfr(list(covid=fit_covid, flu=fit_flu, rsv=fit_rsv), \(ft, d) {
     ft$summary.random$epiweek |> 
         as_tibble() |> 
@@ -329,14 +239,9 @@ seasonal_summ |>
     filter(`0.025quant` > 0, epiweek >= 30) |> 
     slice_min(epiweek)
 
-p4 <- seasonal_summ |> 
+p2 <- seasonal_summ |> 
     mutate(disease=factor(disease, labels=c("COVID-19", "Influenza", "RSV"))) |> 
     ggplot(aes(epiweek, mean, col=disease, fill=disease)) +
-    # annotate(
-    #     "segment", 
-    #     x=0, y=0, xend=53, yend=0, 
-    #     col="gray40", linetype="13", linewidth=1.1
-    # ) +
     geom_hline(yintercept=0, col="gray70", linetype="dashed", linewidth=1.03) +
     geom_ribbon(aes(ymin=`0.025quant`, ymax=`0.975quant`), col=NA, alpha=0.3) +
     geom_ribbon(aes(ymin=`0.25quant`, ymax=`0.75quant`), col=NA, alpha=0.5) +
@@ -355,20 +260,13 @@ get_main_effect <- function(fit_df, ft) {
         select(date, mean, contains("quant"))
 }
 
-get_interaction_effect <- function(fit_df, ft) {
-    fit_df |> 
-        arrange(location, date) |> 
-        bind_cols(as_tibble(ft$summary.random$iloc)) |> 
-        select(date, location, mean, contains("quant"))
-}
-
 short_main_summ <- bind_rows(
     mutate(get_main_effect(fit_df_covid, fit_covid), disease="COVID-19"),
     mutate(get_main_effect(fit_df_flu, fit_flu), disease="Influenza"),
     mutate(get_main_effect(fit_df_rsv, fit_rsv), disease="RSV")
 )
 
-p5 <- short_main_summ |> 
+p3 <- short_main_summ |> 
     mutate(disease=fct_inorder(disease)) |> 
     filter(date > "2021-09-01", date <= max(flu$date)) |> 
     ggplot(aes(date, mean, col=disease, fill=disease)) +
@@ -389,40 +287,17 @@ p5 <- short_main_summ |>
     theme(legend.position="none")
 
 legend <- get_plot_component(
-    p5 + theme(legend.position="right", legend.justification="center", legend.direction="vertical"),
+    p3 + theme(legend.position="right", legend.justification="center", legend.direction="vertical"),
     "guide-box-right",
     return_all=TRUE
 )
 
-# put everything together - version 1
-# plot_grid(
-#     plot_grid(p1, p2, p3, nrow=1, labels="AUTO"),
-#     plot_grid(p4, p5, rel_widths=c(0.8, 1), labels=c("D", "E")),
-#     nrow=2
-# )
-# 
-# ggsave("figs/fig4-draft1.pdf", width=13, height=7.5)
-
-# version 2
-
-# plot_grid(
-#     plot_grid(
-#         p1, 
-#         plot_grid(NULL, p4, NULL, rel_heights=c(0.15, 1, 0.15), nrow=3), 
-#         rel_widths=c(1, 0.9), labels=c("A", "B")
-#     ),
-#     plot_grid(p5, NULL, rel_widths=c(1, 0.2), nrow=1, labels=c("C")), 
-#     nrow=2, rel_heights=c(1, 0.95)
-# )
-
 plot_grid(
-    plot_grid(p4, p5, nrow=2, labels=c("A", "B")),
+    plot_grid(p2, p3, nrow=2, labels=c("A", "B")),
     legend,
     p1,
     nrow=1, rel_widths=c(0.67, 0.23, 1), labels=c("", "", "C")
 )
-
-# ggdraw(plot_grid(pfinal, legend, nrow=1, rel_widths=c(1, 0.15)))
 
 ggsave("figs/fig4-draft6.pdf", width=10.55, height=6.8)
 
@@ -477,9 +352,6 @@ post_seasonal_ci(post_covid, "covid")
 
 alpha <- inla.posterior.sample.eval("t", post_flu)
 delta <- inla.posterior.sample.eval("iloc", post_flu)
-
-ggplot(phi_df, aes(epiweek, value, col=name, group=name)) +
-    geom_line()
 
 # what is the average location effect across US regions for each disease?
 locations <- str_c("location", unique(flu$location))

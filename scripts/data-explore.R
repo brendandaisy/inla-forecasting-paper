@@ -1,3 +1,7 @@
+# --------------------------------------------------------------------------------
+# Figure 1 - exploring seasonal and spatiotemporal patterns of flu, covid, and----
+# rsv hospitalizations in the US--------------------------------------------------
+# --------------------------------------------------------------------------------
 library(tidyverse)
 library(lubridate)
 library(INLA)
@@ -7,11 +11,6 @@ library(igraph)
 library(cowplot)
 
 source("src/prep-fit-data.R")
-source("src/model-formulas.R")
-source("src/fit-inla-model.R")
-source("src/sample-forecasts.R")
-
-inla.setOption(inla.mode="classic")
 
 us_dist_mat <- function(us_sf) {
     ig <- poly2nb(us_sf) |> 
@@ -58,12 +57,6 @@ covid <- read_csv("data/weekly-covid-us.csv") |>
         ),
         season_week=(epiweek-40) %% 52 + 1
     )
-
-# distinct(flu, season, epiweek, season_week) |> filter(season_week %in% c(1, 52))
-
-ggplot(covid, aes(date, count)) +
-    geom_point() +
-    facet_wrap(~location, scales="free")
 
 decompose_timeseries <- function(data, us_dist) {
     nat_seas <- data |> 
@@ -183,8 +176,6 @@ plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza"
     
     plot_grid(p1, p2, p3, nrow=1, rel_widths=c(0.8, 1, 0.65), align="h", axis="b", labels=labels)
 }
-
-# hl_states <- c("Indiana", "Arkansas", "South Carolina", "North Carolina")
 
 us <- load_us_graph(flu)
 us_dist <- us_dist_mat(us)

@@ -1,5 +1,14 @@
-inla-forecasting-paper
+Code for: An accurate hierarchical model to forecast diverse seasonal
+infectious diseases
 ================
+
+This repository contains code to reproduce all materials for the paper
+“An accurate hierarchical model to forecast diverse seasonal infectious
+diseases” by Case, Salcedo & Fox.
+
+Scripts for running all the analyses and figures are contained in the
+`scripts` folder, while core functions for processing data, fitting the
+model, and making predictions are contained in the `src` folder.
 
 ## Summary
 
@@ -184,104 +193,3 @@ aggregate_forecast(pred_samp, is_continental=!(location %in% outside_loc)) |>
     ## 2 2023-12-23       2 TRUE           All      <int [1,000]>
     ## 3 2023-12-30       3 TRUE           All      <int [1,000]>
     ## 4 2024-01-06       4 TRUE           All      <int [1,000]>
-
-## Retrospective analyses
-
-Since no “future” dates are needed, first we can remake the `fit_df` to
-no longer include the `NA` weeks ahead.
-
-<!-- ```{r} -->
-<!-- flu_proc <- prep_fit_data_flu_covid(flu, weeks_ahead=0, ex_lam=population) -->
-<!-- ``` -->
-
-Retrospective forecasts for a sequence of dates are produced with
-`forecast_retro`. The function also supports passing a subset of
-locations to forecast. This allows producing forecasts for only the
-states of interest to make things a bit faster, while still fitting to
-data from all locations so all the information is pooled correctly.
-
-TODO :)
-
-<!-- ```{r} -->
-<!-- retro_forecast_dates <- c("2022-11-15", "2023-01-15", "2023-11-15", "2024-01-15") -->
-<!-- fr <- forecast_retro( -->
-<!--     flu_proc, model, retro_forecast_dates, -->
-<!--     graph=graph, loc_sub=loc_sub, nsamp=1000 -->
-<!-- ) -->
-<!-- plot_retro(fr, flu) -->
-<!-- ``` -->
-
-### Scoring
-
-### Coverage plots
-
-Coverage plots are similar to the above retrospective forecasts except
-predictions `horizon` dates ahead are produced for a continuous range of
-dates in some interval. This produces an unbroken sequence of forecasts
-that can then be compared to the truth data for each date. These plots
-tend to be a bit more confusing to read but can provide a fuller
-understanding of model behavior within the interval.
-
-Here we produce a short coverage plot for December 2023. The result is a
-continuous envelope of forecasts that were produced three weeks prior to
-each of the overlaid true values. Additionally, we adjust the prior for
-the short-term effect to be sightly tighter, resulting in smaller
-prediction intervals.
-
-TODO :)
-
-## Example using percentage data
-
-Load in some example data
-
-``` r
-ili_pct <- read_csv("data/ex-percent.csv") |> 
-    select(date=week_end, location, weekly_percent) |> 
-    mutate(epiweek=epiweek(date), ex_lam=1)
-```
-
-    ## New names:
-    ## Rows: 350 Columns: 4
-    ## ── Column specification
-    ## ──────────────────────────────────────────────────────── Delimiter: "," chr
-    ## (1): location dbl (2): ...1, weekly_percent date (1): week_end
-    ## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
-    ## Specify the column types or set `show_col_types = FALSE` to quiet this message.
-    ## • `` -> `...1`
-
-``` r
-forecast_date <- "2025-01-01" # back a few weeks to compare to truth data
-
-model <- model_formula(
-    response="weekly_percent", seasonal="shared", temporal="ar1", spatial="exchangeable"
-)
-fit_df <- prep_fit_data(ili_pct, forecast_date, weeks_ahead=4, ex_lam=ex_lam)
-```
-
-``` r
-fit <- fit_inla_model(fit_df, model, family="beta", response=weekly_percent)
-```
-
-    ## [1] "forecast_date and pred_idx both NULL. This may have unexpected effects if there are NAs in fit_df prior to when forecasting should begin, but is otherwise fine."
-
-``` r
-pred_samp <- forecast_samples(fit_df, fit, family="beta", response=weekly_percent)
-q_wis <- c(0.01, 0.025, seq(0.05, 0.95, by=0.05), 0.975, 0.99)
-pred_summ <- summarize_quantiles(pred_samp, q=q_wis)
-```
-
-``` r
-ili_sub <- ili_pct |> 
-    filter(date > max(date) - weeks(10)) # get truth data plus some previous weeks
-
-pred_summ |> 
-    pivot_wider(names_from=quantile) |> 
-    ggplot(aes(date)) +
-    geom_ribbon(aes(ymin=`0.025`, ymax=`0.975`), fill="skyblue", alpha=0.5, col=NA) +
-    geom_ribbon(aes(ymin=`0.25`, ymax=`0.75`), fill="blue1", alpha=0.5, col=NA) +
-    geom_line(aes(y=mean), col="blue4") +
-    geom_point(aes(y=weekly_percent), ili_sub, size=0.9) +
-    facet_wrap(~location, scales="free_y")
-```
-
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
