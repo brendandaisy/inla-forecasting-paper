@@ -134,12 +134,6 @@ group=t2, control.group=list(model="ar1"))'
 
 fit <- fit_inla_model(fit_df, model, graph=graph)
 
-fit_df |> 
-    mutate(med=fit$summary.fitted.values$`0.5quant`) |> 
-    filter(abbreviation == "PR") |> 
-    tail(10) |> 
-    View()
-
 pred_samp <- forecast_samples(fit_df, fit, nsamp=5000)
 pred_samp_us <- aggregate_forecast(pred_samp, tags=tibble_row(abbreviation="US", location="US"))
 
