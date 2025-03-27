@@ -1,0 +1,1041 @@
+reference_date,target,horizon,target_end_date,location,output_type,output_type_id,value,mean
+2023-11-18,inc hosp,1,2023-11-25,Alabama,quantile,0.025,181,265.3152
+2023-11-18,inc hosp,1,2023-11-25,Alabama,quantile,0.25,231,265.3152
+2023-11-18,inc hosp,1,2023-11-25,Alabama,quantile,0.5,262,265.3152
+2023-11-18,inc hosp,1,2023-11-25,Alabama,quantile,0.75,296,265.3152
+2023-11-18,inc hosp,1,2023-11-25,Alabama,quantile,0.975,372,265.3152
+2023-11-18,inc hosp,2,2023-12-02,Alabama,quantile,0.025,181,301.5234
+2023-11-18,inc hosp,2,2023-12-02,Alabama,quantile,0.25,250,301.5234
+2023-11-18,inc hosp,2,2023-12-02,Alabama,quantile,0.5,292,301.5234
+2023-11-18,inc hosp,2,2023-12-02,Alabama,quantile,0.75,347,301.5234
+2023-11-18,inc hosp,2,2023-12-02,Alabama,quantile,0.975,467,301.5234
+2023-11-18,inc hosp,3,2023-12-09,Alabama,quantile,0.025,183,339.9736
+2023-11-18,inc hosp,3,2023-12-09,Alabama,quantile,0.25,268,339.9736
+2023-11-18,inc hosp,3,2023-12-09,Alabama,quantile,0.5,328,339.9736
+2023-11-18,inc hosp,3,2023-12-09,Alabama,quantile,0.75,397,339.9736
+2023-11-18,inc hosp,3,2023-12-09,Alabama,quantile,0.975,564,339.9736
+2023-11-18,inc hosp,4,2023-12-16,Alabama,quantile,0.025,184,374.5868
+2023-11-18,inc hosp,4,2023-12-16,Alabama,quantile,0.25,285,374.5868
+2023-11-18,inc hosp,4,2023-12-16,Alabama,quantile,0.5,357,374.5868
+2023-11-18,inc hosp,4,2023-12-16,Alabama,quantile,0.75,445,374.5868
+2023-11-18,inc hosp,4,2023-12-16,Alabama,quantile,0.975,676,374.5868
+2023-11-18,inc hosp,1,2023-11-25,Alaska,quantile,0.025,10,26.5342
+2023-11-18,inc hosp,1,2023-11-25,Alaska,quantile,0.25,19,26.5342
+2023-11-18,inc hosp,1,2023-11-25,Alaska,quantile,0.5,25,26.5342
+2023-11-18,inc hosp,1,2023-11-25,Alaska,quantile,0.75,32,26.5342
+2023-11-18,inc hosp,1,2023-11-25,Alaska,quantile,0.975,52,26.5342
+2023-11-18,inc hosp,2,2023-12-02,Alaska,quantile,0.025,10,30.7628
+2023-11-18,inc hosp,2,2023-12-02,Alaska,quantile,0.25,20,30.7628
+2023-11-18,inc hosp,2,2023-12-02,Alaska,quantile,0.5,28,30.7628
+2023-11-18,inc hosp,2,2023-12-02,Alaska,quantile,0.75,38,30.7628
+2023-11-18,inc hosp,2,2023-12-02,Alaska,quantile,0.975,68,30.7628
+2023-11-18,inc hosp,3,2023-12-09,Alaska,quantile,0.025,10,35.682
+2023-11-18,inc hosp,3,2023-12-09,Alaska,quantile,0.25,22,35.682
+2023-11-18,inc hosp,3,2023-12-09,Alaska,quantile,0.5,31,35.682
+2023-11-18,inc hosp,3,2023-12-09,Alaska,quantile,0.75,45,35.682
+2023-11-18,inc hosp,3,2023-12-09,Alaska,quantile,0.975,88,35.682
+2023-11-18,inc hosp,4,2023-12-16,Alaska,quantile,0.025,10,39.9442
+2023-11-18,inc hosp,4,2023-12-16,Alaska,quantile,0.25,23,39.9442
+2023-11-18,inc hosp,4,2023-12-16,Alaska,quantile,0.5,34,39.9442
+2023-11-18,inc hosp,4,2023-12-16,Alaska,quantile,0.75,50,39.9442
+2023-11-18,inc hosp,4,2023-12-16,Alaska,quantile,0.975,107,39.9442
+2023-11-18,inc hosp,1,2023-11-25,Arizona,quantile,0.025,435,612.9546
+2023-11-18,inc hosp,1,2023-11-25,Arizona,quantile,0.25,538,612.9546
+2023-11-18,inc hosp,1,2023-11-25,Arizona,quantile,0.5,604,612.9546
+2023-11-18,inc hosp,1,2023-11-25,Arizona,quantile,0.75,678,612.9546
+2023-11-18,inc hosp,1,2023-11-25,Arizona,quantile,0.975,844,612.9546
+2023-11-18,inc hosp,2,2023-12-02,Arizona,quantile,0.025,425,680.7676
+2023-11-18,inc hosp,2,2023-12-02,Arizona,quantile,0.25,568,680.7676
+2023-11-18,inc hosp,2,2023-12-02,Arizona,quantile,0.5,662,680.7676
+2023-11-18,inc hosp,2,2023-12-02,Arizona,quantile,0.75,776,680.7676
+2023-11-18,inc hosp,2,2023-12-02,Arizona,quantile,0.975,1036,680.7676
+2023-11-18,inc hosp,3,2023-12-09,Arizona,quantile,0.025,417,743.1828
+2023-11-18,inc hosp,3,2023-12-09,Arizona,quantile,0.25,592,743.1828
+2023-11-18,inc hosp,3,2023-12-09,Arizona,quantile,0.5,714,743.1828
+2023-11-18,inc hosp,3,2023-12-09,Arizona,quantile,0.75,861,743.1828
+2023-11-18,inc hosp,3,2023-12-09,Arizona,quantile,0.975,1222,743.1828
+2023-11-18,inc hosp,4,2023-12-16,Arizona,quantile,0.025,420,799.1688
+2023-11-18,inc hosp,4,2023-12-16,Arizona,quantile,0.25,616,799.1688
+2023-11-18,inc hosp,4,2023-12-16,Arizona,quantile,0.5,763,799.1688
+2023-11-18,inc hosp,4,2023-12-16,Arizona,quantile,0.75,942,799.1688
+2023-11-18,inc hosp,4,2023-12-16,Arizona,quantile,0.975,1405,799.1688
+2023-11-18,inc hosp,1,2023-11-25,Arkansas,quantile,0.025,120,173.3314
+2023-11-18,inc hosp,1,2023-11-25,Arkansas,quantile,0.25,151,173.3314
+2023-11-18,inc hosp,1,2023-11-25,Arkansas,quantile,0.5,171,173.3314
+2023-11-18,inc hosp,1,2023-11-25,Arkansas,quantile,0.75,193,173.3314
+2023-11-18,inc hosp,1,2023-11-25,Arkansas,quantile,0.975,242,173.3314
+2023-11-18,inc hosp,2,2023-12-02,Arkansas,quantile,0.025,120,196.5336
+2023-11-18,inc hosp,2,2023-12-02,Arkansas,quantile,0.25,164,196.5336
+2023-11-18,inc hosp,2,2023-12-02,Arkansas,quantile,0.5,192,196.5336
+2023-11-18,inc hosp,2,2023-12-02,Arkansas,quantile,0.75,224,196.5336
+2023-11-18,inc hosp,2,2023-12-02,Arkansas,quantile,0.975,295,196.5336
+2023-11-18,inc hosp,3,2023-12-09,Arkansas,quantile,0.025,122,219.2494
+2023-11-18,inc hosp,3,2023-12-09,Arkansas,quantile,0.25,176,219.2494
+2023-11-18,inc hosp,3,2023-12-09,Arkansas,quantile,0.5,213,219.2494
+2023-11-18,inc hosp,3,2023-12-09,Arkansas,quantile,0.75,254,219.2494
+2023-11-18,inc hosp,3,2023-12-09,Arkansas,quantile,0.975,355,219.2494
+2023-11-18,inc hosp,4,2023-12-16,Arkansas,quantile,0.025,123,240.6806
+2023-11-18,inc hosp,4,2023-12-16,Arkansas,quantile,0.25,187,240.6806
+2023-11-18,inc hosp,4,2023-12-16,Arkansas,quantile,0.5,231,240.6806
+2023-11-18,inc hosp,4,2023-12-16,Arkansas,quantile,0.75,284,240.6806
+2023-11-18,inc hosp,4,2023-12-16,Arkansas,quantile,0.975,408,240.6806
+2023-11-18,inc hosp,1,2023-11-25,California,quantile,0.025,1558,2240.2198
+2023-11-18,inc hosp,1,2023-11-25,California,quantile,0.25,1965,2240.2198
+2023-11-18,inc hosp,1,2023-11-25,California,quantile,0.5,2201,2240.2198
+2023-11-18,inc hosp,1,2023-11-25,California,quantile,0.75,2482,2240.2198
+2023-11-18,inc hosp,1,2023-11-25,California,quantile,0.975,3110,2240.2198
+2023-11-18,inc hosp,2,2023-12-02,California,quantile,0.025,1493,2516.788
+2023-11-18,inc hosp,2,2023-12-02,California,quantile,0.25,2072,2516.788
+2023-11-18,inc hosp,2,2023-12-02,California,quantile,0.5,2425,2516.788
+2023-11-18,inc hosp,2,2023-12-02,California,quantile,0.75,2872,2516.788
+2023-11-18,inc hosp,2,2023-12-02,California,quantile,0.975,4009,2516.788
+2023-11-18,inc hosp,3,2023-12-09,California,quantile,0.025,1491,2765.0178
+2023-11-18,inc hosp,3,2023-12-09,California,quantile,0.25,2168,2765.0178
+2023-11-18,inc hosp,3,2023-12-09,California,quantile,0.5,2656,2765.0178
+2023-11-18,inc hosp,3,2023-12-09,California,quantile,0.75,3221,2765.0178
+2023-11-18,inc hosp,3,2023-12-09,California,quantile,0.975,4691,2765.0178
+2023-11-18,inc hosp,4,2023-12-16,California,quantile,0.025,1475,2994.0712
+2023-11-18,inc hosp,4,2023-12-16,California,quantile,0.25,2252,2994.0712
+2023-11-18,inc hosp,4,2023-12-16,California,quantile,0.5,2839,2994.0712
+2023-11-18,inc hosp,4,2023-12-16,California,quantile,0.75,3547,2994.0712
+2023-11-18,inc hosp,4,2023-12-16,California,quantile,0.975,5466,2994.0712
+2023-11-18,inc hosp,1,2023-11-25,Colorado,quantile,0.025,403,556.169
+2023-11-18,inc hosp,1,2023-11-25,Colorado,quantile,0.25,495,556.169
+2023-11-18,inc hosp,1,2023-11-25,Colorado,quantile,0.5,550,556.169
+2023-11-18,inc hosp,1,2023-11-25,Colorado,quantile,0.75,611,556.169
+2023-11-18,inc hosp,1,2023-11-25,Colorado,quantile,0.975,746,556.169
+2023-11-18,inc hosp,2,2023-12-02,Colorado,quantile,0.025,392,610.6962
+2023-11-18,inc hosp,2,2023-12-02,Colorado,quantile,0.25,520,610.6962
+2023-11-18,inc hosp,2,2023-12-02,Colorado,quantile,0.5,596,610.6962
+2023-11-18,inc hosp,2,2023-12-02,Colorado,quantile,0.75,689,610.6962
+2023-11-18,inc hosp,2,2023-12-02,Colorado,quantile,0.975,900,610.6962
+2023-11-18,inc hosp,3,2023-12-09,Colorado,quantile,0.025,383,659.8658
+2023-11-18,inc hosp,3,2023-12-09,Colorado,quantile,0.25,539,659.8658
+2023-11-18,inc hosp,3,2023-12-09,Colorado,quantile,0.5,643,659.8658
+2023-11-18,inc hosp,3,2023-12-09,Colorado,quantile,0.75,757,659.8658
+2023-11-18,inc hosp,3,2023-12-09,Colorado,quantile,0.975,1046,659.8658
+2023-11-18,inc hosp,4,2023-12-16,Colorado,quantile,0.025,383,703.285
+2023-11-18,inc hosp,4,2023-12-16,Colorado,quantile,0.25,557,703.285
+2023-11-18,inc hosp,4,2023-12-16,Colorado,quantile,0.5,675,703.285
+2023-11-18,inc hosp,4,2023-12-16,Colorado,quantile,0.75,818,703.285
+2023-11-18,inc hosp,4,2023-12-16,Colorado,quantile,0.975,1192,703.285
+2023-11-18,inc hosp,1,2023-11-25,Connecticut,quantile,0.025,182,275.9432
+2023-11-18,inc hosp,1,2023-11-25,Connecticut,quantile,0.25,238,275.9432
+2023-11-18,inc hosp,1,2023-11-25,Connecticut,quantile,0.5,270,275.9432
+2023-11-18,inc hosp,1,2023-11-25,Connecticut,quantile,0.75,309,275.9432
+2023-11-18,inc hosp,1,2023-11-25,Connecticut,quantile,0.975,400,275.9432
+2023-11-18,inc hosp,2,2023-12-02,Connecticut,quantile,0.025,178,308.1622
+2023-11-18,inc hosp,2,2023-12-02,Connecticut,quantile,0.25,250,308.1622
+2023-11-18,inc hosp,2,2023-12-02,Connecticut,quantile,0.5,299,308.1622
+2023-11-18,inc hosp,2,2023-12-02,Connecticut,quantile,0.75,355,308.1622
+2023-11-18,inc hosp,2,2023-12-02,Connecticut,quantile,0.975,497,308.1622
+2023-11-18,inc hosp,3,2023-12-09,Connecticut,quantile,0.025,175,339.0214
+2023-11-18,inc hosp,3,2023-12-09,Connecticut,quantile,0.25,261,339.0214
+2023-11-18,inc hosp,3,2023-12-09,Connecticut,quantile,0.5,322,339.0214
+2023-11-18,inc hosp,3,2023-12-09,Connecticut,quantile,0.75,399,339.0214
+2023-11-18,inc hosp,3,2023-12-09,Connecticut,quantile,0.975,597,339.0214
+2023-11-18,inc hosp,4,2023-12-16,Connecticut,quantile,0.025,174,367.052
+2023-11-18,inc hosp,4,2023-12-16,Connecticut,quantile,0.25,273,367.052
+2023-11-18,inc hosp,4,2023-12-16,Connecticut,quantile,0.5,344,367.052
+2023-11-18,inc hosp,4,2023-12-16,Connecticut,quantile,0.75,440,367.052
+2023-11-18,inc hosp,4,2023-12-16,Connecticut,quantile,0.975,684,367.052
+2023-11-18,inc hosp,1,2023-11-25,Delaware,quantile,0.025,32,55.1472
+2023-11-18,inc hosp,1,2023-11-25,Delaware,quantile,0.25,46,55.1472
+2023-11-18,inc hosp,1,2023-11-25,Delaware,quantile,0.5,54,55.1472
+2023-11-18,inc hosp,1,2023-11-25,Delaware,quantile,0.75,64,55.1472
+2023-11-18,inc hosp,1,2023-11-25,Delaware,quantile,0.975,83,55.1472
+2023-11-18,inc hosp,2,2023-12-02,Delaware,quantile,0.025,33,62.0948
+2023-11-18,inc hosp,2,2023-12-02,Delaware,quantile,0.25,49,62.0948
+2023-11-18,inc hosp,2,2023-12-02,Delaware,quantile,0.5,60,62.0948
+2023-11-18,inc hosp,2,2023-12-02,Delaware,quantile,0.75,73,62.0948
+2023-11-18,inc hosp,2,2023-12-02,Delaware,quantile,0.975,103,62.0948
+2023-11-18,inc hosp,3,2023-12-09,Delaware,quantile,0.025,33,69.437
+2023-11-18,inc hosp,3,2023-12-09,Delaware,quantile,0.25,53,69.437
+2023-11-18,inc hosp,3,2023-12-09,Delaware,quantile,0.5,66,69.437
+2023-11-18,inc hosp,3,2023-12-09,Delaware,quantile,0.75,83,69.437
+2023-11-18,inc hosp,3,2023-12-09,Delaware,quantile,0.975,123,69.437
+2023-11-18,inc hosp,4,2023-12-16,Delaware,quantile,0.025,33,75.9488
+2023-11-18,inc hosp,4,2023-12-16,Delaware,quantile,0.25,56,75.9488
+2023-11-18,inc hosp,4,2023-12-16,Delaware,quantile,0.5,71,75.9488
+2023-11-18,inc hosp,4,2023-12-16,Delaware,quantile,0.75,91,75.9488
+2023-11-18,inc hosp,4,2023-12-16,Delaware,quantile,0.975,144,75.9488
+2023-11-18,inc hosp,1,2023-11-25,District of Columbia,quantile,0.025,27,47.5808
+2023-11-18,inc hosp,1,2023-11-25,District of Columbia,quantile,0.25,38,47.5808
+2023-11-18,inc hosp,1,2023-11-25,District of Columbia,quantile,0.5,47,47.5808
+2023-11-18,inc hosp,1,2023-11-25,District of Columbia,quantile,0.75,55,47.5808
+2023-11-18,inc hosp,1,2023-11-25,District of Columbia,quantile,0.975,76,47.5808
+2023-11-18,inc hosp,2,2023-12-02,District of Columbia,quantile,0.025,26,54.0162
+2023-11-18,inc hosp,2,2023-12-02,District of Columbia,quantile,0.25,41,54.0162
+2023-11-18,inc hosp,2,2023-12-02,District of Columbia,quantile,0.5,52,54.0162
+2023-11-18,inc hosp,2,2023-12-02,District of Columbia,quantile,0.75,64,54.0162
+2023-11-18,inc hosp,2,2023-12-02,District of Columbia,quantile,0.975,94,54.0162
+2023-11-18,inc hosp,3,2023-12-09,District of Columbia,quantile,0.025,26,60.8332
+2023-11-18,inc hosp,3,2023-12-09,District of Columbia,quantile,0.25,45,60.8332
+2023-11-18,inc hosp,3,2023-12-09,District of Columbia,quantile,0.5,58,60.8332
+2023-11-18,inc hosp,3,2023-12-09,District of Columbia,quantile,0.75,73,60.8332
+2023-11-18,inc hosp,3,2023-12-09,District of Columbia,quantile,0.975,112,60.8332
+2023-11-18,inc hosp,4,2023-12-16,District of Columbia,quantile,0.025,27,66.4854
+2023-11-18,inc hosp,4,2023-12-16,District of Columbia,quantile,0.25,48,66.4854
+2023-11-18,inc hosp,4,2023-12-16,District of Columbia,quantile,0.5,62,66.4854
+2023-11-18,inc hosp,4,2023-12-16,District of Columbia,quantile,0.75,80,66.4854
+2023-11-18,inc hosp,4,2023-12-16,District of Columbia,quantile,0.975,128,66.4854
+2023-11-18,inc hosp,1,2023-11-25,Florida,quantile,0.025,573,866.1866
+2023-11-18,inc hosp,1,2023-11-25,Florida,quantile,0.25,741,866.1866
+2023-11-18,inc hosp,1,2023-11-25,Florida,quantile,0.5,852,866.1866
+2023-11-18,inc hosp,1,2023-11-25,Florida,quantile,0.75,973,866.1866
+2023-11-18,inc hosp,1,2023-11-25,Florida,quantile,0.975,1245,866.1866
+2023-11-18,inc hosp,2,2023-12-02,Florida,quantile,0.025,575,1009.653
+2023-11-18,inc hosp,2,2023-12-02,Florida,quantile,0.25,813,1009.653
+2023-11-18,inc hosp,2,2023-12-02,Florida,quantile,0.5,978,1009.653
+2023-11-18,inc hosp,2,2023-12-02,Florida,quantile,0.75,1165,1009.653
+2023-11-18,inc hosp,2,2023-12-02,Florida,quantile,0.975,1629,1009.653
+2023-11-18,inc hosp,3,2023-12-09,Florida,quantile,0.025,586,1161.5592
+2023-11-18,inc hosp,3,2023-12-09,Florida,quantile,0.25,879,1161.5592
+2023-11-18,inc hosp,3,2023-12-09,Florida,quantile,0.5,1101,1161.5592
+2023-11-18,inc hosp,3,2023-12-09,Florida,quantile,0.75,1376,1161.5592
+2023-11-18,inc hosp,3,2023-12-09,Florida,quantile,0.975,2068,1161.5592
+2023-11-18,inc hosp,4,2023-12-16,Florida,quantile,0.025,599,1303.8742
+2023-11-18,inc hosp,4,2023-12-16,Florida,quantile,0.25,948,1303.8742
+2023-11-18,inc hosp,4,2023-12-16,Florida,quantile,0.5,1216,1303.8742
+2023-11-18,inc hosp,4,2023-12-16,Florida,quantile,0.75,1563,1303.8742
+2023-11-18,inc hosp,4,2023-12-16,Florida,quantile,0.975,2480,1303.8742
+2023-11-18,inc hosp,1,2023-11-25,Georgia,quantile,0.025,316,450.7938
+2023-11-18,inc hosp,1,2023-11-25,Georgia,quantile,0.25,397,450.7938
+2023-11-18,inc hosp,1,2023-11-25,Georgia,quantile,0.5,444,450.7938
+2023-11-18,inc hosp,1,2023-11-25,Georgia,quantile,0.75,497,450.7938
+2023-11-18,inc hosp,1,2023-11-25,Georgia,quantile,0.975,624,450.7938
+2023-11-18,inc hosp,2,2023-12-02,Georgia,quantile,0.025,317,517.273
+2023-11-18,inc hosp,2,2023-12-02,Georgia,quantile,0.25,431,517.273
+2023-11-18,inc hosp,2,2023-12-02,Georgia,quantile,0.5,504,517.273
+2023-11-18,inc hosp,2,2023-12-02,Georgia,quantile,0.75,590,517.273
+2023-11-18,inc hosp,2,2023-12-02,Georgia,quantile,0.975,781,517.273
+2023-11-18,inc hosp,3,2023-12-09,Georgia,quantile,0.025,327,584.8946
+2023-11-18,inc hosp,3,2023-12-09,Georgia,quantile,0.25,465,584.8946
+2023-11-18,inc hosp,3,2023-12-09,Georgia,quantile,0.5,566,584.8946
+2023-11-18,inc hosp,3,2023-12-09,Georgia,quantile,0.75,681,584.8946
+2023-11-18,inc hosp,3,2023-12-09,Georgia,quantile,0.975,958,584.8946
+2023-11-18,inc hosp,4,2023-12-16,Georgia,quantile,0.025,333,649.8462
+2023-11-18,inc hosp,4,2023-12-16,Georgia,quantile,0.25,498,649.8462
+2023-11-18,inc hosp,4,2023-12-16,Georgia,quantile,0.5,622,649.8462
+2023-11-18,inc hosp,4,2023-12-16,Georgia,quantile,0.75,766,649.8462
+2023-11-18,inc hosp,4,2023-12-16,Georgia,quantile,0.975,1134,649.8462
+2023-11-18,inc hosp,1,2023-11-25,Hawaii,quantile,0.025,46,94.7082
+2023-11-18,inc hosp,1,2023-11-25,Hawaii,quantile,0.25,72,94.7082
+2023-11-18,inc hosp,1,2023-11-25,Hawaii,quantile,0.5,90,94.7082
+2023-11-18,inc hosp,1,2023-11-25,Hawaii,quantile,0.75,112,94.7082
+2023-11-18,inc hosp,1,2023-11-25,Hawaii,quantile,0.975,171,94.7082
+2023-11-18,inc hosp,2,2023-12-02,Hawaii,quantile,0.025,40,108.1576
+2023-11-18,inc hosp,2,2023-12-02,Hawaii,quantile,0.25,74,108.1576
+2023-11-18,inc hosp,2,2023-12-02,Hawaii,quantile,0.5,100,108.1576
+2023-11-18,inc hosp,2,2023-12-02,Hawaii,quantile,0.75,133,108.1576
+2023-11-18,inc hosp,2,2023-12-02,Hawaii,quantile,0.975,224,108.1576
+2023-11-18,inc hosp,3,2023-12-09,Hawaii,quantile,0.025,38,120.4854
+2023-11-18,inc hosp,3,2023-12-09,Hawaii,quantile,0.25,75,120.4854
+2023-11-18,inc hosp,3,2023-12-09,Hawaii,quantile,0.5,107,120.4854
+2023-11-18,inc hosp,3,2023-12-09,Hawaii,quantile,0.75,150,120.4854
+2023-11-18,inc hosp,3,2023-12-09,Hawaii,quantile,0.975,282,120.4854
+2023-11-18,inc hosp,4,2023-12-16,Hawaii,quantile,0.025,36,133.281
+2023-11-18,inc hosp,4,2023-12-16,Hawaii,quantile,0.25,78,133.281
+2023-11-18,inc hosp,4,2023-12-16,Hawaii,quantile,0.5,114,133.281
+2023-11-18,inc hosp,4,2023-12-16,Hawaii,quantile,0.75,168,133.281
+2023-11-18,inc hosp,4,2023-12-16,Hawaii,quantile,0.975,342,133.281
+2023-11-18,inc hosp,1,2023-11-25,Idaho,quantile,0.025,70,106.334
+2023-11-18,inc hosp,1,2023-11-25,Idaho,quantile,0.25,92,106.334
+2023-11-18,inc hosp,1,2023-11-25,Idaho,quantile,0.5,105,106.334
+2023-11-18,inc hosp,1,2023-11-25,Idaho,quantile,0.75,119,106.334
+2023-11-18,inc hosp,1,2023-11-25,Idaho,quantile,0.975,153,106.334
+2023-11-18,inc hosp,2,2023-12-02,Idaho,quantile,0.025,70,119.1198
+2023-11-18,inc hosp,2,2023-12-02,Idaho,quantile,0.25,98,119.1198
+2023-11-18,inc hosp,2,2023-12-02,Idaho,quantile,0.5,116,119.1198
+2023-11-18,inc hosp,2,2023-12-02,Idaho,quantile,0.75,137,119.1198
+2023-11-18,inc hosp,2,2023-12-02,Idaho,quantile,0.975,185,119.1198
+2023-11-18,inc hosp,3,2023-12-09,Idaho,quantile,0.025,72,131.1126
+2023-11-18,inc hosp,3,2023-12-09,Idaho,quantile,0.25,104,131.1126
+2023-11-18,inc hosp,3,2023-12-09,Idaho,quantile,0.5,127,131.1126
+2023-11-18,inc hosp,3,2023-12-09,Idaho,quantile,0.75,152,131.1126
+2023-11-18,inc hosp,3,2023-12-09,Idaho,quantile,0.975,217,131.1126
+2023-11-18,inc hosp,4,2023-12-16,Idaho,quantile,0.025,73,141.7024
+2023-11-18,inc hosp,4,2023-12-16,Idaho,quantile,0.25,110,141.7024
+2023-11-18,inc hosp,4,2023-12-16,Idaho,quantile,0.5,135,141.7024
+2023-11-18,inc hosp,4,2023-12-16,Idaho,quantile,0.75,167,141.7024
+2023-11-18,inc hosp,4,2023-12-16,Idaho,quantile,0.975,247,141.7024
+2023-11-18,inc hosp,1,2023-11-25,Illinois,quantile,0.025,702,968.208
+2023-11-18,inc hosp,1,2023-11-25,Illinois,quantile,0.25,862,968.208
+2023-11-18,inc hosp,1,2023-11-25,Illinois,quantile,0.5,957,968.208
+2023-11-18,inc hosp,1,2023-11-25,Illinois,quantile,0.75,1065,968.208
+2023-11-18,inc hosp,1,2023-11-25,Illinois,quantile,0.975,1289,968.208
+2023-11-18,inc hosp,2,2023-12-02,Illinois,quantile,0.025,695,1075.1702
+2023-11-18,inc hosp,2,2023-12-02,Illinois,quantile,0.25,907,1075.1702
+2023-11-18,inc hosp,2,2023-12-02,Illinois,quantile,0.5,1047,1075.1702
+2023-11-18,inc hosp,2,2023-12-02,Illinois,quantile,0.75,1219,1075.1702
+2023-11-18,inc hosp,2,2023-12-02,Illinois,quantile,0.975,1620,1075.1702
+2023-11-18,inc hosp,3,2023-12-09,Illinois,quantile,0.025,689,1183.1924
+2023-11-18,inc hosp,3,2023-12-09,Illinois,quantile,0.25,962,1183.1924
+2023-11-18,inc hosp,3,2023-12-09,Illinois,quantile,0.5,1144,1183.1924
+2023-11-18,inc hosp,3,2023-12-09,Illinois,quantile,0.75,1369,1183.1924
+2023-11-18,inc hosp,3,2023-12-09,Illinois,quantile,0.975,1901,1183.1924
+2023-11-18,inc hosp,4,2023-12-16,Illinois,quantile,0.025,682,1279.4008
+2023-11-18,inc hosp,4,2023-12-16,Illinois,quantile,0.25,999,1279.4008
+2023-11-18,inc hosp,4,2023-12-16,Illinois,quantile,0.5,1219,1279.4008
+2023-11-18,inc hosp,4,2023-12-16,Illinois,quantile,0.75,1505,1279.4008
+2023-11-18,inc hosp,4,2023-12-16,Illinois,quantile,0.975,2182,1279.4008
+2023-11-18,inc hosp,1,2023-11-25,Indiana,quantile,0.025,311,443.5686
+2023-11-18,inc hosp,1,2023-11-25,Indiana,quantile,0.25,390,443.5686
+2023-11-18,inc hosp,1,2023-11-25,Indiana,quantile,0.5,437,443.5686
+2023-11-18,inc hosp,1,2023-11-25,Indiana,quantile,0.75,492,443.5686
+2023-11-18,inc hosp,1,2023-11-25,Indiana,quantile,0.975,610,443.5686
+2023-11-18,inc hosp,2,2023-12-02,Indiana,quantile,0.025,305,496.6922
+2023-11-18,inc hosp,2,2023-12-02,Indiana,quantile,0.25,414,496.6922
+2023-11-18,inc hosp,2,2023-12-02,Indiana,quantile,0.5,484,496.6922
+2023-11-18,inc hosp,2,2023-12-02,Indiana,quantile,0.75,564,496.6922
+2023-11-18,inc hosp,2,2023-12-02,Indiana,quantile,0.975,760,496.6922
+2023-11-18,inc hosp,3,2023-12-09,Indiana,quantile,0.025,304,549.6538
+2023-11-18,inc hosp,3,2023-12-09,Indiana,quantile,0.25,437,549.6538
+2023-11-18,inc hosp,3,2023-12-09,Indiana,quantile,0.5,529,549.6538
+2023-11-18,inc hosp,3,2023-12-09,Indiana,quantile,0.75,639,549.6538
+2023-11-18,inc hosp,3,2023-12-09,Indiana,quantile,0.975,917,549.6538
+2023-11-18,inc hosp,4,2023-12-16,Indiana,quantile,0.025,307,597.9252
+2023-11-18,inc hosp,4,2023-12-16,Indiana,quantile,0.25,457,597.9252
+2023-11-18,inc hosp,4,2023-12-16,Indiana,quantile,0.5,566,597.9252
+2023-11-18,inc hosp,4,2023-12-16,Indiana,quantile,0.75,704,597.9252
+2023-11-18,inc hosp,4,2023-12-16,Indiana,quantile,0.975,1061,597.9252
+2023-11-18,inc hosp,1,2023-11-25,Iowa,quantile,0.025,146,210.2386
+2023-11-18,inc hosp,1,2023-11-25,Iowa,quantile,0.25,185,210.2386
+2023-11-18,inc hosp,1,2023-11-25,Iowa,quantile,0.5,208,210.2386
+2023-11-18,inc hosp,1,2023-11-25,Iowa,quantile,0.75,233,210.2386
+2023-11-18,inc hosp,1,2023-11-25,Iowa,quantile,0.975,290,210.2386
+2023-11-18,inc hosp,2,2023-12-02,Iowa,quantile,0.025,145,234.0444
+2023-11-18,inc hosp,2,2023-12-02,Iowa,quantile,0.25,196,234.0444
+2023-11-18,inc hosp,2,2023-12-02,Iowa,quantile,0.5,229,234.0444
+2023-11-18,inc hosp,2,2023-12-02,Iowa,quantile,0.75,266,234.0444
+2023-11-18,inc hosp,2,2023-12-02,Iowa,quantile,0.975,355,234.0444
+2023-11-18,inc hosp,3,2023-12-09,Iowa,quantile,0.025,145,257.286
+2023-11-18,inc hosp,3,2023-12-09,Iowa,quantile,0.25,207,257.286
+2023-11-18,inc hosp,3,2023-12-09,Iowa,quantile,0.5,249,257.286
+2023-11-18,inc hosp,3,2023-12-09,Iowa,quantile,0.75,299,257.286
+2023-11-18,inc hosp,3,2023-12-09,Iowa,quantile,0.975,418,257.286
+2023-11-18,inc hosp,4,2023-12-16,Iowa,quantile,0.025,146,278.6648
+2023-11-18,inc hosp,4,2023-12-16,Iowa,quantile,0.25,217,278.6648
+2023-11-18,inc hosp,4,2023-12-16,Iowa,quantile,0.5,267,278.6648
+2023-11-18,inc hosp,4,2023-12-16,Iowa,quantile,0.75,327,278.6648
+2023-11-18,inc hosp,4,2023-12-16,Iowa,quantile,0.975,485,278.6648
+2023-11-18,inc hosp,1,2023-11-25,Kansas,quantile,0.025,178,260.528
+2023-11-18,inc hosp,1,2023-11-25,Kansas,quantile,0.25,227,260.528
+2023-11-18,inc hosp,1,2023-11-25,Kansas,quantile,0.5,258,260.528
+2023-11-18,inc hosp,1,2023-11-25,Kansas,quantile,0.75,289,260.528
+2023-11-18,inc hosp,1,2023-11-25,Kansas,quantile,0.975,362,260.528
+2023-11-18,inc hosp,2,2023-12-02,Kansas,quantile,0.025,173,288.6624
+2023-11-18,inc hosp,2,2023-12-02,Kansas,quantile,0.25,240,288.6624
+2023-11-18,inc hosp,2,2023-12-02,Kansas,quantile,0.5,281,288.6624
+2023-11-18,inc hosp,2,2023-12-02,Kansas,quantile,0.75,331,288.6624
+2023-11-18,inc hosp,2,2023-12-02,Kansas,quantile,0.975,439,288.6624
+2023-11-18,inc hosp,3,2023-12-09,Kansas,quantile,0.025,171,315.4364
+2023-11-18,inc hosp,3,2023-12-09,Kansas,quantile,0.25,250,315.4364
+2023-11-18,inc hosp,3,2023-12-09,Kansas,quantile,0.5,304,315.4364
+2023-11-18,inc hosp,3,2023-12-09,Kansas,quantile,0.75,368,315.4364
+2023-11-18,inc hosp,3,2023-12-09,Kansas,quantile,0.975,525,315.4364
+2023-11-18,inc hosp,4,2023-12-16,Kansas,quantile,0.025,174,338.6158
+2023-11-18,inc hosp,4,2023-12-16,Kansas,quantile,0.25,261,338.6158
+2023-11-18,inc hosp,4,2023-12-16,Kansas,quantile,0.5,322,338.6158
+2023-11-18,inc hosp,4,2023-12-16,Kansas,quantile,0.75,399,338.6158
+2023-11-18,inc hosp,4,2023-12-16,Kansas,quantile,0.975,593,338.6158
+2023-11-18,inc hosp,1,2023-11-25,Kentucky,quantile,0.025,303,418.1608
+2023-11-18,inc hosp,1,2023-11-25,Kentucky,quantile,0.25,370,418.1608
+2023-11-18,inc hosp,1,2023-11-25,Kentucky,quantile,0.5,413,418.1608
+2023-11-18,inc hosp,1,2023-11-25,Kentucky,quantile,0.75,460,418.1608
+2023-11-18,inc hosp,1,2023-11-25,Kentucky,quantile,0.975,564,418.1608
+2023-11-18,inc hosp,2,2023-12-02,Kentucky,quantile,0.025,300,468.8928
+2023-11-18,inc hosp,2,2023-12-02,Kentucky,quantile,0.25,397,468.8928
+2023-11-18,inc hosp,2,2023-12-02,Kentucky,quantile,0.5,459,468.8928
+2023-11-18,inc hosp,2,2023-12-02,Kentucky,quantile,0.75,531,468.8928
+2023-11-18,inc hosp,2,2023-12-02,Kentucky,quantile,0.975,694,468.8928
+2023-11-18,inc hosp,3,2023-12-09,Kentucky,quantile,0.025,304,519.6092
+2023-11-18,inc hosp,3,2023-12-09,Kentucky,quantile,0.25,423,519.6092
+2023-11-18,inc hosp,3,2023-12-09,Kentucky,quantile,0.5,505,519.6092
+2023-11-18,inc hosp,3,2023-12-09,Kentucky,quantile,0.75,599,519.6092
+2023-11-18,inc hosp,3,2023-12-09,Kentucky,quantile,0.975,826,519.6092
+2023-11-18,inc hosp,4,2023-12-16,Kentucky,quantile,0.025,307,566.0562
+2023-11-18,inc hosp,4,2023-12-16,Kentucky,quantile,0.25,449,566.0562
+2023-11-18,inc hosp,4,2023-12-16,Kentucky,quantile,0.5,545,566.0562
+2023-11-18,inc hosp,4,2023-12-16,Kentucky,quantile,0.75,662,566.0562
+2023-11-18,inc hosp,4,2023-12-16,Kentucky,quantile,0.975,949,566.0562
+2023-11-18,inc hosp,1,2023-11-25,Louisiana,quantile,0.025,113,173.5912
+2023-11-18,inc hosp,1,2023-11-25,Louisiana,quantile,0.25,149,173.5912
+2023-11-18,inc hosp,1,2023-11-25,Louisiana,quantile,0.5,171,173.5912
+2023-11-18,inc hosp,1,2023-11-25,Louisiana,quantile,0.75,194,173.5912
+2023-11-18,inc hosp,1,2023-11-25,Louisiana,quantile,0.975,252,173.5912
+2023-11-18,inc hosp,2,2023-12-02,Louisiana,quantile,0.025,114,200.5794
+2023-11-18,inc hosp,2,2023-12-02,Louisiana,quantile,0.25,163,200.5794
+2023-11-18,inc hosp,2,2023-12-02,Louisiana,quantile,0.5,195,200.5794
+2023-11-18,inc hosp,2,2023-12-02,Louisiana,quantile,0.75,232,200.5794
+2023-11-18,inc hosp,2,2023-12-02,Louisiana,quantile,0.975,317,200.5794
+2023-11-18,inc hosp,3,2023-12-09,Louisiana,quantile,0.025,116,227.9466
+2023-11-18,inc hosp,3,2023-12-09,Louisiana,quantile,0.25,177,227.9466
+2023-11-18,inc hosp,3,2023-12-09,Louisiana,quantile,0.5,219,227.9466
+2023-11-18,inc hosp,3,2023-12-09,Louisiana,quantile,0.75,269,227.9466
+2023-11-18,inc hosp,3,2023-12-09,Louisiana,quantile,0.975,390,227.9466
+2023-11-18,inc hosp,4,2023-12-16,Louisiana,quantile,0.025,119,254.533
+2023-11-18,inc hosp,4,2023-12-16,Louisiana,quantile,0.25,191,254.533
+2023-11-18,inc hosp,4,2023-12-16,Louisiana,quantile,0.5,240,254.533
+2023-11-18,inc hosp,4,2023-12-16,Louisiana,quantile,0.75,303,254.533
+2023-11-18,inc hosp,4,2023-12-16,Louisiana,quantile,0.975,471,254.533
+2023-11-18,inc hosp,1,2023-11-25,Maine,quantile,0.025,36,65.7318
+2023-11-18,inc hosp,1,2023-11-25,Maine,quantile,0.25,53,65.7318
+2023-11-18,inc hosp,1,2023-11-25,Maine,quantile,0.5,64,65.7318
+2023-11-18,inc hosp,1,2023-11-25,Maine,quantile,0.75,77,65.7318
+2023-11-18,inc hosp,1,2023-11-25,Maine,quantile,0.975,108,65.7318
+2023-11-18,inc hosp,2,2023-12-02,Maine,quantile,0.025,33,72.984
+2023-11-18,inc hosp,2,2023-12-02,Maine,quantile,0.25,54,72.984
+2023-11-18,inc hosp,2,2023-12-02,Maine,quantile,0.5,69,72.984
+2023-11-18,inc hosp,2,2023-12-02,Maine,quantile,0.75,88,72.984
+2023-11-18,inc hosp,2,2023-12-02,Maine,quantile,0.975,133,72.984
+2023-11-18,inc hosp,3,2023-12-09,Maine,quantile,0.025,33,80.9834
+2023-11-18,inc hosp,3,2023-12-09,Maine,quantile,0.25,57,80.9834
+2023-11-18,inc hosp,3,2023-12-09,Maine,quantile,0.5,75,80.9834
+2023-11-18,inc hosp,3,2023-12-09,Maine,quantile,0.75,98,80.9834
+2023-11-18,inc hosp,3,2023-12-09,Maine,quantile,0.975,162,80.9834
+2023-11-18,inc hosp,4,2023-12-16,Maine,quantile,0.025,32,87.9074
+2023-11-18,inc hosp,4,2023-12-16,Maine,quantile,0.25,58,87.9074
+2023-11-18,inc hosp,4,2023-12-16,Maine,quantile,0.5,81,87.9074
+2023-11-18,inc hosp,4,2023-12-16,Maine,quantile,0.75,108,87.9074
+2023-11-18,inc hosp,4,2023-12-16,Maine,quantile,0.975,192,87.9074
+2023-11-18,inc hosp,1,2023-11-25,Maryland,quantile,0.025,221,317.6008
+2023-11-18,inc hosp,1,2023-11-25,Maryland,quantile,0.25,278,317.6008
+2023-11-18,inc hosp,1,2023-11-25,Maryland,quantile,0.5,313,317.6008
+2023-11-18,inc hosp,1,2023-11-25,Maryland,quantile,0.75,353,317.6008
+2023-11-18,inc hosp,1,2023-11-25,Maryland,quantile,0.975,437,317.6008
+2023-11-18,inc hosp,2,2023-12-02,Maryland,quantile,0.025,220,355.3448
+2023-11-18,inc hosp,2,2023-12-02,Maryland,quantile,0.25,296,355.3448
+2023-11-18,inc hosp,2,2023-12-02,Maryland,quantile,0.5,347,355.3448
+2023-11-18,inc hosp,2,2023-12-02,Maryland,quantile,0.75,404,355.3448
+2023-11-18,inc hosp,2,2023-12-02,Maryland,quantile,0.975,540,355.3448
+2023-11-18,inc hosp,3,2023-12-09,Maryland,quantile,0.025,216,393.7566
+2023-11-18,inc hosp,3,2023-12-09,Maryland,quantile,0.25,315,393.7566
+2023-11-18,inc hosp,3,2023-12-09,Maryland,quantile,0.5,380,393.7566
+2023-11-18,inc hosp,3,2023-12-09,Maryland,quantile,0.75,458,393.7566
+2023-11-18,inc hosp,3,2023-12-09,Maryland,quantile,0.975,646,393.7566
+2023-11-18,inc hosp,4,2023-12-16,Maryland,quantile,0.025,216,428.0066
+2023-11-18,inc hosp,4,2023-12-16,Maryland,quantile,0.25,330,428.0066
+2023-11-18,inc hosp,4,2023-12-16,Maryland,quantile,0.5,409,428.0066
+2023-11-18,inc hosp,4,2023-12-16,Maryland,quantile,0.75,504,428.0066
+2023-11-18,inc hosp,4,2023-12-16,Maryland,quantile,0.975,744,428.0066
+2023-11-18,inc hosp,1,2023-11-25,Massachusetts,quantile,0.025,307,443.6598
+2023-11-18,inc hosp,1,2023-11-25,Massachusetts,quantile,0.25,387,443.6598
+2023-11-18,inc hosp,1,2023-11-25,Massachusetts,quantile,0.5,436,443.6598
+2023-11-18,inc hosp,1,2023-11-25,Massachusetts,quantile,0.75,494,443.6598
+2023-11-18,inc hosp,1,2023-11-25,Massachusetts,quantile,0.975,617,443.6598
+2023-11-18,inc hosp,2,2023-12-02,Massachusetts,quantile,0.025,299,493.2718
+2023-11-18,inc hosp,2,2023-12-02,Massachusetts,quantile,0.25,406,493.2718
+2023-11-18,inc hosp,2,2023-12-02,Massachusetts,quantile,0.5,481,493.2718
+2023-11-18,inc hosp,2,2023-12-02,Massachusetts,quantile,0.75,564,493.2718
+2023-11-18,inc hosp,2,2023-12-02,Massachusetts,quantile,0.975,768,493.2718
+2023-11-18,inc hosp,3,2023-12-09,Massachusetts,quantile,0.025,298,543.0254
+2023-11-18,inc hosp,3,2023-12-09,Massachusetts,quantile,0.25,431,543.0254
+2023-11-18,inc hosp,3,2023-12-09,Massachusetts,quantile,0.5,520,543.0254
+2023-11-18,inc hosp,3,2023-12-09,Massachusetts,quantile,0.75,638,543.0254
+2023-11-18,inc hosp,3,2023-12-09,Massachusetts,quantile,0.975,907,543.0254
+2023-11-18,inc hosp,4,2023-12-16,Massachusetts,quantile,0.025,298,587.9134
+2023-11-18,inc hosp,4,2023-12-16,Massachusetts,quantile,0.25,448,587.9134
+2023-11-18,inc hosp,4,2023-12-16,Massachusetts,quantile,0.5,559,587.9134
+2023-11-18,inc hosp,4,2023-12-16,Massachusetts,quantile,0.75,697,587.9134
+2023-11-18,inc hosp,4,2023-12-16,Massachusetts,quantile,0.975,1031,587.9134
+2023-11-18,inc hosp,1,2023-11-25,Michigan,quantile,0.025,512,719.5654
+2023-11-18,inc hosp,1,2023-11-25,Michigan,quantile,0.25,636,719.5654
+2023-11-18,inc hosp,1,2023-11-25,Michigan,quantile,0.5,713,719.5654
+2023-11-18,inc hosp,1,2023-11-25,Michigan,quantile,0.75,795,719.5654
+2023-11-18,inc hosp,1,2023-11-25,Michigan,quantile,0.975,966,719.5654
+2023-11-18,inc hosp,2,2023-12-02,Michigan,quantile,0.025,509,803.1446
+2023-11-18,inc hosp,2,2023-12-02,Michigan,quantile,0.25,674,803.1446
+2023-11-18,inc hosp,2,2023-12-02,Michigan,quantile,0.5,783,803.1446
+2023-11-18,inc hosp,2,2023-12-02,Michigan,quantile,0.75,915,803.1446
+2023-11-18,inc hosp,2,2023-12-02,Michigan,quantile,0.975,1199,803.1446
+2023-11-18,inc hosp,3,2023-12-09,Michigan,quantile,0.025,504,883.0818
+2023-11-18,inc hosp,3,2023-12-09,Michigan,quantile,0.25,712,883.0818
+2023-11-18,inc hosp,3,2023-12-09,Michigan,quantile,0.5,849,883.0818
+2023-11-18,inc hosp,3,2023-12-09,Michigan,quantile,0.75,1019,883.0818
+2023-11-18,inc hosp,3,2023-12-09,Michigan,quantile,0.975,1452,883.0818
+2023-11-18,inc hosp,4,2023-12-16,Michigan,quantile,0.025,508,957.3856
+2023-11-18,inc hosp,4,2023-12-16,Michigan,quantile,0.25,738,957.3856
+2023-11-18,inc hosp,4,2023-12-16,Michigan,quantile,0.5,911,957.3856
+2023-11-18,inc hosp,4,2023-12-16,Michigan,quantile,0.75,1125,957.3856
+2023-11-18,inc hosp,4,2023-12-16,Michigan,quantile,0.975,1656,957.3856
+2023-11-18,inc hosp,1,2023-11-25,Minnesota,quantile,0.025,292,412.2284
+2023-11-18,inc hosp,1,2023-11-25,Minnesota,quantile,0.25,363,412.2284
+2023-11-18,inc hosp,1,2023-11-25,Minnesota,quantile,0.5,405,412.2284
+2023-11-18,inc hosp,1,2023-11-25,Minnesota,quantile,0.75,456,412.2284
+2023-11-18,inc hosp,1,2023-11-25,Minnesota,quantile,0.975,561,412.2284
+2023-11-18,inc hosp,2,2023-12-02,Minnesota,quantile,0.025,281,456.6068
+2023-11-18,inc hosp,2,2023-12-02,Minnesota,quantile,0.25,381,456.6068
+2023-11-18,inc hosp,2,2023-12-02,Minnesota,quantile,0.5,443,456.6068
+2023-11-18,inc hosp,2,2023-12-02,Minnesota,quantile,0.75,520,456.6068
+2023-11-18,inc hosp,2,2023-12-02,Minnesota,quantile,0.975,689,456.6068
+2023-11-18,inc hosp,3,2023-12-09,Minnesota,quantile,0.025,285,495.9714
+2023-11-18,inc hosp,3,2023-12-09,Minnesota,quantile,0.25,398,495.9714
+2023-11-18,inc hosp,3,2023-12-09,Minnesota,quantile,0.5,480,495.9714
+2023-11-18,inc hosp,3,2023-12-09,Minnesota,quantile,0.75,574,495.9714
+2023-11-18,inc hosp,3,2023-12-09,Minnesota,quantile,0.975,809,495.9714
+2023-11-18,inc hosp,4,2023-12-16,Minnesota,quantile,0.025,281,532.1652
+2023-11-18,inc hosp,4,2023-12-16,Minnesota,quantile,0.25,412,532.1652
+2023-11-18,inc hosp,4,2023-12-16,Minnesota,quantile,0.5,506,532.1652
+2023-11-18,inc hosp,4,2023-12-16,Minnesota,quantile,0.75,627,532.1652
+2023-11-18,inc hosp,4,2023-12-16,Minnesota,quantile,0.975,925,532.1652
+2023-11-18,inc hosp,1,2023-11-25,Mississippi,quantile,0.025,62,95.4636
+2023-11-18,inc hosp,1,2023-11-25,Mississippi,quantile,0.25,81,95.4636
+2023-11-18,inc hosp,1,2023-11-25,Mississippi,quantile,0.5,94,95.4636
+2023-11-18,inc hosp,1,2023-11-25,Mississippi,quantile,0.75,107,95.4636
+2023-11-18,inc hosp,1,2023-11-25,Mississippi,quantile,0.975,139,95.4636
+2023-11-18,inc hosp,2,2023-12-02,Mississippi,quantile,0.025,63,109.668
+2023-11-18,inc hosp,2,2023-12-02,Mississippi,quantile,0.25,89,109.668
+2023-11-18,inc hosp,2,2023-12-02,Mississippi,quantile,0.5,106,109.668
+2023-11-18,inc hosp,2,2023-12-02,Mississippi,quantile,0.75,127,109.668
+2023-11-18,inc hosp,2,2023-12-02,Mississippi,quantile,0.975,174,109.668
+2023-11-18,inc hosp,3,2023-12-09,Mississippi,quantile,0.025,66,123.8452
+2023-11-18,inc hosp,3,2023-12-09,Mississippi,quantile,0.25,97,123.8452
+2023-11-18,inc hosp,3,2023-12-09,Mississippi,quantile,0.5,119,123.8452
+2023-11-18,inc hosp,3,2023-12-09,Mississippi,quantile,0.75,144,123.8452
+2023-11-18,inc hosp,3,2023-12-09,Mississippi,quantile,0.975,214,123.8452
+2023-11-18,inc hosp,4,2023-12-16,Mississippi,quantile,0.025,68,137.3262
+2023-11-18,inc hosp,4,2023-12-16,Mississippi,quantile,0.25,104,137.3262
+2023-11-18,inc hosp,4,2023-12-16,Mississippi,quantile,0.5,130,137.3262
+2023-11-18,inc hosp,4,2023-12-16,Mississippi,quantile,0.75,164,137.3262
+2023-11-18,inc hosp,4,2023-12-16,Mississippi,quantile,0.975,254,137.3262
+2023-11-18,inc hosp,1,2023-11-25,Missouri,quantile,0.025,370,504.2518
+2023-11-18,inc hosp,1,2023-11-25,Missouri,quantile,0.25,449,504.2518
+2023-11-18,inc hosp,1,2023-11-25,Missouri,quantile,0.5,498,504.2518
+2023-11-18,inc hosp,1,2023-11-25,Missouri,quantile,0.75,552,504.2518
+2023-11-18,inc hosp,1,2023-11-25,Missouri,quantile,0.975,671,504.2518
+2023-11-18,inc hosp,2,2023-12-02,Missouri,quantile,0.025,362,561.418
+2023-11-18,inc hosp,2,2023-12-02,Missouri,quantile,0.25,479,561.418
+2023-11-18,inc hosp,2,2023-12-02,Missouri,quantile,0.5,550,561.418
+2023-11-18,inc hosp,2,2023-12-02,Missouri,quantile,0.75,634,561.418
+2023-11-18,inc hosp,2,2023-12-02,Missouri,quantile,0.975,829,561.418
+2023-11-18,inc hosp,3,2023-12-09,Missouri,quantile,0.025,365,616.9304
+2023-11-18,inc hosp,3,2023-12-09,Missouri,quantile,0.25,506,616.9304
+2023-11-18,inc hosp,3,2023-12-09,Missouri,quantile,0.5,599,616.9304
+2023-11-18,inc hosp,3,2023-12-09,Missouri,quantile,0.75,713,616.9304
+2023-11-18,inc hosp,3,2023-12-09,Missouri,quantile,0.975,966,616.9304
+2023-11-18,inc hosp,4,2023-12-16,Missouri,quantile,0.025,362,668.5714
+2023-11-18,inc hosp,4,2023-12-16,Missouri,quantile,0.25,535,668.5714
+2023-11-18,inc hosp,4,2023-12-16,Missouri,quantile,0.5,642,668.5714
+2023-11-18,inc hosp,4,2023-12-16,Missouri,quantile,0.75,777,668.5714
+2023-11-18,inc hosp,4,2023-12-16,Missouri,quantile,0.975,1109,668.5714
+2023-11-18,inc hosp,1,2023-11-25,Montana,quantile,0.025,66,102.698
+2023-11-18,inc hosp,1,2023-11-25,Montana,quantile,0.25,87,102.698
+2023-11-18,inc hosp,1,2023-11-25,Montana,quantile,0.5,101,102.698
+2023-11-18,inc hosp,1,2023-11-25,Montana,quantile,0.75,116,102.698
+2023-11-18,inc hosp,1,2023-11-25,Montana,quantile,0.975,149,102.698
+2023-11-18,inc hosp,2,2023-12-02,Montana,quantile,0.025,64,115.0648
+2023-11-18,inc hosp,2,2023-12-02,Montana,quantile,0.25,93,115.0648
+2023-11-18,inc hosp,2,2023-12-02,Montana,quantile,0.5,111,115.0648
+2023-11-18,inc hosp,2,2023-12-02,Montana,quantile,0.75,133,115.0648
+2023-11-18,inc hosp,2,2023-12-02,Montana,quantile,0.975,184,115.0648
+2023-11-18,inc hosp,3,2023-12-09,Montana,quantile,0.025,66,127.0996
+2023-11-18,inc hosp,3,2023-12-09,Montana,quantile,0.25,100,127.0996
+2023-11-18,inc hosp,3,2023-12-09,Montana,quantile,0.5,123,127.0996
+2023-11-18,inc hosp,3,2023-12-09,Montana,quantile,0.75,148,127.0996
+2023-11-18,inc hosp,3,2023-12-09,Montana,quantile,0.975,219,127.0996
+2023-11-18,inc hosp,4,2023-12-16,Montana,quantile,0.025,67,138.1976
+2023-11-18,inc hosp,4,2023-12-16,Montana,quantile,0.25,104,138.1976
+2023-11-18,inc hosp,4,2023-12-16,Montana,quantile,0.5,131,138.1976
+2023-11-18,inc hosp,4,2023-12-16,Montana,quantile,0.75,164,138.1976
+2023-11-18,inc hosp,4,2023-12-16,Montana,quantile,0.975,248,138.1976
+2023-11-18,inc hosp,1,2023-11-25,Nebraska,quantile,0.025,113,166.2898
+2023-11-18,inc hosp,1,2023-11-25,Nebraska,quantile,0.25,145,166.2898
+2023-11-18,inc hosp,1,2023-11-25,Nebraska,quantile,0.5,164,166.2898
+2023-11-18,inc hosp,1,2023-11-25,Nebraska,quantile,0.75,185,166.2898
+2023-11-18,inc hosp,1,2023-11-25,Nebraska,quantile,0.975,233,166.2898
+2023-11-18,inc hosp,2,2023-12-02,Nebraska,quantile,0.025,110,182.9198
+2023-11-18,inc hosp,2,2023-12-02,Nebraska,quantile,0.25,152,182.9198
+2023-11-18,inc hosp,2,2023-12-02,Nebraska,quantile,0.5,179,182.9198
+2023-11-18,inc hosp,2,2023-12-02,Nebraska,quantile,0.75,208,182.9198
+2023-11-18,inc hosp,2,2023-12-02,Nebraska,quantile,0.975,279,182.9198
+2023-11-18,inc hosp,3,2023-12-09,Nebraska,quantile,0.025,112,198.6578
+2023-11-18,inc hosp,3,2023-12-09,Nebraska,quantile,0.25,159,198.6578
+2023-11-18,inc hosp,3,2023-12-09,Nebraska,quantile,0.5,192,198.6578
+2023-11-18,inc hosp,3,2023-12-09,Nebraska,quantile,0.75,230,198.6578
+2023-11-18,inc hosp,3,2023-12-09,Nebraska,quantile,0.975,324,198.6578
+2023-11-18,inc hosp,4,2023-12-16,Nebraska,quantile,0.025,110,212.1062
+2023-11-18,inc hosp,4,2023-12-16,Nebraska,quantile,0.25,165,212.1062
+2023-11-18,inc hosp,4,2023-12-16,Nebraska,quantile,0.5,203,212.1062
+2023-11-18,inc hosp,4,2023-12-16,Nebraska,quantile,0.75,250,212.1062
+2023-11-18,inc hosp,4,2023-12-16,Nebraska,quantile,0.975,367,212.1062
+2023-11-18,inc hosp,1,2023-11-25,Nevada,quantile,0.025,133,194.809
+2023-11-18,inc hosp,1,2023-11-25,Nevada,quantile,0.25,169,194.809
+2023-11-18,inc hosp,1,2023-11-25,Nevada,quantile,0.5,192,194.809
+2023-11-18,inc hosp,1,2023-11-25,Nevada,quantile,0.75,217,194.809
+2023-11-18,inc hosp,1,2023-11-25,Nevada,quantile,0.975,275,194.809
+2023-11-18,inc hosp,2,2023-12-02,Nevada,quantile,0.025,132,218.5226
+2023-11-18,inc hosp,2,2023-12-02,Nevada,quantile,0.25,181,218.5226
+2023-11-18,inc hosp,2,2023-12-02,Nevada,quantile,0.5,212,218.5226
+2023-11-18,inc hosp,2,2023-12-02,Nevada,quantile,0.75,250,218.5226
+2023-11-18,inc hosp,2,2023-12-02,Nevada,quantile,0.975,345,218.5226
+2023-11-18,inc hosp,3,2023-12-09,Nevada,quantile,0.025,133,242.2554
+2023-11-18,inc hosp,3,2023-12-09,Nevada,quantile,0.25,194,242.2554
+2023-11-18,inc hosp,3,2023-12-09,Nevada,quantile,0.5,233,242.2554
+2023-11-18,inc hosp,3,2023-12-09,Nevada,quantile,0.75,282,242.2554
+2023-11-18,inc hosp,3,2023-12-09,Nevada,quantile,0.975,411,242.2554
+2023-11-18,inc hosp,4,2023-12-16,Nevada,quantile,0.025,133,263.536
+2023-11-18,inc hosp,4,2023-12-16,Nevada,quantile,0.25,203,263.536
+2023-11-18,inc hosp,4,2023-12-16,Nevada,quantile,0.5,251,263.536
+2023-11-18,inc hosp,4,2023-12-16,Nevada,quantile,0.75,309,263.536
+2023-11-18,inc hosp,4,2023-12-16,Nevada,quantile,0.975,469,263.536
+2023-11-18,inc hosp,1,2023-11-25,New Hampshire,quantile,0.025,43,72.924
+2023-11-18,inc hosp,1,2023-11-25,New Hampshire,quantile,0.25,60,72.924
+2023-11-18,inc hosp,1,2023-11-25,New Hampshire,quantile,0.5,71,72.924
+2023-11-18,inc hosp,1,2023-11-25,New Hampshire,quantile,0.75,84,72.924
+2023-11-18,inc hosp,1,2023-11-25,New Hampshire,quantile,0.975,112,72.924
+2023-11-18,inc hosp,2,2023-12-02,New Hampshire,quantile,0.025,42,81.0986
+2023-11-18,inc hosp,2,2023-12-02,New Hampshire,quantile,0.25,63,81.0986
+2023-11-18,inc hosp,2,2023-12-02,New Hampshire,quantile,0.5,78,81.0986
+2023-11-18,inc hosp,2,2023-12-02,New Hampshire,quantile,0.75,96,81.0986
+2023-11-18,inc hosp,2,2023-12-02,New Hampshire,quantile,0.975,137,81.0986
+2023-11-18,inc hosp,3,2023-12-09,New Hampshire,quantile,0.025,42,89.1232
+2023-11-18,inc hosp,3,2023-12-09,New Hampshire,quantile,0.25,67,89.1232
+2023-11-18,inc hosp,3,2023-12-09,New Hampshire,quantile,0.5,84,89.1232
+2023-11-18,inc hosp,3,2023-12-09,New Hampshire,quantile,0.75,106,89.1232
+2023-11-18,inc hosp,3,2023-12-09,New Hampshire,quantile,0.975,161,89.1232
+2023-11-18,inc hosp,4,2023-12-16,New Hampshire,quantile,0.025,42,96.7136
+2023-11-18,inc hosp,4,2023-12-16,New Hampshire,quantile,0.25,69,96.7136
+2023-11-18,inc hosp,4,2023-12-16,New Hampshire,quantile,0.5,91,96.7136
+2023-11-18,inc hosp,4,2023-12-16,New Hampshire,quantile,0.75,117,96.7136
+2023-11-18,inc hosp,4,2023-12-16,New Hampshire,quantile,0.975,185,96.7136
+2023-11-18,inc hosp,1,2023-11-25,New Jersey,quantile,0.025,335,489.0536
+2023-11-18,inc hosp,1,2023-11-25,New Jersey,quantile,0.25,424,489.0536
+2023-11-18,inc hosp,1,2023-11-25,New Jersey,quantile,0.5,482,489.0536
+2023-11-18,inc hosp,1,2023-11-25,New Jersey,quantile,0.75,545,489.0536
+2023-11-18,inc hosp,1,2023-11-25,New Jersey,quantile,0.975,686,489.0536
+2023-11-18,inc hosp,2,2023-12-02,New Jersey,quantile,0.025,329,551.0662
+2023-11-18,inc hosp,2,2023-12-02,New Jersey,quantile,0.25,450,551.0662
+2023-11-18,inc hosp,2,2023-12-02,New Jersey,quantile,0.5,535,551.0662
+2023-11-18,inc hosp,2,2023-12-02,New Jersey,quantile,0.75,635,551.0662
+2023-11-18,inc hosp,2,2023-12-02,New Jersey,quantile,0.975,851,551.0662
+2023-11-18,inc hosp,3,2023-12-09,New Jersey,quantile,0.025,324,615.8284
+2023-11-18,inc hosp,3,2023-12-09,New Jersey,quantile,0.25,482,615.8284
+2023-11-18,inc hosp,3,2023-12-09,New Jersey,quantile,0.5,591,615.8284
+2023-11-18,inc hosp,3,2023-12-09,New Jersey,quantile,0.75,723,615.8284
+2023-11-18,inc hosp,3,2023-12-09,New Jersey,quantile,0.975,1042,615.8284
+2023-11-18,inc hosp,4,2023-12-16,New Jersey,quantile,0.025,333,672.5756
+2023-11-18,inc hosp,4,2023-12-16,New Jersey,quantile,0.25,506,672.5756
+2023-11-18,inc hosp,4,2023-12-16,New Jersey,quantile,0.5,634,672.5756
+2023-11-18,inc hosp,4,2023-12-16,New Jersey,quantile,0.75,804,672.5756
+2023-11-18,inc hosp,4,2023-12-16,New Jersey,quantile,0.975,1218,672.5756
+2023-11-18,inc hosp,1,2023-11-25,New Mexico,quantile,0.025,146,211.1116
+2023-11-18,inc hosp,1,2023-11-25,New Mexico,quantile,0.25,185,211.1116
+2023-11-18,inc hosp,1,2023-11-25,New Mexico,quantile,0.5,208,211.1116
+2023-11-18,inc hosp,1,2023-11-25,New Mexico,quantile,0.75,234,211.1116
+2023-11-18,inc hosp,1,2023-11-25,New Mexico,quantile,0.975,294,211.1116
+2023-11-18,inc hosp,2,2023-12-02,New Mexico,quantile,0.025,142,232.503
+2023-11-18,inc hosp,2,2023-12-02,New Mexico,quantile,0.25,194,232.503
+2023-11-18,inc hosp,2,2023-12-02,New Mexico,quantile,0.5,226,232.503
+2023-11-18,inc hosp,2,2023-12-02,New Mexico,quantile,0.75,265,232.503
+2023-11-18,inc hosp,2,2023-12-02,New Mexico,quantile,0.975,358,232.503
+2023-11-18,inc hosp,3,2023-12-09,New Mexico,quantile,0.025,139,252.2676
+2023-11-18,inc hosp,3,2023-12-09,New Mexico,quantile,0.25,202,252.2676
+2023-11-18,inc hosp,3,2023-12-09,New Mexico,quantile,0.5,243,252.2676
+2023-11-18,inc hosp,3,2023-12-09,New Mexico,quantile,0.75,293,252.2676
+2023-11-18,inc hosp,3,2023-12-09,New Mexico,quantile,0.975,415,252.2676
+2023-11-18,inc hosp,4,2023-12-16,New Mexico,quantile,0.025,136,269.2136
+2023-11-18,inc hosp,4,2023-12-16,New Mexico,quantile,0.25,208,269.2136
+2023-11-18,inc hosp,4,2023-12-16,New Mexico,quantile,0.5,257,269.2136
+2023-11-18,inc hosp,4,2023-12-16,New Mexico,quantile,0.75,316,269.2136
+2023-11-18,inc hosp,4,2023-12-16,New Mexico,quantile,0.975,475,269.2136
+2023-11-18,inc hosp,1,2023-11-25,New York,quantile,0.025,886,1250.0832
+2023-11-18,inc hosp,1,2023-11-25,New York,quantile,0.25,1102,1250.0832
+2023-11-18,inc hosp,1,2023-11-25,New York,quantile,0.5,1238,1250.0832
+2023-11-18,inc hosp,1,2023-11-25,New York,quantile,0.75,1376,1250.0832
+2023-11-18,inc hosp,1,2023-11-25,New York,quantile,0.975,1689,1250.0832
+2023-11-18,inc hosp,2,2023-12-02,New York,quantile,0.025,882,1400.0378
+2023-11-18,inc hosp,2,2023-12-02,New York,quantile,0.25,1171,1400.0378
+2023-11-18,inc hosp,2,2023-12-02,New York,quantile,0.5,1369,1400.0378
+2023-11-18,inc hosp,2,2023-12-02,New York,quantile,0.75,1593,1400.0378
+2023-11-18,inc hosp,2,2023-12-02,New York,quantile,0.975,2134,1400.0378
+2023-11-18,inc hosp,3,2023-12-09,New York,quantile,0.025,874,1551.9638
+2023-11-18,inc hosp,3,2023-12-09,New York,quantile,0.25,1241,1551.9638
+2023-11-18,inc hosp,3,2023-12-09,New York,quantile,0.5,1501,1551.9638
+2023-11-18,inc hosp,3,2023-12-09,New York,quantile,0.75,1800,1551.9638
+2023-11-18,inc hosp,3,2023-12-09,New York,quantile,0.975,2533,1551.9638
+2023-11-18,inc hosp,4,2023-12-16,New York,quantile,0.025,888,1687.4286
+2023-11-18,inc hosp,4,2023-12-16,New York,quantile,0.25,1313,1687.4286
+2023-11-18,inc hosp,4,2023-12-16,New York,quantile,0.5,1604,1687.4286
+2023-11-18,inc hosp,4,2023-12-16,New York,quantile,0.75,1971,1687.4286
+2023-11-18,inc hosp,4,2023-12-16,New York,quantile,0.975,2962,1687.4286
+2023-11-18,inc hosp,1,2023-11-25,North Carolina,quantile,0.025,308,439.109
+2023-11-18,inc hosp,1,2023-11-25,North Carolina,quantile,0.25,386,439.109
+2023-11-18,inc hosp,1,2023-11-25,North Carolina,quantile,0.5,432,439.109
+2023-11-18,inc hosp,1,2023-11-25,North Carolina,quantile,0.75,486,439.109
+2023-11-18,inc hosp,1,2023-11-25,North Carolina,quantile,0.975,608,439.109
+2023-11-18,inc hosp,2,2023-12-02,North Carolina,quantile,0.025,309,499.9134
+2023-11-18,inc hosp,2,2023-12-02,North Carolina,quantile,0.25,413,499.9134
+2023-11-18,inc hosp,2,2023-12-02,North Carolina,quantile,0.5,486,499.9134
+2023-11-18,inc hosp,2,2023-12-02,North Carolina,quantile,0.75,571,499.9134
+2023-11-18,inc hosp,2,2023-12-02,North Carolina,quantile,0.975,780,499.9134
+2023-11-18,inc hosp,3,2023-12-09,North Carolina,quantile,0.025,303,559.7034
+2023-11-18,inc hosp,3,2023-12-09,North Carolina,quantile,0.25,442,559.7034
+2023-11-18,inc hosp,3,2023-12-09,North Carolina,quantile,0.5,538,559.7034
+2023-11-18,inc hosp,3,2023-12-09,North Carolina,quantile,0.75,653,559.7034
+2023-11-18,inc hosp,3,2023-12-09,North Carolina,quantile,0.975,938,559.7034
+2023-11-18,inc hosp,4,2023-12-16,North Carolina,quantile,0.025,316,613.6606
+2023-11-18,inc hosp,4,2023-12-16,North Carolina,quantile,0.25,473,613.6606
+2023-11-18,inc hosp,4,2023-12-16,North Carolina,quantile,0.5,582,613.6606
+2023-11-18,inc hosp,4,2023-12-16,North Carolina,quantile,0.75,719,613.6606
+2023-11-18,inc hosp,4,2023-12-16,North Carolina,quantile,0.975,1091,613.6606
+2023-11-18,inc hosp,1,2023-11-25,North Dakota,quantile,0.025,49,79.6888
+2023-11-18,inc hosp,1,2023-11-25,North Dakota,quantile,0.25,67,79.6888
+2023-11-18,inc hosp,1,2023-11-25,North Dakota,quantile,0.5,78,79.6888
+2023-11-18,inc hosp,1,2023-11-25,North Dakota,quantile,0.75,91,79.6888
+2023-11-18,inc hosp,1,2023-11-25,North Dakota,quantile,0.975,119,79.6888
+2023-11-18,inc hosp,2,2023-12-02,North Dakota,quantile,0.025,46,87.6332
+2023-11-18,inc hosp,2,2023-12-02,North Dakota,quantile,0.25,70,87.6332
+2023-11-18,inc hosp,2,2023-12-02,North Dakota,quantile,0.5,85,87.6332
+2023-11-18,inc hosp,2,2023-12-02,North Dakota,quantile,0.75,102,87.6332
+2023-11-18,inc hosp,2,2023-12-02,North Dakota,quantile,0.975,144,87.6332
+2023-11-18,inc hosp,3,2023-12-09,North Dakota,quantile,0.025,46,96.0312
+2023-11-18,inc hosp,3,2023-12-09,North Dakota,quantile,0.25,74,96.0312
+2023-11-18,inc hosp,3,2023-12-09,North Dakota,quantile,0.5,92,96.0312
+2023-11-18,inc hosp,3,2023-12-09,North Dakota,quantile,0.75,114,96.0312
+2023-11-18,inc hosp,3,2023-12-09,North Dakota,quantile,0.975,169,96.0312
+2023-11-18,inc hosp,4,2023-12-16,North Dakota,quantile,0.025,46,102.4888
+2023-11-18,inc hosp,4,2023-12-16,North Dakota,quantile,0.25,76,102.4888
+2023-11-18,inc hosp,4,2023-12-16,North Dakota,quantile,0.5,96,102.4888
+2023-11-18,inc hosp,4,2023-12-16,North Dakota,quantile,0.75,123,102.4888
+2023-11-18,inc hosp,4,2023-12-16,North Dakota,quantile,0.975,190,102.4888
+2023-11-18,inc hosp,1,2023-11-25,Ohio,quantile,0.025,694,970.9228
+2023-11-18,inc hosp,1,2023-11-25,Ohio,quantile,0.25,859,970.9228
+2023-11-18,inc hosp,1,2023-11-25,Ohio,quantile,0.5,958,970.9228
+2023-11-18,inc hosp,1,2023-11-25,Ohio,quantile,0.75,1069,970.9228
+2023-11-18,inc hosp,1,2023-11-25,Ohio,quantile,0.975,1304,970.9228
+2023-11-18,inc hosp,2,2023-12-02,Ohio,quantile,0.025,673,1081.9118
+2023-11-18,inc hosp,2,2023-12-02,Ohio,quantile,0.25,907,1081.9118
+2023-11-18,inc hosp,2,2023-12-02,Ohio,quantile,0.5,1060,1081.9118
+2023-11-18,inc hosp,2,2023-12-02,Ohio,quantile,0.75,1229,1081.9118
+2023-11-18,inc hosp,2,2023-12-02,Ohio,quantile,0.975,1619,1081.9118
+2023-11-18,inc hosp,3,2023-12-09,Ohio,quantile,0.025,682,1186.9408
+2023-11-18,inc hosp,3,2023-12-09,Ohio,quantile,0.25,950,1186.9408
+2023-11-18,inc hosp,3,2023-12-09,Ohio,quantile,0.5,1147,1186.9408
+2023-11-18,inc hosp,3,2023-12-09,Ohio,quantile,0.75,1375,1186.9408
+2023-11-18,inc hosp,3,2023-12-09,Ohio,quantile,0.975,1914,1186.9408
+2023-11-18,inc hosp,4,2023-12-16,Ohio,quantile,0.025,677,1282.0892
+2023-11-18,inc hosp,4,2023-12-16,Ohio,quantile,0.25,999,1282.0892
+2023-11-18,inc hosp,4,2023-12-16,Ohio,quantile,0.5,1222,1282.0892
+2023-11-18,inc hosp,4,2023-12-16,Ohio,quantile,0.75,1506,1282.0892
+2023-11-18,inc hosp,4,2023-12-16,Ohio,quantile,0.975,2174,1282.0892
+2023-11-18,inc hosp,1,2023-11-25,Oklahoma,quantile,0.025,173,249.4388
+2023-11-18,inc hosp,1,2023-11-25,Oklahoma,quantile,0.25,219,249.4388
+2023-11-18,inc hosp,1,2023-11-25,Oklahoma,quantile,0.5,247,249.4388
+2023-11-18,inc hosp,1,2023-11-25,Oklahoma,quantile,0.75,277,249.4388
+2023-11-18,inc hosp,1,2023-11-25,Oklahoma,quantile,0.975,344,249.4388
+2023-11-18,inc hosp,2,2023-12-02,Oklahoma,quantile,0.025,175,282.4438
+2023-11-18,inc hosp,2,2023-12-02,Oklahoma,quantile,0.25,236,282.4438
+2023-11-18,inc hosp,2,2023-12-02,Oklahoma,quantile,0.5,276,282.4438
+2023-11-18,inc hosp,2,2023-12-02,Oklahoma,quantile,0.75,321,282.4438
+2023-11-18,inc hosp,2,2023-12-02,Oklahoma,quantile,0.975,430,282.4438
+2023-11-18,inc hosp,3,2023-12-09,Oklahoma,quantile,0.025,180,315.4744
+2023-11-18,inc hosp,3,2023-12-09,Oklahoma,quantile,0.25,254,315.4744
+2023-11-18,inc hosp,3,2023-12-09,Oklahoma,quantile,0.5,305,315.4744
+2023-11-18,inc hosp,3,2023-12-09,Oklahoma,quantile,0.75,365,315.4744
+2023-11-18,inc hosp,3,2023-12-09,Oklahoma,quantile,0.975,509,315.4744
+2023-11-18,inc hosp,4,2023-12-16,Oklahoma,quantile,0.025,184,345.7632
+2023-11-18,inc hosp,4,2023-12-16,Oklahoma,quantile,0.25,270,345.7632
+2023-11-18,inc hosp,4,2023-12-16,Oklahoma,quantile,0.5,330,345.7632
+2023-11-18,inc hosp,4,2023-12-16,Oklahoma,quantile,0.75,405,345.7632
+2023-11-18,inc hosp,4,2023-12-16,Oklahoma,quantile,0.975,603,345.7632
+2023-11-18,inc hosp,1,2023-11-25,Oregon,quantile,0.025,136,204.1454
+2023-11-18,inc hosp,1,2023-11-25,Oregon,quantile,0.25,176,204.1454
+2023-11-18,inc hosp,1,2023-11-25,Oregon,quantile,0.5,200,204.1454
+2023-11-18,inc hosp,1,2023-11-25,Oregon,quantile,0.75,228,204.1454
+2023-11-18,inc hosp,1,2023-11-25,Oregon,quantile,0.975,293,204.1454
+2023-11-18,inc hosp,2,2023-12-02,Oregon,quantile,0.025,134,227.5586
+2023-11-18,inc hosp,2,2023-12-02,Oregon,quantile,0.25,186,227.5586
+2023-11-18,inc hosp,2,2023-12-02,Oregon,quantile,0.5,221,227.5586
+2023-11-18,inc hosp,2,2023-12-02,Oregon,quantile,0.75,262,227.5586
+2023-11-18,inc hosp,2,2023-12-02,Oregon,quantile,0.975,361,227.5586
+2023-11-18,inc hosp,3,2023-12-09,Oregon,quantile,0.025,133,249.968
+2023-11-18,inc hosp,3,2023-12-09,Oregon,quantile,0.25,195,249.968
+2023-11-18,inc hosp,3,2023-12-09,Oregon,quantile,0.5,241,249.968
+2023-11-18,inc hosp,3,2023-12-09,Oregon,quantile,0.75,293,249.968
+2023-11-18,inc hosp,3,2023-12-09,Oregon,quantile,0.975,431,249.968
+2023-11-18,inc hosp,4,2023-12-16,Oregon,quantile,0.025,132,269.7502
+2023-11-18,inc hosp,4,2023-12-16,Oregon,quantile,0.25,203,269.7502
+2023-11-18,inc hosp,4,2023-12-16,Oregon,quantile,0.5,256,269.7502
+2023-11-18,inc hosp,4,2023-12-16,Oregon,quantile,0.75,322,269.7502
+2023-11-18,inc hosp,4,2023-12-16,Oregon,quantile,0.975,494,269.7502
+2023-11-18,inc hosp,1,2023-11-25,Pennsylvania,quantile,0.025,702,972.0614
+2023-11-18,inc hosp,1,2023-11-25,Pennsylvania,quantile,0.25,862,972.0614
+2023-11-18,inc hosp,1,2023-11-25,Pennsylvania,quantile,0.5,962,972.0614
+2023-11-18,inc hosp,1,2023-11-25,Pennsylvania,quantile,0.75,1070,972.0614
+2023-11-18,inc hosp,1,2023-11-25,Pennsylvania,quantile,0.975,1303,972.0614
+2023-11-18,inc hosp,2,2023-12-02,Pennsylvania,quantile,0.025,690,1078.602
+2023-11-18,inc hosp,2,2023-12-02,Pennsylvania,quantile,0.25,910,1078.602
+2023-11-18,inc hosp,2,2023-12-02,Pennsylvania,quantile,0.5,1055,1078.602
+2023-11-18,inc hosp,2,2023-12-02,Pennsylvania,quantile,0.75,1219,1078.602
+2023-11-18,inc hosp,2,2023-12-02,Pennsylvania,quantile,0.975,1615,1078.602
+2023-11-18,inc hosp,3,2023-12-09,Pennsylvania,quantile,0.025,676,1185.2244
+2023-11-18,inc hosp,3,2023-12-09,Pennsylvania,quantile,0.25,955,1185.2244
+2023-11-18,inc hosp,3,2023-12-09,Pennsylvania,quantile,0.5,1145,1185.2244
+2023-11-18,inc hosp,3,2023-12-09,Pennsylvania,quantile,0.75,1365,1185.2244
+2023-11-18,inc hosp,3,2023-12-09,Pennsylvania,quantile,0.975,1938,1185.2244
+2023-11-18,inc hosp,4,2023-12-16,Pennsylvania,quantile,0.025,680,1278.6968
+2023-11-18,inc hosp,4,2023-12-16,Pennsylvania,quantile,0.25,998,1278.6968
+2023-11-18,inc hosp,4,2023-12-16,Pennsylvania,quantile,0.5,1223,1278.6968
+2023-11-18,inc hosp,4,2023-12-16,Pennsylvania,quantile,0.75,1500,1278.6968
+2023-11-18,inc hosp,4,2023-12-16,Pennsylvania,quantile,0.975,2209,1278.6968
+2023-11-18,inc hosp,1,2023-11-25,Puerto Rico,quantile,0.025,42,86.164
+2023-11-18,inc hosp,1,2023-11-25,Puerto Rico,quantile,0.25,66,86.164
+2023-11-18,inc hosp,1,2023-11-25,Puerto Rico,quantile,0.5,83,86.164
+2023-11-18,inc hosp,1,2023-11-25,Puerto Rico,quantile,0.75,102,86.164
+2023-11-18,inc hosp,1,2023-11-25,Puerto Rico,quantile,0.975,152,86.164
+2023-11-18,inc hosp,2,2023-12-02,Puerto Rico,quantile,0.025,39,100.7394
+2023-11-18,inc hosp,2,2023-12-02,Puerto Rico,quantile,0.25,69,100.7394
+2023-11-18,inc hosp,2,2023-12-02,Puerto Rico,quantile,0.5,91,100.7394
+2023-11-18,inc hosp,2,2023-12-02,Puerto Rico,quantile,0.75,123,100.7394
+2023-11-18,inc hosp,2,2023-12-02,Puerto Rico,quantile,0.975,210,100.7394
+2023-11-18,inc hosp,3,2023-12-09,Puerto Rico,quantile,0.025,38,115.705
+2023-11-18,inc hosp,3,2023-12-09,Puerto Rico,quantile,0.25,72,115.705
+2023-11-18,inc hosp,3,2023-12-09,Puerto Rico,quantile,0.5,102,115.705
+2023-11-18,inc hosp,3,2023-12-09,Puerto Rico,quantile,0.75,142,115.705
+2023-11-18,inc hosp,3,2023-12-09,Puerto Rico,quantile,0.975,279,115.705
+2023-11-18,inc hosp,4,2023-12-16,Puerto Rico,quantile,0.025,36,130.4052
+2023-11-18,inc hosp,4,2023-12-16,Puerto Rico,quantile,0.25,75,130.4052
+2023-11-18,inc hosp,4,2023-12-16,Puerto Rico,quantile,0.5,111,130.4052
+2023-11-18,inc hosp,4,2023-12-16,Puerto Rico,quantile,0.75,163,130.4052
+2023-11-18,inc hosp,4,2023-12-16,Puerto Rico,quantile,0.975,343,130.4052
+2023-11-18,inc hosp,1,2023-11-25,Rhode Island,quantile,0.025,28,49.9938
+2023-11-18,inc hosp,1,2023-11-25,Rhode Island,quantile,0.25,41,49.9938
+2023-11-18,inc hosp,1,2023-11-25,Rhode Island,quantile,0.5,49,49.9938
+2023-11-18,inc hosp,1,2023-11-25,Rhode Island,quantile,0.75,58,49.9938
+2023-11-18,inc hosp,1,2023-11-25,Rhode Island,quantile,0.975,77,49.9938
+2023-11-18,inc hosp,2,2023-12-02,Rhode Island,quantile,0.025,28,55.9646
+2023-11-18,inc hosp,2,2023-12-02,Rhode Island,quantile,0.25,43,55.9646
+2023-11-18,inc hosp,2,2023-12-02,Rhode Island,quantile,0.5,54,55.9646
+2023-11-18,inc hosp,2,2023-12-02,Rhode Island,quantile,0.75,66,55.9646
+2023-11-18,inc hosp,2,2023-12-02,Rhode Island,quantile,0.975,96,55.9646
+2023-11-18,inc hosp,3,2023-12-09,Rhode Island,quantile,0.025,29,61.914
+2023-11-18,inc hosp,3,2023-12-09,Rhode Island,quantile,0.25,46,61.914
+2023-11-18,inc hosp,3,2023-12-09,Rhode Island,quantile,0.5,59,61.914
+2023-11-18,inc hosp,3,2023-12-09,Rhode Island,quantile,0.75,74,61.914
+2023-11-18,inc hosp,3,2023-12-09,Rhode Island,quantile,0.975,112,61.914
+2023-11-18,inc hosp,4,2023-12-16,Rhode Island,quantile,0.025,29,67.5314
+2023-11-18,inc hosp,4,2023-12-16,Rhode Island,quantile,0.25,49,67.5314
+2023-11-18,inc hosp,4,2023-12-16,Rhode Island,quantile,0.5,64,67.5314
+2023-11-18,inc hosp,4,2023-12-16,Rhode Island,quantile,0.75,82,67.5314
+2023-11-18,inc hosp,4,2023-12-16,Rhode Island,quantile,0.975,130,67.5314
+2023-11-18,inc hosp,1,2023-11-25,South Carolina,quantile,0.025,172,262.6584
+2023-11-18,inc hosp,1,2023-11-25,South Carolina,quantile,0.25,224,262.6584
+2023-11-18,inc hosp,1,2023-11-25,South Carolina,quantile,0.5,258,262.6584
+2023-11-18,inc hosp,1,2023-11-25,South Carolina,quantile,0.75,296,262.6584
+2023-11-18,inc hosp,1,2023-11-25,South Carolina,quantile,0.975,385,262.6584
+2023-11-18,inc hosp,2,2023-12-02,South Carolina,quantile,0.025,164,296.8632
+2023-11-18,inc hosp,2,2023-12-02,South Carolina,quantile,0.25,238,296.8632
+2023-11-18,inc hosp,2,2023-12-02,South Carolina,quantile,0.5,287,296.8632
+2023-11-18,inc hosp,2,2023-12-02,South Carolina,quantile,0.75,345,296.8632
+2023-11-18,inc hosp,2,2023-12-02,South Carolina,quantile,0.975,486,296.8632
+2023-11-18,inc hosp,3,2023-12-09,South Carolina,quantile,0.025,166,331.5216
+2023-11-18,inc hosp,3,2023-12-09,South Carolina,quantile,0.25,251,331.5216
+2023-11-18,inc hosp,3,2023-12-09,South Carolina,quantile,0.5,314,331.5216
+2023-11-18,inc hosp,3,2023-12-09,South Carolina,quantile,0.75,395,331.5216
+2023-11-18,inc hosp,3,2023-12-09,South Carolina,quantile,0.975,597,331.5216
+2023-11-18,inc hosp,4,2023-12-16,South Carolina,quantile,0.025,161,363.5548
+2023-11-18,inc hosp,4,2023-12-16,South Carolina,quantile,0.25,264,363.5548
+2023-11-18,inc hosp,4,2023-12-16,South Carolina,quantile,0.5,338,363.5548
+2023-11-18,inc hosp,4,2023-12-16,South Carolina,quantile,0.75,439,363.5548
+2023-11-18,inc hosp,4,2023-12-16,South Carolina,quantile,0.975,698,363.5548
+2023-11-18,inc hosp,1,2023-11-25,South Dakota,quantile,0.025,61,93.5884
+2023-11-18,inc hosp,1,2023-11-25,South Dakota,quantile,0.25,81,93.5884
+2023-11-18,inc hosp,1,2023-11-25,South Dakota,quantile,0.5,92,93.5884
+2023-11-18,inc hosp,1,2023-11-25,South Dakota,quantile,0.75,106,93.5884
+2023-11-18,inc hosp,1,2023-11-25,South Dakota,quantile,0.975,132,93.5884
+2023-11-18,inc hosp,2,2023-12-02,South Dakota,quantile,0.025,60,103.4732
+2023-11-18,inc hosp,2,2023-12-02,South Dakota,quantile,0.25,85,103.4732
+2023-11-18,inc hosp,2,2023-12-02,South Dakota,quantile,0.5,101,103.4732
+2023-11-18,inc hosp,2,2023-12-02,South Dakota,quantile,0.75,119,103.4732
+2023-11-18,inc hosp,2,2023-12-02,South Dakota,quantile,0.975,161,103.4732
+2023-11-18,inc hosp,3,2023-12-09,South Dakota,quantile,0.025,60,112.305
+2023-11-18,inc hosp,3,2023-12-09,South Dakota,quantile,0.25,89,112.305
+2023-11-18,inc hosp,3,2023-12-09,South Dakota,quantile,0.5,108,112.305
+2023-11-18,inc hosp,3,2023-12-09,South Dakota,quantile,0.75,132,112.305
+2023-11-18,inc hosp,3,2023-12-09,South Dakota,quantile,0.975,188,112.305
+2023-11-18,inc hosp,4,2023-12-16,South Dakota,quantile,0.025,60,120.5014
+2023-11-18,inc hosp,4,2023-12-16,South Dakota,quantile,0.25,93,120.5014
+2023-11-18,inc hosp,4,2023-12-16,South Dakota,quantile,0.5,115,120.5014
+2023-11-18,inc hosp,4,2023-12-16,South Dakota,quantile,0.75,143,120.5014
+2023-11-18,inc hosp,4,2023-12-16,South Dakota,quantile,0.975,210,120.5014
+2023-11-18,inc hosp,1,2023-11-25,Tennessee,quantile,0.025,279,383.839
+2023-11-18,inc hosp,1,2023-11-25,Tennessee,quantile,0.25,341,383.839
+2023-11-18,inc hosp,1,2023-11-25,Tennessee,quantile,0.5,381,383.839
+2023-11-18,inc hosp,1,2023-11-25,Tennessee,quantile,0.75,421,383.839
+2023-11-18,inc hosp,1,2023-11-25,Tennessee,quantile,0.975,510,383.839
+2023-11-18,inc hosp,2,2023-12-02,Tennessee,quantile,0.025,277,431.2258
+2023-11-18,inc hosp,2,2023-12-02,Tennessee,quantile,0.25,367,431.2258
+2023-11-18,inc hosp,2,2023-12-02,Tennessee,quantile,0.5,423,431.2258
+2023-11-18,inc hosp,2,2023-12-02,Tennessee,quantile,0.75,486,431.2258
+2023-11-18,inc hosp,2,2023-12-02,Tennessee,quantile,0.975,630,431.2258
+2023-11-18,inc hosp,3,2023-12-09,Tennessee,quantile,0.025,280,477.7526
+2023-11-18,inc hosp,3,2023-12-09,Tennessee,quantile,0.25,390,477.7526
+2023-11-18,inc hosp,3,2023-12-09,Tennessee,quantile,0.5,464,477.7526
+2023-11-18,inc hosp,3,2023-12-09,Tennessee,quantile,0.75,550,477.7526
+2023-11-18,inc hosp,3,2023-12-09,Tennessee,quantile,0.975,748,477.7526
+2023-11-18,inc hosp,4,2023-12-16,Tennessee,quantile,0.025,285,521.0718
+2023-11-18,inc hosp,4,2023-12-16,Tennessee,quantile,0.25,416,521.0718
+2023-11-18,inc hosp,4,2023-12-16,Tennessee,quantile,0.5,502,521.0718
+2023-11-18,inc hosp,4,2023-12-16,Tennessee,quantile,0.75,604,521.0718
+2023-11-18,inc hosp,4,2023-12-16,Tennessee,quantile,0.975,872,521.0718
+2023-11-18,inc hosp,1,2023-11-25,Texas,quantile,0.025,848,1202.9558
+2023-11-18,inc hosp,1,2023-11-25,Texas,quantile,0.25,1058,1202.9558
+2023-11-18,inc hosp,1,2023-11-25,Texas,quantile,0.5,1185,1202.9558
+2023-11-18,inc hosp,1,2023-11-25,Texas,quantile,0.75,1327,1202.9558
+2023-11-18,inc hosp,1,2023-11-25,Texas,quantile,0.975,1656,1202.9558
+2023-11-18,inc hosp,2,2023-12-02,Texas,quantile,0.025,852,1380.96
+2023-11-18,inc hosp,2,2023-12-02,Texas,quantile,0.25,1150,1380.96
+2023-11-18,inc hosp,2,2023-12-02,Texas,quantile,0.5,1348,1380.96
+2023-11-18,inc hosp,2,2023-12-02,Texas,quantile,0.75,1577,1380.96
+2023-11-18,inc hosp,2,2023-12-02,Texas,quantile,0.975,2093,1380.96
+2023-11-18,inc hosp,3,2023-12-09,Texas,quantile,0.025,860,1560.902
+2023-11-18,inc hosp,3,2023-12-09,Texas,quantile,0.25,1243,1560.902
+2023-11-18,inc hosp,3,2023-12-09,Texas,quantile,0.5,1500,1560.902
+2023-11-18,inc hosp,3,2023-12-09,Texas,quantile,0.75,1812,1560.902
+2023-11-18,inc hosp,3,2023-12-09,Texas,quantile,0.975,2608,1560.902
+2023-11-18,inc hosp,4,2023-12-16,Texas,quantile,0.025,889,1732.6866
+2023-11-18,inc hosp,4,2023-12-16,Texas,quantile,0.25,1336,1732.6866
+2023-11-18,inc hosp,4,2023-12-16,Texas,quantile,0.5,1646,1732.6866
+2023-11-18,inc hosp,4,2023-12-16,Texas,quantile,0.75,2032,1732.6866
+2023-11-18,inc hosp,4,2023-12-16,Texas,quantile,0.975,3095,1732.6866
+2023-11-18,inc hosp,1,2023-11-25,Utah,quantile,0.025,127,184.1014
+2023-11-18,inc hosp,1,2023-11-25,Utah,quantile,0.25,161,184.1014
+2023-11-18,inc hosp,1,2023-11-25,Utah,quantile,0.5,182,184.1014
+2023-11-18,inc hosp,1,2023-11-25,Utah,quantile,0.75,204,184.1014
+2023-11-18,inc hosp,1,2023-11-25,Utah,quantile,0.975,255,184.1014
+2023-11-18,inc hosp,2,2023-12-02,Utah,quantile,0.025,126,205.7134
+2023-11-18,inc hosp,2,2023-12-02,Utah,quantile,0.25,171,205.7134
+2023-11-18,inc hosp,2,2023-12-02,Utah,quantile,0.5,200,205.7134
+2023-11-18,inc hosp,2,2023-12-02,Utah,quantile,0.75,235,205.7134
+2023-11-18,inc hosp,2,2023-12-02,Utah,quantile,0.975,316,205.7134
+2023-11-18,inc hosp,3,2023-12-09,Utah,quantile,0.025,125,225.913
+2023-11-18,inc hosp,3,2023-12-09,Utah,quantile,0.25,181,225.913
+2023-11-18,inc hosp,3,2023-12-09,Utah,quantile,0.5,218,225.913
+2023-11-18,inc hosp,3,2023-12-09,Utah,quantile,0.75,260,225.913
+2023-11-18,inc hosp,3,2023-12-09,Utah,quantile,0.975,373,225.913
+2023-11-18,inc hosp,4,2023-12-16,Utah,quantile,0.025,128,244.9282
+2023-11-18,inc hosp,4,2023-12-16,Utah,quantile,0.25,191,244.9282
+2023-11-18,inc hosp,4,2023-12-16,Utah,quantile,0.5,235,244.9282
+2023-11-18,inc hosp,4,2023-12-16,Utah,quantile,0.75,285,244.9282
+2023-11-18,inc hosp,4,2023-12-16,Utah,quantile,0.975,425,244.9282
+2023-11-18,inc hosp,1,2023-11-25,Vermont,quantile,0.025,22,39.4264
+2023-11-18,inc hosp,1,2023-11-25,Vermont,quantile,0.25,32,39.4264
+2023-11-18,inc hosp,1,2023-11-25,Vermont,quantile,0.5,39,39.4264
+2023-11-18,inc hosp,1,2023-11-25,Vermont,quantile,0.75,46,39.4264
+2023-11-18,inc hosp,1,2023-11-25,Vermont,quantile,0.975,62,39.4264
+2023-11-18,inc hosp,2,2023-12-02,Vermont,quantile,0.025,21,42.9616
+2023-11-18,inc hosp,2,2023-12-02,Vermont,quantile,0.25,34,42.9616
+2023-11-18,inc hosp,2,2023-12-02,Vermont,quantile,0.5,41,42.9616
+2023-11-18,inc hosp,2,2023-12-02,Vermont,quantile,0.75,51,42.9616
+2023-11-18,inc hosp,2,2023-12-02,Vermont,quantile,0.975,74,42.9616
+2023-11-18,inc hosp,3,2023-12-09,Vermont,quantile,0.025,21,46.3448
+2023-11-18,inc hosp,3,2023-12-09,Vermont,quantile,0.25,35,46.3448
+2023-11-18,inc hosp,3,2023-12-09,Vermont,quantile,0.5,44,46.3448
+2023-11-18,inc hosp,3,2023-12-09,Vermont,quantile,0.75,56,46.3448
+2023-11-18,inc hosp,3,2023-12-09,Vermont,quantile,0.975,85,46.3448
+2023-11-18,inc hosp,4,2023-12-16,Vermont,quantile,0.025,21,49.4638
+2023-11-18,inc hosp,4,2023-12-16,Vermont,quantile,0.25,36,49.4638
+2023-11-18,inc hosp,4,2023-12-16,Vermont,quantile,0.5,46,49.4638
+2023-11-18,inc hosp,4,2023-12-16,Vermont,quantile,0.75,60,49.4638
+2023-11-18,inc hosp,4,2023-12-16,Vermont,quantile,0.975,94,49.4638
+2023-11-18,inc hosp,1,2023-11-25,Virginia,quantile,0.025,359,501.1826
+2023-11-18,inc hosp,1,2023-11-25,Virginia,quantile,0.25,443,501.1826
+2023-11-18,inc hosp,1,2023-11-25,Virginia,quantile,0.5,495,501.1826
+2023-11-18,inc hosp,1,2023-11-25,Virginia,quantile,0.75,553,501.1826
+2023-11-18,inc hosp,1,2023-11-25,Virginia,quantile,0.975,678,501.1826
+2023-11-18,inc hosp,2,2023-12-02,Virginia,quantile,0.025,349,558.1242
+2023-11-18,inc hosp,2,2023-12-02,Virginia,quantile,0.25,470,558.1242
+2023-11-18,inc hosp,2,2023-12-02,Virginia,quantile,0.5,545,558.1242
+2023-11-18,inc hosp,2,2023-12-02,Virginia,quantile,0.75,632,558.1242
+2023-11-18,inc hosp,2,2023-12-02,Virginia,quantile,0.975,842,558.1242
+2023-11-18,inc hosp,3,2023-12-09,Virginia,quantile,0.025,349,612.7
+2023-11-18,inc hosp,3,2023-12-09,Virginia,quantile,0.25,494,612.7
+2023-11-18,inc hosp,3,2023-12-09,Virginia,quantile,0.5,590,612.7
+2023-11-18,inc hosp,3,2023-12-09,Virginia,quantile,0.75,708,612.7
+2023-11-18,inc hosp,3,2023-12-09,Virginia,quantile,0.975,988,612.7
+2023-11-18,inc hosp,4,2023-12-16,Virginia,quantile,0.025,346,660.5586
+2023-11-18,inc hosp,4,2023-12-16,Virginia,quantile,0.25,516,660.5586
+2023-11-18,inc hosp,4,2023-12-16,Virginia,quantile,0.5,635,660.5586
+2023-11-18,inc hosp,4,2023-12-16,Virginia,quantile,0.75,771,660.5586
+2023-11-18,inc hosp,4,2023-12-16,Virginia,quantile,0.975,1141,660.5586
+2023-11-18,inc hosp,1,2023-11-25,Washington,quantile,0.025,190,288.5242
+2023-11-18,inc hosp,1,2023-11-25,Washington,quantile,0.25,247,288.5242
+2023-11-18,inc hosp,1,2023-11-25,Washington,quantile,0.5,284,288.5242
+2023-11-18,inc hosp,1,2023-11-25,Washington,quantile,0.75,324,288.5242
+2023-11-18,inc hosp,1,2023-11-25,Washington,quantile,0.975,419,288.5242
+2023-11-18,inc hosp,2,2023-12-02,Washington,quantile,0.025,183,325.2176
+2023-11-18,inc hosp,2,2023-12-02,Washington,quantile,0.25,258,325.2176
+2023-11-18,inc hosp,2,2023-12-02,Washington,quantile,0.5,314,325.2176
+2023-11-18,inc hosp,2,2023-12-02,Washington,quantile,0.75,378,325.2176
+2023-11-18,inc hosp,2,2023-12-02,Washington,quantile,0.975,531,325.2176
+2023-11-18,inc hosp,3,2023-12-09,Washington,quantile,0.025,182,359.9066
+2023-11-18,inc hosp,3,2023-12-09,Washington,quantile,0.25,274,359.9066
+2023-11-18,inc hosp,3,2023-12-09,Washington,quantile,0.5,342,359.9066
+2023-11-18,inc hosp,3,2023-12-09,Washington,quantile,0.75,426,359.9066
+2023-11-18,inc hosp,3,2023-12-09,Washington,quantile,0.975,636,359.9066
+2023-11-18,inc hosp,4,2023-12-16,Washington,quantile,0.025,183,392.5794
+2023-11-18,inc hosp,4,2023-12-16,Washington,quantile,0.25,286,392.5794
+2023-11-18,inc hosp,4,2023-12-16,Washington,quantile,0.5,368,392.5794
+2023-11-18,inc hosp,4,2023-12-16,Washington,quantile,0.75,472,392.5794
+2023-11-18,inc hosp,4,2023-12-16,Washington,quantile,0.975,744,392.5794
+2023-11-18,inc hosp,1,2023-11-25,West Virginia,quantile,0.025,152,219.1356
+2023-11-18,inc hosp,1,2023-11-25,West Virginia,quantile,0.25,192,219.1356
+2023-11-18,inc hosp,1,2023-11-25,West Virginia,quantile,0.5,217,219.1356
+2023-11-18,inc hosp,1,2023-11-25,West Virginia,quantile,0.75,243,219.1356
+2023-11-18,inc hosp,1,2023-11-25,West Virginia,quantile,0.975,303,219.1356
+2023-11-18,inc hosp,2,2023-12-02,West Virginia,quantile,0.025,145,240.237
+2023-11-18,inc hosp,2,2023-12-02,West Virginia,quantile,0.25,201,240.237
+2023-11-18,inc hosp,2,2023-12-02,West Virginia,quantile,0.5,235,240.237
+2023-11-18,inc hosp,2,2023-12-02,West Virginia,quantile,0.75,274,240.237
+2023-11-18,inc hosp,2,2023-12-02,West Virginia,quantile,0.975,367,240.237
+2023-11-18,inc hosp,3,2023-12-09,West Virginia,quantile,0.025,143,261.0444
+2023-11-18,inc hosp,3,2023-12-09,West Virginia,quantile,0.25,207,261.0444
+2023-11-18,inc hosp,3,2023-12-09,West Virginia,quantile,0.5,252,261.0444
+2023-11-18,inc hosp,3,2023-12-09,West Virginia,quantile,0.75,304,261.0444
+2023-11-18,inc hosp,3,2023-12-09,West Virginia,quantile,0.975,432,261.0444
+2023-11-18,inc hosp,4,2023-12-16,West Virginia,quantile,0.025,142,279.8918
+2023-11-18,inc hosp,4,2023-12-16,West Virginia,quantile,0.25,215,279.8918
+2023-11-18,inc hosp,4,2023-12-16,West Virginia,quantile,0.5,267,279.8918
+2023-11-18,inc hosp,4,2023-12-16,West Virginia,quantile,0.75,330,279.8918
+2023-11-18,inc hosp,4,2023-12-16,West Virginia,quantile,0.975,490,279.8918
+2023-11-18,inc hosp,1,2023-11-25,Wisconsin,quantile,0.025,375,534.357
+2023-11-18,inc hosp,1,2023-11-25,Wisconsin,quantile,0.25,469,534.357
+2023-11-18,inc hosp,1,2023-11-25,Wisconsin,quantile,0.5,526,534.357
+2023-11-18,inc hosp,1,2023-11-25,Wisconsin,quantile,0.75,591,534.357
+2023-11-18,inc hosp,1,2023-11-25,Wisconsin,quantile,0.975,736,534.357
+2023-11-18,inc hosp,2,2023-12-02,Wisconsin,quantile,0.025,363,595.7392
+2023-11-18,inc hosp,2,2023-12-02,Wisconsin,quantile,0.25,495,595.7392
+2023-11-18,inc hosp,2,2023-12-02,Wisconsin,quantile,0.5,578,595.7392
+2023-11-18,inc hosp,2,2023-12-02,Wisconsin,quantile,0.75,676,595.7392
+2023-11-18,inc hosp,2,2023-12-02,Wisconsin,quantile,0.975,934,595.7392
+2023-11-18,inc hosp,3,2023-12-09,Wisconsin,quantile,0.025,363,656.7204
+2023-11-18,inc hosp,3,2023-12-09,Wisconsin,quantile,0.25,520,656.7204
+2023-11-18,inc hosp,3,2023-12-09,Wisconsin,quantile,0.5,631,656.7204
+2023-11-18,inc hosp,3,2023-12-09,Wisconsin,quantile,0.75,763,656.7204
+2023-11-18,inc hosp,3,2023-12-09,Wisconsin,quantile,0.975,1087,656.7204
+2023-11-18,inc hosp,4,2023-12-16,Wisconsin,quantile,0.025,366,710.5036
+2023-11-18,inc hosp,4,2023-12-16,Wisconsin,quantile,0.25,544,710.5036
+2023-11-18,inc hosp,4,2023-12-16,Wisconsin,quantile,0.5,676,710.5036
+2023-11-18,inc hosp,4,2023-12-16,Wisconsin,quantile,0.75,833,710.5036
+2023-11-18,inc hosp,4,2023-12-16,Wisconsin,quantile,0.975,1263,710.5036
+2023-11-18,inc hosp,1,2023-11-25,Wyoming,quantile,0.025,25,41.5868
+2023-11-18,inc hosp,1,2023-11-25,Wyoming,quantile,0.25,35,41.5868
+2023-11-18,inc hosp,1,2023-11-25,Wyoming,quantile,0.5,41,41.5868
+2023-11-18,inc hosp,1,2023-11-25,Wyoming,quantile,0.75,48,41.5868
+2023-11-18,inc hosp,1,2023-11-25,Wyoming,quantile,0.975,63,41.5868
+2023-11-18,inc hosp,2,2023-12-02,Wyoming,quantile,0.025,25,46.5296
+2023-11-18,inc hosp,2,2023-12-02,Wyoming,quantile,0.25,38,46.5296
+2023-11-18,inc hosp,2,2023-12-02,Wyoming,quantile,0.5,45,46.5296
+2023-11-18,inc hosp,2,2023-12-02,Wyoming,quantile,0.75,54,46.5296
+2023-11-18,inc hosp,2,2023-12-02,Wyoming,quantile,0.975,75,46.5296
+2023-11-18,inc hosp,3,2023-12-09,Wyoming,quantile,0.025,25,51.1874
+2023-11-18,inc hosp,3,2023-12-09,Wyoming,quantile,0.25,40,51.1874
+2023-11-18,inc hosp,3,2023-12-09,Wyoming,quantile,0.5,50,51.1874
+2023-11-18,inc hosp,3,2023-12-09,Wyoming,quantile,0.75,60,51.1874
+2023-11-18,inc hosp,3,2023-12-09,Wyoming,quantile,0.975,87,51.1874
+2023-11-18,inc hosp,4,2023-12-16,Wyoming,quantile,0.025,26,55.3624
+2023-11-18,inc hosp,4,2023-12-16,Wyoming,quantile,0.25,42,55.3624
+2023-11-18,inc hosp,4,2023-12-16,Wyoming,quantile,0.5,53,55.3624
+2023-11-18,inc hosp,4,2023-12-16,Wyoming,quantile,0.75,66,55.3624
+2023-11-18,inc hosp,4,2023-12-16,Wyoming,quantile,0.975,99,55.3624
