@@ -165,7 +165,7 @@ pred_summ <- pred_samp |>
     select(reference_date, target, horizon, target_end_date, abbreviation, location, output_type, output_type_id, value)
 
 write_csv(
-    select(pred_summ, -abbreviation), 
+    select(pred_summ, -abbreviation),
     paste0("flusight-predictions/FluSight-forecast-hub/model-output/UGA_flucast-INFLAenza/", reference_date, "-UGA_flucast-INFLAenza.csv")
 )
 
