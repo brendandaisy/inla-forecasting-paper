@@ -17,9 +17,10 @@ source("src/scoring.R")
 inla.setOption(inla.mode="classic")
 
 flu <- read_csv("data/weekly-flu-us.csv") |> 
-    filter(date >= "2021-09-01") # exclude peak COVID-19 period
+    filter(date >= "2021-09-01", location != "US") # exclude peak COVID-19 period
 
-covid <- read_csv("data/weekly-covid-us.csv")
+covid <- read_csv("data/weekly-covid-us.csv") |> 
+    filter(location != "US")
 
 covid_interval <- interval(ymd("2020-03-01"), ymd("2021-06-01"))
 rsv <- read_csv("data/weekly-rsv-us.csv") |> 
@@ -75,6 +76,17 @@ fr_no_spatial <- future_map(retro_forecast_dates_flu_rsv, \(fd) {
 
 saveRDS(fr_no_spatial, "results/simpler-mod-comp/rsv-no-spatial.rds")
 
+mod_iid_seasonal <- model_formula(seasonal="iid", temporal="ar1", spatial="besagproper")
+fr_iid_seasonal <- future_map(retro_forecast_dates_covid, \(fd) {
+    fit_df <- prep_fit_data(covid, fd, weeks_ahead=4, ex_lam=population)
+    fit <- fit_inla_model(fit_df, mod_iid_seasonal, graph=graph, pc_prior_u=c(1, 1))
+    
+    forecast_samples(fit_df, fit, nsamp=5000) |>
+        summarize_quantiles(q=q_wis, model="iid seasonal")
+}, .options=furrr_options(seed=TRUE))
+
+saveRDS(fr_iid_seasonal, "results/simpler-mod-comp/covid-iid-seasonal.rds")
+
 #  processing results-------------------------------------------------------------
 library(scoringutils)
 
@@ -95,13 +107,15 @@ library(scoringutils)
 pred_flu <- bind_rows(
     readRDS("results/simpler-mod-comp/flu-inflaenza.rds"),
     readRDS("results/simpler-mod-comp/flu-no-seasonal.rds"),
-    readRDS("results/simpler-mod-comp/flu-no-spatial-1.rds")
+    readRDS("results/simpler-mod-comp/flu-no-spatial-1.rds"), 
+    readRDS("results/simpler-mod-comp/flu-iid-seasonal.rds")
 )
 
 pred_flu_2 <- bind_rows(
     readRDS("results/simpler-mod-comp/flu-inflaenza.rds"),
     readRDS("results/simpler-mod-comp/flu-no-seasonal.rds"),
-    readRDS("results/simpler-mod-comp/flu-no-spatial-2.rds")
+    readRDS("results/simpler-mod-comp/flu-no-spatial-2.rds"),
+    readRDS("results/simpler-mod-comp/flu-iid-seasonal.rds")
 )
 
 scores_flu <- score_pred_quantiles(flu, pred_flu) |> mutate(disease="flu")
@@ -121,12 +135,14 @@ scores_flu <- scores_flu |>
     bind_rows(fixed_scores)
 
 # for the table
-summarize_scores(scores_flu, by=c("model"))
+summarize_scores(scores_flu, by=c("model")) |> 
+    mutate(pct_better=(wis-first(wis))/wis)
 
 pred_rsv <- bind_rows(
     readRDS("results/simpler-mod-comp/rsv-inflaenza.rds"),
     readRDS("results/simpler-mod-comp/rsv-no-seasonal.rds"),
-    readRDS("results/simpler-mod-comp/rsv-no-spatial.rds")
+    readRDS("results/simpler-mod-comp/rsv-no-spatial.rds"),
+    readRDS("results/simpler-mod-comp/rsv-iid-seasonal.rds")
 )
 
 scores_rsv <- score_pred_quantiles(rsv, pred_rsv) |> mutate(disease="rsv")
@@ -137,14 +153,17 @@ bad_scores <- scores_rsv |>
 
 scores_rsv <- anti_join(scores_rsv, bad_scores)
 
-summarize_scores(scores_rsv, by=c("model"))
+summarize_scores(scores_rsv, by=c("model")) |> 
+    mutate(pct_better=(wis-first(wis))/wis)
 
 pred_covid <- bind_rows(
     readRDS("results/simpler-mod-comp/covid-inflaenza.rds"),
     readRDS("results/simpler-mod-comp/covid-no-seasonal.rds"),
-    readRDS("results/simpler-mod-comp/covid-no-spatial.rds")
+    readRDS("results/simpler-mod-comp/covid-no-spatial.rds"),
+    readRDS("results/simpler-mod-comp/covid-iid-seasonal.rds")
 )
 
 scores_covid <- score_pred_quantiles(covid, pred_covid) |> mutate(disease="covid")
 
-summarize_scores(scores_covid, by=c("model"))
+summarize_scores(scores_covid, by=c("model")) |> 
+    mutate(pct_better=(wis-first(wis))/wis)
