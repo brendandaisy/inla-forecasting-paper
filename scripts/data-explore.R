@@ -170,7 +170,7 @@ plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza"
         # stat_boxplot(aes(y=after_stat(xlower)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
         # stat_boxplot(aes(x=dist, y=after_stat(notchupper)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
         scale_color_manual(values=highlights) +
-        labs(x="Neighborhood distance", y="Correlation") +
+        labs(x="No. states away", y="Correlation") +
         theme_half_open() +
         theme(legend.position="none")
     
@@ -208,7 +208,7 @@ p3 <- plot_disease_summary(
 )
 
 plot_grid(p1, p2, p3, nrow=3)
-ggsave("figs/fig1-draft7.pdf", width=11.2, height=7.5)
+ggsave("figs/fig1-draft8.pdf", width=11.2, height=7.5)
 
 # old stuff-----------------------------------------------------------------------
 
