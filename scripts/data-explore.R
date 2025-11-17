@@ -210,6 +210,89 @@ p3 <- plot_disease_summary(
 plot_grid(p1, p2, p3, nrow=3)
 ggsave("figs/fig1-draft8.pdf", width=11.2, height=7.5)
 
+###
+library(gghighlight)
+
+flu_last <- filter(flu, season == "2023-24")
+    # pivot_wider(id_cols=c(date, season_week), names_from=location, values_from=weekly_rate) |> 
+    # arrange(season_week)
+
+flu_nat_pre_last <- flu |> 
+    filter(season != "2023-24") |> 
+    group_by(epiweek, season_week) |> 
+    summarise(nat_mean=mean(weekly_rate), .groups="drop") |> 
+    filter(season_week %in% unique(flu_last$season_week))
+
+p1 <- ggplot(flu_last, aes(season_week, weekly_rate, group=location)) +
+    geom_line(col="gray50", alpha=0.1) +
+    geom_line(
+        aes(col=location), 
+        filter(flu_last, location %in% c("Puerto Rico", "Alaska", "Arkansas")),
+        linewidth=1
+    ) +
+    geom_line(
+        aes(season_week, nat_mean), flu_nat_pre_last, 
+        col="black", linewidth=1.1, inherit.aes=FALSE
+    ) +
+    coord_cartesian(ylim=c(0, 9.3)) +
+    labs(x="Respiratory season week", y="Flu Admits per 100k", col=NULL) +
+    theme_half_open() +
+    theme(legend.position="none")
+
+rmse_nat <- flu_last |> 
+    pivot_wider(id_cols=c(date, season_week), names_from=location, values_from=weekly_rate) |> 
+    left_join(flu_nat_pre_last) |> 
+    transmute(across(`Alabama`:`Wyoming`, ~(.x/(mean(.x)/mean(nat_mean))-nat_mean)^2)) |> 
+    pivot_longer(everything()) |> 
+    summarize(rmse_diff_nat=sqrt(mean(value)), .by=name) |> 
+    arrange(desc(rmse_diff_nat))
+    # ggplot(aes(fct_inorder(name), rmse_diff_nat)) +
+    # geom_col(fill="lightblue3") +
+    # scale_x_discrete(guide=guide_axis(angle=45)) +
+    # labs(y="RMSE", x=NULL) +
+    # theme_half_open()
+
+corr_state <- flu_last |> 
+    pivot_wider(id_cols=c(date, season_week), names_from=location, values_from=weekly_rate) |>
+    select(-season_week) |> 
+    correlate(diagonal=1) |> 
+    stretch() |> 
+    summarize(med_corr=median(r), .by=x) |> 
+    rename(name=x)
+
+baddies <- c(
+    "Alaska",
+    "Arkansas",
+    "Puerto Rico"
+    # "West Virginia",
+    # "Kentucky"
+)
+
+p2 <- ggplot(left_join(rmse_nat, corr_state), aes(med_corr, rmse_diff_nat)) +
+    geom_point(aes(col=name), size=2) +
+    gghighlight(
+        name %in% baddies, 
+        unhighlighted_params=list(col="gray50"), 
+        use_direct_label=FALSE
+    ) +
+    labs(x="Median correlation", y="RMSE", col=NULL) +
+    theme_half_open()
+
+plot_grid(p1, p2, rel_widths=c(0.85, 1), nrow=1, labels="AUTO")
+ggsave("figs/fig-S3.pdf", width=8.1, height=3)
+
+cor(flu_nat$mean, select(flu_last, -c(date, season_week)))[1,] |> 
+    enframe() |> 
+    arrange(abs(value)) |> 
+    arrange(med_cor)
+
+# eh..
+flu_last |> 
+    pivot_wider(id_cols=c(date, season_week), names_from=location, values_from=weekly_rate) |> 
+    reframe(across(-c(date, season_week), ~cor(.x, lag(.x), use="complete.obs"))) |> 
+    pivot_longer(everything()) |> 
+    arrange(abs(value))
+
 # old stuff-----------------------------------------------------------------------
 
 # frs_corr |> 
