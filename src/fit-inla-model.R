@@ -13,7 +13,8 @@ fit_inla_model <- function(
         pred_idx=NULL,
         forecast_date=NULL,
         q=c(0.025, 0.25, 0.5, 0.75, 0.975),
-        graph=NULL, dic=FALSE, config=FALSE
+        graph=NULL, dic=FALSE, config=FALSE,
+        ... # other arguments to be based to `inla`
 ) {
     # the PC priors c(u, a) give the probability a that the standard deviation between weeks exceeds u
     # increasing u increases prior beliefs that there will be large jumps between weeks
@@ -38,7 +39,8 @@ fit_inla_model <- function(
         selection=if (length(pred_idx) == 0) NULL else list(Predictor=pred_idx),
         control.fixed=list(prec=1, expand.factor.strategy="inla"),
         control.compute=list(dic=dic, mlik=FALSE, return.marginals.predictor=TRUE, config=config),
-        control.predictor=list(link=1) # produce marginal fitted values with default (log) link function
+        control.predictor=list(link=1), # produce marginal fitted values with default (log) link function
+        ...
     )
     
     return(fit)
