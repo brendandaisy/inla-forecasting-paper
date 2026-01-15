@@ -65,7 +65,7 @@ prep_fit_data_flusight <- function(
 plot_seasonal <- function(fit, forecast_date) {
     summ <- fit$summary.random$epiweek |> 
         as_tibble() |> 
-        mutate(season_group=rep(c("Contiguous", "AK", "HI", "PR"), each=52))
+        mutate(season_group=rep(c("Contiguous", "AK", "HI", "PR"), each=53))
     
     ggplot(summ, aes(ID, col=season_group, fill=season_group)) +
         geom_vline(xintercept=epiweek(forecast_date), linetype="dashed", col="gray70") +
@@ -134,6 +134,7 @@ f(epiweek, model="rw2", cyclic=TRUE, hyper=hyper_epwk, scale.model=TRUE, group=s
 f(t, model="ar1", hyper=hyper_wk) + f(iloc, model="besagproper", hyper=hyper_wk, graph=graph,
 group=t2, control.group=list(model="ar1"))'
 
+# actually run the model
 fit_hosp <- fit_inla_model(fit_df, model, graph=graph)
 
 pred_samp <- forecast_samples(fit_df, fit_hosp, nsamp=5000)
@@ -174,6 +175,7 @@ prev_counts <- flu |>
     right_join(mutate(prev_counts_epiweek, epiyear=epiyear-1)) |> 
     mutate(matching_date=rep(forecast_date + weeks(-7:4), each=53))
 
+# one of two main plots to share each week
 pred_summ_hosp |> 
     pivot_wider(names_from=output_type_id) |> 
     ggplot(aes(target_end_date)) +
@@ -188,13 +190,9 @@ pred_summ_hosp |>
     theme_half_open()
 
 ggsave(
-    paste0("flusight-predictions/INFLAenza-conf-hosp-", reference_date, ".pdf"), 
+    paste0("figs/flusight-25-26/INFLAenza-conf-hosp-", reference_date, ".pdf"), 
     width=12, height=8.5
 )
-
-###
-plot_seasonal(fit_hosp, forecast_date)
-plot_holiday(fit_hosp)
 
 # Percentage ED visits target-----------------------------------------------------
 ed0 <- read_csv("https://raw.githubusercontent.com/cdcepi/FluSight-forecast-hub/refs/heads/main/target-data/target-ed-visits-prop.csv")
@@ -206,10 +204,6 @@ ed <- ed0 |>
     mutate(epiweek=epiweek(date), epiyear=epiyear(date)) |> 
     left_join(locations) |> 
     arrange(date, location_name)
-
-ggplot(filter(ed, abbreviation == "NC"), aes(date, prop)) +
-    geom_point() +
-    scale_x_date(breaks="1 month", date_labels="%y-%b", guide=guide_axis(angle=45))
 
 fit_df <- prep_fit_data_flusight(
         ed, forecast_date, 
@@ -274,6 +268,7 @@ prev_prop <- ed |>
     inner_join(mutate(prev_prop_epiweek, epiyear=epiyear-1)) |> 
     mutate(matching_date=rep(forecast_date + weeks(-7:4), each=51)) # only 51 locations
 
+# second main plot
 pred_summ_prop_ed |> 
     pivot_wider(names_from=output_type_id) |> 
     ggplot(aes(target_end_date)) +
@@ -288,12 +283,18 @@ pred_summ_prop_ed |>
     theme_half_open()
 
 ggsave(
-    paste0("flusight-predictions/INFLAenza-ed-prop-", reference_date, ".pdf"), 
+    paste0("figs/flusight-25-26/INFLAenza-ed-prop-", reference_date, ".pdf"), 
     width=12, height=8.5
 )
 
 # combine all targets into the submission file------------------------------------
+
+# Rajath: you'll need to change this path to wherever you keep your local fork
+# of the FluSight repository:
+path_flusight_repo <- "output/flusight/FluSight-forecast-hub/"
+
 write_csv(
     select(bind_rows(pred_summ_hosp, pred_summ_prop_ed), -abbreviation),
-    paste0("flusight-predictions/FluSight-forecast-hub/model-output/UGA_flucast-INFLAenza/", reference_date, "-UGA_flucast-INFLAenza.csv")
+    # select(pred_summ_hosp, -abbreviation),
+    paste0(path_flusight_repo, "model-output/UGA_flucast-INFLAenza/", reference_date, "-UGA_flucast-INFLAenza.csv")
 )
