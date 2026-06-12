@@ -114,6 +114,8 @@ prep_fit_data <- function(
     
     ret |> 
         left_join(date_ind, by=c("date"), relationship="many-to-one") |> 
+        # TODO duplicate ind cols should be made elsewhere based on which/how many 
+        # the model formula actually needs
         mutate(t2=t) |> 
         arrange(t, iloc)
 }

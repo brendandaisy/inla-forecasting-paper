@@ -14,7 +14,7 @@ fit_inla_model <- function(
         forecast_date=NULL,
         q=c(0.025, 0.25, 0.5, 0.75, 0.975),
         graph=NULL, dic=FALSE, config=FALSE,
-        ... # other arguments to be based to `inla`
+        ... # other arguments to be passed to `inla`
 ) {
     # the PC priors c(u, a) give the probability a that the standard deviation between weeks exceeds u
     # increasing u increases prior beliefs that there will be large jumps between weeks

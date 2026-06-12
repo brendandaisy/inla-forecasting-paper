@@ -1,7 +1,6 @@
 library(tidyverse)
 library(lubridate)
 
-# response needs to be a tidyselect now, because I'm bad at programming
 forecast_samples <- function(fit_df, fit, nsamp=1000, response=count, family="poisson") {
     pred_idx <- parse_number(fit$selection$names)
     
