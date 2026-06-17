@@ -1,0 +1,538 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(INLA)
+library(lubridate)
+library(cowplot)
+library(sf)
+library(spdep)
+library(covidHubUtils)
+library(scoringutils)
+library(patchwork)
+library(ggplot2)
+library(usmap)
+
+source("../src/plot_retro.R")
+#source("../src/plot_retro.R")
+source("../src/retrospective.R")
+#source("/Users/maya/Desktop/inla-forecasting-paper-main/src/retrospective.R")
+
+inla.setOption(inla.mode="classic")
+
+```
+
+
+
+#facet try
+```{r}
+##############################  #read in truth data 
+rsv <- rsv_truth()
+
+test_covid <- read_data_model("covid_2020")
+#test_rsv <- read_data_model("rsv_201")
+test_flu <- read_data_model("flu_2021")
+
+truth_df_covid <- prepare_truth_df(test_covid)
+truth_df_flu <- prepare_truth_df(test_flu)
+truth_df_rsv <- prepare_truth_df(rsv)
+
+truth_df_covid <- truth_df_covid |>
+  mutate(disease = "covid") 
+
+truth_df_flu <- truth_df_flu |>
+  mutate(disease = "flu")
+
+truth_df_rsv <- truth_df_rsv |>
+  mutate(disease = "rsv") |>
+  filter(date >= as.Date("2022-08-27") & date <= as.Date("2024-05-11"))
+
+truth_df1 <- rbind(truth_df_covid, truth_df_flu)
+
+truth_df <- rbind(truth_df1, truth_df_rsv)
+
+dates_vector <- generate_dates("2022-08-27", "2024-05-11", 5) 
+
+```
+
+```{r}
+##############################  #read in data (PLEASE CHANGE path)
+data_retro_covid <- read_and_combine_csv("../processed_data/covid_graphing/", "\\d{4}-\\d{2}-\\d{2}-UGA_flucast-INFLAenza\\.csv")
+```
+
+```{r}
+data_retro_flu <- read_and_combine_csv("../processed_data/flu_graphing/", "\\d{4}-\\d{2}-\\d{2}-UGA_flucast-INFLAenza\\.csv")
+```
+
+```{r}
+data_retro_rsv <- read_and_combine_csv("../processed_data/rsv_graphing_dec10_clean/", "\\d{4}-\\d{2}-\\d{2}-UGA_flucast-INFLAenza\\.csv")
+```
+
+```{r}
+######################################
+plot_df_covid <- make_plot_df(data_retro_covid, dates_vector, truth_df_covid)
+plot_df_flu <- make_plot_df(data_retro_flu, dates_vector, truth_df_flu)
+plot_df_rsv <- make_plot_df(data_retro_rsv, dates_vector, truth_df_rsv)
+```
+
+```{r}
+plot_df_covid <- plot_df_covid |>
+  mutate(disease = "covid") |>
+  filter(location == "US")
+
+plot_df_flu <- plot_df_flu |>
+  mutate(disease = "flu") |>
+  filter(location == "US")
+
+plot_df_rsv <- plot_df_rsv |>
+  mutate(disease = "rsv") |>
+  filter(location == "US")
+```
+
+```{r}
+plot_df <-  rbind(plot_df_covid, plot_df_flu)
+
+plot_df_all <- rbind(plot_df, plot_df_rsv)
+
+```
+
+
+```{r}
+#write_csv(plot_df_all, "/Users/maya/Desktop/inla-forecasting-paper-main/for_spencer/plot_df_a.csv")
+
+#write_csv(truth_df, "/Users/maya/Desktop/inla-forecasting-paper-main/for_spencer/truth_df.csv")
+```
+
+```{r}
+##############
+#use this
+##############
+
+generate_plots <- function(plot_df, truth_df) {
+  
+  # Process the forecast data to keep only specified quantiles
+  forecast_df <- plot_df %>%
+    spread(quantile, prediction) 
+  
+  truth_df <- truth_df %>%
+    filter(date >= ymd("2022-08-30"))
+  
+  # Create a list to store the plots for each location
+  plots_list <- list()
+  
+  for(curr_location in unique(forecast_df$location)) {
+    
+    location_forecast <- forecast_df %>%
+      filter(location == curr_location)
+    
+    location_truth <- truth_df %>%
+      filter(location == curr_location)
+    
+    # Suppress warnings about NAs in the plot - NAs are supposed to be in there 
+    suppressWarnings({
+      
+      # Create individual plots for each disease with specific y-axis limits
+      covid_plot <- ggplot() +
+        geom_point(data = location_truth %>% filter(disease == "covid"), aes(x = date, y = count), color = "black", size = 0.5) +
+        geom_ribbon(data = location_forecast %>% filter(disease == "covid"), aes(x = date, ymin = `0.025`, ymax = `0.975`), fill = "#addd8e", alpha = 0.3) +
+        geom_line(data = location_forecast %>% filter(disease == "covid"), aes(x = date, y = `0.5`), color = "#31a354") +
+        scale_y_continuous(limits = c(0, 65000), oob = scales::rescale_none, labels = scales::comma) +  # Custom limits for COVID
+        theme_minimal() +
+        theme_cowplot() +
+        labs(x = NULL, y = NULL) +
+        scale_x_date(date_breaks = "3 months", date_labels = "%b '%y", guide = guide_axis(angle = 0), expand = c(0, 0)) +
+        background_grid(major = 'xy', minor = 'y') +
+        theme(legend.position = "none",
+              axis.title.x = element_blank(), # Remove x-axis labels from here
+              axis.text.x = element_blank(),
+              axis.ticks.x = element_blank(),
+              axis.text.y = element_text(size = 10),
+              plot.title = element_text(size = 10, face = "plain", hjust = 0.5),
+              strip.background = element_blank(),
+              strip.text = element_text(face = "bold", size = 10)) +
+        ggtitle("COVID-19")
+      
+      flu_plot <- ggplot() +
+        geom_point(data = location_truth %>% filter(disease == "flu"), aes(x = date, y = count), color = "black", size = 0.5) +
+        geom_ribbon(data = location_forecast %>% filter(disease == "flu"), aes(x = date, ymin = `0.025`, ymax = `0.975`), fill = "#addd8e", alpha = 0.3) +
+        geom_line(data = location_forecast %>% filter(disease == "flu"), aes(x = date, y = `0.5`), color = "#31a354") +
+        scale_y_continuous(limits = c(0, 35000), oob = scales::rescale_none, labels = scales::comma) +  # Custom limits for Flu
+        theme_minimal() +
+        theme_cowplot() +
+        labs(x = NULL, y = NULL) +
+        scale_x_date(date_breaks = "3 months", date_labels = "%b '%y", guide = guide_axis(angle = 0), expand = c(0, 0)) +
+        background_grid(major = 'xy', minor = 'y') +
+        theme(legend.position = "none",
+              axis.title.x = element_blank(), # Remove x-axis labels from here
+              axis.text.x = element_blank(),
+              axis.ticks.x = element_blank(),
+              axis.text.y = element_text(size = 10),
+              plot.title = element_text(size = 10, face = "plain", hjust = 0.5),
+              strip.background = element_blank(),
+              strip.text = element_text(face = "bold", size = 10)) +
+        ggtitle("Influenza")
+      
+      rsv_plot <- ggplot() +
+        geom_point(data = location_truth %>% filter(disease == "rsv"), aes(x = date, y = count), color = "black", size = 0.5) +
+        geom_ribbon(data = location_forecast %>% filter(disease == "rsv"), aes(x = date, ymin = `0.025`, ymax = `0.975`), fill = "#addd8e", alpha = 0.3) +
+        geom_line(data = location_forecast %>% filter(disease == "rsv"), aes(x = date, y = `0.5`), color = "#31a354") +
+        scale_y_continuous(limits = c(0, 20000), oob = scales::rescale_none, labels = scales::comma) +  # Custom limits for COVID
+        theme_minimal() +
+        theme_cowplot() +
+        labs(x = NULL, y = NULL) +
+        scale_x_date(date_breaks = "3 months", date_labels = "%b '%y", guide = guide_axis(angle = 0), expand = c(0, 0)) +
+        background_grid(major = 'xy', minor = 'y') +
+        theme(legend.position = "none",
+              #axis.title.x = element_blank(), # Remove x-axis labels from here
+              #axis.text.x = element_blank(),
+              #axis.ticks.x = element_blank(),
+              strip.background = element_blank(),
+              axis.text.x = element_text(size = 10),  # Change x-axis text size
+              axis.text.y = element_text(size = 10),  # Change y-axis text size
+              plot.title = element_text(size = 10, face = "plain", hjust = 0.5),
+              strip.text = element_text(face = "bold", size = 10)) +
+        ggtitle("RSV")
+      
+      # Combine the plots with shared x-axis using plot_grid
+      combined_plot <- plot_grid(covid_plot, flu_plot, rsv_plot, ncol = 1, align = "v", rel_heights = c(1, 1, 1.2))
+      # Store both plots in the list with the location name as the key
+      #plots_list[[curr_location]] <- list(covid_plot = covid_plot, flu_plot = flu_plot)
+      plots_list[[curr_location]] <- combined_plot
+    })
+  }
+  
+  # Return the list of plots for each location
+  return(plots_list)
+
+}
+```
+
+
+```{r}
+##############################  #generate and save plots (PLEASE CHANGE path)
+
+plots_all <- generate_plots(plot_df_all, truth_df) #changed to flu so green
+
+
+#for generate_plots please input disease: "RSV", "COVID" or "Flu" for different colored outputs depending on disease
+```
+
+```{r}
+combined_plot <- plot_grid(plotlist = plots_all, ncol = 1, align = "v", rel_heights = c(1, 1, 5))
+print(combined_plot)
+```
+
+```{r}
+#save_plot("/Users/maya/Desktop/inla-forecasting-paper-main/figure/fig4_panelA.pdf", combined_plot, base_width = 6, base_asp = .5, bg = "white")
+```
+
+
+#Panel 2 Analysis (no summer months)
+#covid 
+```{r}
+test <- read_data_model("covid_2020")
+truth_df <- prepare_truth_df(test)
+
+######################## Grab and format model output (except baseline)
+folders <- c("covid_2020")  #Need to change 
+
+model_names <- c("covid") #Need to change 
+
+list_of_dataframes <- suppressMessages(suppressWarnings(process_data_folders(folders, model_names)))
+
+formatted_df <- lapply(list_of_dataframes, function(df) suppressMessages(suppressWarnings(format_dataframe(df, truth_df = truth_df))))
+
+######################## Grab and format baseline model output
+
+bdata <- read_and_combine_csv("../processed_data/Covid_Baseline_2020/", "\\d{4}-\\d{2}-\\d{2}-baseline\\.csv") ###Needs to be changed
+
+quantile_filter <-c(0.025, 0.25, 0.5, 0.75, 0.975)
+
+bdata <- clean_baseline(bdata, "covid", quantile_filter) #Need to change
+
+baseline <- suppressMessages(suppressWarnings(format_dataframe(bdata, truth_df)))
+
+############################ combine and final formatting before scoring 
+formatted_df <- c(formatted_df, list(baseline = baseline))
+
+formatted_df <- lapply(formatted_df, remove_na_location)
+
+overall_df <- do.call(rbind, formatted_df) %>%
+    #filter(!is.na(true_value) & location != "US") #removes after 2024-05
+  filter(!is.na(true_value) & location != "US" & quantile %in% quantile_filter)
+
+############################ scoring
+score_graph_location_covid <- score(overall_df) %>%
+    add_coverage(ranges = c(50, 95), by = c("model", "location")) %>%
+  summarise_scores(by = c("model", "location"))
+
+score_graph_location_covid <- make_rwis(score_graph_location_covid, "baseline_covid") #need to change 
+```
+
+
+#flu
+```{r}
+test <- read_data_model("flu_2021")
+truth_df <- prepare_truth_df(test)
+
+######################## Grab and format model output (except baseline)
+folders <- c("flu_2021")  #Need to change 
+
+model_names <- c("flu") #Need to change 
+
+list_of_dataframes <- suppressMessages(suppressWarnings(process_data_folders(folders, model_names)))
+
+formatted_df <- lapply(list_of_dataframes, function(df) suppressMessages(suppressWarnings(format_dataframe(df, truth_df = truth_df))))
+
+######################## Grab and format baseline model output
+
+bdata <- read_and_combine_csv("../processed_data/Flu_Baseline_2021/", "\\d{4}-\\d{2}-\\d{2}-baseline\\.csv") ###Needs to be changed
+
+quantile_filter <-c(0.025, 0.25, 0.5, 0.75, 0.975)
+
+bdata <- clean_baseline(bdata, "flu", quantile_filter) #Need to change
+
+baseline <- suppressMessages(suppressWarnings(format_dataframe(bdata, truth_df)))
+
+############################ combine and final formatting before scoring 
+formatted_df <- c(formatted_df, list(baseline = baseline))
+
+formatted_df <- lapply(formatted_df, remove_na_location)
+
+overall_df <- do.call(rbind, formatted_df) %>%
+    #filter(!is.na(true_value) & location != "US") #removes after 2024-05
+  filter(!is.na(true_value) & location != "US" & quantile %in% quantile_filter)
+
+############################ scoring
+score_graph_location_flu <- score(overall_df) %>%
+    add_coverage(ranges = c(50, 95), by = c("model", "location")) %>%
+  summarise_scores(by = c("model", "location"))
+
+score_graph_location_flu <- make_rwis(score_graph_location_flu, "baseline_flu") #need to change 
+```
+
+
+
+#rsv
+```{r}
+test <- read_data_model("rsv_2018")
+truth_df <- prepare_truth_df(test)
+
+######################## Grab and format model output (except baseline)
+folders <- c("2018_rsv")  #Need to change 
+
+model_names <- c("rsv_2018") #Need to change 
+
+list_of_dataframes <- suppressMessages(suppressWarnings(process_data_folders(folders, model_names)))
+
+formatted_df <- lapply(list_of_dataframes, function(df) suppressMessages(suppressWarnings(format_dataframe(df, truth_df = truth_df))))
+
+######################## Grab and format baseline model output
+
+bdata <- read_and_combine_csv("../processed_data/RSV_Baseline_2018/", "\\d{4}-\\d{2}-\\d{2}-baseline\\.csv") ###Needs to be changed
+
+quantile_filter <-c(0.025, 0.25, 0.5, 0.75, 0.975)
+
+bdata <- clean_baseline(bdata, "rsv", quantile_filter) #Need to change
+
+baseline <- suppressMessages(suppressWarnings(format_dataframe(bdata, truth_df)))
+
+############################ combine and final formatting before scoring 
+formatted_df <- c(formatted_df, list(baseline = baseline))
+
+formatted_df <- lapply(formatted_df, remove_na_location)
+
+overall_df <- do.call(rbind, formatted_df) %>%
+    #filter(!is.na(true_value) & location != "US") #removes after 2024-05
+  filter(!is.na(true_value) & location != "US" & quantile %in% quantile_filter)
+
+############################ scoring
+score_graph_location_rsv <- score(overall_df) %>%
+    add_coverage(ranges = c(50, 95), by = c("model", "location")) %>%
+  summarise_scores(by = c("model", "location"))
+
+score_graph_location_rsv <- make_rwis(score_graph_location_rsv, "baseline_rsv") #need to change 
+```
+
+```{r}
+#write_csv(score_graph_location_rsv, "/Users/maya/Desktop/inla-forecasting-paper-main/for_spencer/score_graph_location_rsv.csv")
+
+#write_csv(score_graph_location_flu, "/Users/maya/Desktop/inla-forecasting-paper-main/for_spencer/score_graph_location_flu.csv")
+
+#write_csv(score_graph_location_covid, "/Users/maya/Desktop/inla-forecasting-paper-main/for_spencer/score_graph_location_covid.csv")
+```
+
+#Make graph for maps
+
+```{r}
+# Prepare the US map data with FIPS codes
+us <- us_map(regions = "states") %>% 
+  st_as_sf()  # Convert to sf object
+
+iso_states <- c("Alaska", "Hawaii", "Puerto Rico", "District of Columbia", "Rhode Island")
+
+# Define custom positions for small or isolated states
+us_pts <- tribble(
+  ~abbr, ~full, ~x, ~y,
+  "AK", "Alaska", 2350000, -500000,
+  "DC", "District of Columbia", 2350000, -700000,
+  "RI", "Rhode Island", 2700000, -700000,
+  "HI", "Hawaii", 2350000, -900000,
+  "PR", "Puerto Rico", 2700000, -900000
+) |> 
+  st_as_sf(crs = st_crs(us), coords = c("x", "y"))
+```
+
+```{r}
+# Define the plot function
+plot_loc_effect <- function(map_data, us, us_pts = NULL) {
+  ret <- map_data %>%
+    ggplot() +
+    geom_sf(aes(fill = r_wis), col = "black", size = 0.1) +
+    scale_fill_gradientn(
+      name = "r WIS",
+      colors = c("#253494", "#08519c", "#3182bd", "#6baed6", "#9ecae1", "#c6dbef", "#eff3ff", "#dfc27d", "darkorange3"),
+      values = scales::rescale(c(0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.18, 1.6)),
+      limits = c(0.4, 1.65),
+      breaks = c(0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.6),
+      labels = c("0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0", "1.1", "1.6"),
+      na.value = "grey70" # Set NA values to grey
+    ) +
+    theme_minimal(base_size = 15) +
+    theme(
+      axis.title.x = element_blank(), 
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      panel.grid = element_blank(),
+      legend.position = "none"
+    )
+  
+  if (!is.null(us_pts)) {
+    # Check the join process
+    #us_pts <- left_join(us_pts, map_data, by = c("full" = "location"))  # Ensure correct join
+    
+    # Verify if `r_wis` or equivalent column exists after join
+    if ("r_wis" %in% names(us_pts)) {
+      ret <- ret +
+        geom_sf(data = us_pts, aes(fill = r_wis), shape = 21, size = 8, col = "white") +
+        geom_sf_text(data = us_pts, aes(label = abbr), nudge_x = 150000)
+    } else {
+      stop("Error: `r_wis` column not found in `us_pts` after join.")
+    }
+  }
+  return(ret)
+}
+```
+
+####covid 
+```{r}
+# Filter 
+map_df <- score_graph_location_covid %>%
+  filter(model == "covid") %>%
+  mutate(fips = fips(location)) # Convert state names to FIPS codes
+
+map_data <- us_map(regions = "states") %>%
+  left_join(map_df, by = "fips") |>
+  filter(!full %in% c("Alaska", "Hawaii"))
+
+r_wis_iso <- map_data |>
+  filter(full %in% iso_states) |>
+  select(abbr, full, r_wis)
+
+df_covid <- data.frame(
+  #abbr = c("AK", "DC", "HI", "RI", "PR"),
+  full = c("Alaska", "District of Columbia", "Hawaii", "Rhode Island", "Puerto Rico"),
+  r_wis = c(0.8394664, 0.5309340, 1.0024976, 0.5516186, 0.5730461))
+
+us_pts_covid <- left_join(us_pts, df_covid, by = "full") 
+
+# Generate the map
+p_covid <- plot_loc_effect(map_data, us, us_pts_covid)
+print(p_covid)
+
+# Save the plot as a PNG
+#ggsave(
+#  filename = "covid_map.png",   # File name
+#  plot = p_covid,              # Plot object
+#  width = 10,                # Width in inches
+#  height = 8,                # Height in inches
+#  dpi = 300                  # Resolution in dots per inch
+#)
+```
+
+#flu
+```{r}
+map_df <- score_graph_location_flu %>%
+  filter(model == "flu") %>%
+  mutate(fips = fips(location)) # Convert state names to FIPS codes
+
+map_data <- us_map(regions = "states") %>%
+  left_join(map_df, by = "fips") |>
+  filter(!full %in% c("Alaska", "Hawaii"))
+
+r_wis_iso <- map_data |>
+  filter(full %in% iso_states) |>
+  select(abbr, full, r_wis)
+
+df_flu <- data.frame(
+  #abbr = c("AK", "DC", "HI", "RI", "PR"),
+  full = c("Alaska", "District of Columbia", "Hawaii", "Rhode Island", "Puerto Rico"),
+  r_wis = c(0.8188897, 0.6378093, 0.7721396, 0.5542517, 1.6152894))
+
+us_pts_flu <- left_join(us_pts, df_flu, by = "full") 
+
+# Generate the map
+p_flu <- plot_loc_effect(map_data, us, us_pts_flu)
+print(p_flu)
+
+# Save the plot as a PNG
+#ggsave(
+#  filename = "flu_map.png",   # File name
+#  plot = p_flu,              # Plot object
+#  width = 10,                # Width in inches
+#  height = 8,                # Height in inches
+#  dpi = 300                  # Resolution in dots per inch
+#)
+```
+
+#RSV
+```{r}
+map_df <- score_graph_location_rsv %>%
+  filter(model == "rsv_2018") %>%
+  mutate(fips = fips(location)) # Convert state names to FIPS codes
+
+map_data <- us_map(regions = "states") %>%
+  left_join(map_df, by = "fips") |>
+  filter(!full %in% c("Alaska", "Hawaii"))
+
+map_data <- map_data %>%
+  mutate(r_wis = as.numeric(r_wis))
+
+df_RSV <- data.frame(
+  #abbr = c("AK", "DC", "HI", "RI", "PR"),
+  full = c("Alaska", "District of Columbia", "Hawaii", "Rhode Island", "Puerto Rico"),
+  r_wis = c(NA, NA, NA, NA, NA))
+
+us_pts_RSV <- left_join(us_pts, df_RSV, by = "full") 
+
+us_pts_RSV <- us_pts_RSV %>%
+  mutate(r_wis = as.numeric(r_wis))
+
+# Generate the map
+p_RSV <- plot_loc_effect(map_data, us, us_pts_RSV)
+print(p_RSV)
+
+# Save the plot as a PNG
+#ggsave(
+#  filename = "RSV_map.png",   # File name
+#  plot = p_RSV,              # Plot object
+#  width = 10,                # Width in inches
+#  height = 8,                # Height in inches
+#  dpi = 300                  # Resolution in dots per inch
+#)
+```
