@@ -1,6 +1,9 @@
 # --------------------------------------------------------------------------------
-# Table S1: comparing the proposed model to simpler variations removing-----------
-# seasonal or spatial components--------------------------------------------------
+# Table S1: comparing the proposed model to other variations removing or----------
+# adding seasonal or spatial components-------------------------------------------
+# --------------------------------------------------------------------------------
+# usage: each code block is set up for a single disease, so needs to be edited----
+# slightly to run for other diseases----------------------------------------------
 # --------------------------------------------------------------------------------
 
 library(tidyverse)
@@ -76,6 +79,7 @@ fr_no_spatial <- future_map(retro_forecast_dates_flu_rsv, \(fd) {
 
 saveRDS(fr_no_spatial, "results/simpler-mod-comp/rsv-no-spatial.rds")
 
+# model with independent seasonal effects for each state
 mod_iid_seasonal <- model_formula(seasonal="iid", temporal="ar1", spatial="besagproper")
 fr_iid_seasonal <- future_map(retro_forecast_dates_covid, \(fd) {
     fit_df <- prep_fit_data(covid, fd, weeks_ahead=4, ex_lam=population)
@@ -87,20 +91,39 @@ fr_iid_seasonal <- future_map(retro_forecast_dates_covid, \(fd) {
 
 saveRDS(fr_iid_seasonal, "results/simpler-mod-comp/covid-iid-seasonal.rds")
 
-#  processing results-------------------------------------------------------------
+# model with geographic seasonality based on HHS regions and outlier states
+hhs_lookup <- load_us_graph(flu) |>
+    st_drop_geometry() |> 
+    mutate(region=ifelse(region == 9, 3, region)) |> 
+    mutate(region=factor(region, labels=c("Northeast", "Midwest", "South", "West/Pacific"))) |> 
+    select(-division) |> 
+    nest(locs=c(state))
+
+mod_geo_seasonal <- "count ~ 1 + location + 
+f(epiweek, model='rw2', scale.model=TRUE, cyclic=TRUE, hyper=hyper_epwk, group=season_group, control.group=list(model='iid')) + 
+f(t, model='ar1', hyper=hyper_wk) + f(t2, model='ar1', hyper=hyper_wk, group=iloc, control.group=list(model='exchangeable'))"
+fr_geo_seasonal <- future_map(retro_forecast_dates_flu_rsv, \(fd) {
+    fit_df <- prep_fit_data(rsv, fd, weeks_ahead=4, ex_lam=pop_served) |> 
+        mutate(season_group=case_when(
+            location == "Puerto Rico" ~ 1,
+            location == "Hawaii" ~ 2,
+            location == "Alaska" ~ 3,
+            location %in% hhs_lookup$locs[[1]]$state ~ 4,
+            location %in% hhs_lookup$locs[[2]]$state ~ 5,
+            location %in% hhs_lookup$locs[[3]]$state ~ 6,
+            location %in% hhs_lookup$locs[[4]]$state ~ 7
+        ))
+    
+    fit <- fit_inla_model(fit_df, mod_geo_seasonal, pc_prior_u=c(1, 0.2))
+    
+    forecast_samples(fit_df, fit, nsamp=5000) |>
+        summarize_quantiles(q=q_wis, model="geo seasonal")
+}, .options=furrr_options(seed=TRUE))
+
+saveRDS(fr_geo_seasonal, "results/simpler-mod-comp/rsv-geo-seasonal.rds")
+
+# processing results-------------------------------------------------------------
 library(scoringutils)
-
-# for flu/RSV and the no spatial model, take two runs and replace where the first diverged
-# nsp1 <- readRDS("results/simpler-mod-comp/flu-no-spatial-1.rds") |> 
-#     bind_rows()
-#     
-# nsp2 <- readRDS("retro-files/flu-no-spatial-2.rds") |> 
-#     bind_rows()
-# 
-# nsp_res <- bind_rows(nsp1, nsp2)
-
-# retro_files <- list.files("retro-files", full.names=TRUE) |> 
-#     setdiff(c("retro-files/flu-no-spatial-1.rds", "retro-files/flu-no-spatial-2.rds"))
 
 # note that for flu/RSV and the no spatial model, some forecast tended to diverge, so 
 # take two independent runs and choose the one that fit successfully
@@ -108,14 +131,16 @@ pred_flu <- bind_rows(
     readRDS("results/simpler-mod-comp/flu-inflaenza.rds"),
     readRDS("results/simpler-mod-comp/flu-no-seasonal.rds"),
     readRDS("results/simpler-mod-comp/flu-no-spatial-1.rds"), 
-    readRDS("results/simpler-mod-comp/flu-iid-seasonal.rds")
+    readRDS("results/simpler-mod-comp/flu-iid-seasonal.rds"),
+    readRDS("results/simpler-mod-comp/flu-geo-seasonal.rds")
 )
 
 pred_flu_2 <- bind_rows(
     readRDS("results/simpler-mod-comp/flu-inflaenza.rds"),
     readRDS("results/simpler-mod-comp/flu-no-seasonal.rds"),
     readRDS("results/simpler-mod-comp/flu-no-spatial-2.rds"),
-    readRDS("results/simpler-mod-comp/flu-iid-seasonal.rds")
+    readRDS("results/simpler-mod-comp/flu-iid-seasonal.rds"),
+    readRDS("results/simpler-mod-comp/flu-geo-seasonal.rds")
 )
 
 scores_flu <- score_pred_quantiles(flu, pred_flu) |> mutate(disease="flu")
@@ -142,7 +167,8 @@ pred_rsv <- bind_rows(
     readRDS("results/simpler-mod-comp/rsv-inflaenza.rds"),
     readRDS("results/simpler-mod-comp/rsv-no-seasonal.rds"),
     readRDS("results/simpler-mod-comp/rsv-no-spatial.rds"),
-    readRDS("results/simpler-mod-comp/rsv-iid-seasonal.rds")
+    readRDS("results/simpler-mod-comp/rsv-iid-seasonal.rds"),
+    readRDS("results/simpler-mod-comp/rsv-geo-seasonal.rds")
 )
 
 scores_rsv <- score_pred_quantiles(rsv, pred_rsv) |> mutate(disease="rsv")
@@ -160,7 +186,8 @@ pred_covid <- bind_rows(
     readRDS("results/simpler-mod-comp/covid-inflaenza.rds"),
     readRDS("results/simpler-mod-comp/covid-no-seasonal.rds"),
     readRDS("results/simpler-mod-comp/covid-no-spatial.rds"),
-    readRDS("results/simpler-mod-comp/covid-iid-seasonal.rds")
+    readRDS("results/simpler-mod-comp/covid-iid-seasonal.rds"),
+    readRDS("results/simpler-mod-comp/covid-geo-seasonal.rds")
 )
 
 scores_covid <- score_pred_quantiles(covid, pred_covid) |> mutate(disease="covid")

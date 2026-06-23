@@ -95,7 +95,7 @@ median_cl <- function(y) {
     n <- length(y)
     l <- qbinom(0.05/2, size=n, prob=0.5)
     u <- 1 + n - l
-    ys <- sort.int(c(-Inf, y, Inf), partial = c(1 + l, 1 + u))
+    ys <- sort.int(c(-Inf, y, 1), partial = c(1 + l, 1 + u))
     print(paste0("bootstrap CI: (", ys[1 + l], ", ", ys[1 + u], ")"))
     data.frame(
         y = quantile(y, probs=0.5, na.rm=TRUE, type=8),
@@ -150,7 +150,11 @@ plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza"
     corr_summ <- dts$resid_seas_corr |> 
         filter(!is.na(r), is.finite(dist), dist <= 8) |> 
         group_by(dist) |> 
-        summarise(med=median(r), l=med - 1.58*IQR(r)/sqrt(n()), u=med + 1.58*IQR(r)/sqrt(n()))
+        summarise(
+            med=median(r), 
+            # l=med - 1.58*IQR(r)/sqrt(n()), u=med + 1.58*IQR(r)/sqrt(n()),
+            n=str_c("(", n(), ")")
+        )
     
     dts_corr <- dts$resid_seas_corr |> 
         filter(!is.na(r), is.finite(dist), dist <= 8)
@@ -166,6 +170,7 @@ plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza"
         # geom_boxplot(col="tomato", fill=NA, outlier.shape=NA, alpha=0.5) +
         geom_line(aes(dist, med), corr_summ, col="black") +
         stat_summary(fun.data=median_cl, geom="errorbar", width=0.4) +
+        geom_text(aes(x=dist, label=n), corr_summ, y=if (disease == "RSV") 1.1 else 1, size=2, hjust="middle") +
         # geom_errorbar(aes(dist, ymin=l, ymax=u), corr_summ, col="black", inherit.aes=FALSE, width=0.4) +
         # stat_boxplot(aes(y=after_stat(xlower)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
         # stat_boxplot(aes(x=dist, y=after_stat(notchupper)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
@@ -174,6 +179,9 @@ plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza"
         theme_half_open() +
         theme(legend.position="none")
     
+    if (disease == "RSV")
+        p3 <- p3 + scale_y_continuous(limits=c(NA, 1.12))
+    
     plot_grid(p1, p2, p3, nrow=1, rel_widths=c(0.8, 1, 0.65), align="h", axis="b", labels=labels)
 }
 
@@ -181,6 +189,9 @@ us <- load_us_graph(flu)
 us_dist <- us_dist_mat(us)
 
 dts_covid <- decompose_timeseries(covid, us_dist)
+
+dts_covid$resid_seas_corr |> 
+    count(dist)
 
 # For text: find median correlation between all states that share a border
 dts_covid$resid_seas_corr |> 
@@ -202,13 +213,13 @@ p2 <- plot_disease_summary(
 
 dts_rsv <- decompose_timeseries(rsv, us_dist)
 p3 <- plot_disease_summary(
-    dts_rsv, rsv, c("C", "G", "I"), "RSV",
+    dts_rsv, rsv, c("C", "F", "I"), "RSV",
     highlights=c("California"="#AB76DE")
     # highlights=c("Georgia"="blue4", "New Mexico"="tomato")
 )
 
 plot_grid(p1, p2, p3, nrow=3)
-ggsave("figs/fig1-draft8.pdf", width=11.2, height=7.5)
+ggsave("figs/fig1-draft9.pdf", width=11.2, height=7.5)
 
 ###
 library(gghighlight)

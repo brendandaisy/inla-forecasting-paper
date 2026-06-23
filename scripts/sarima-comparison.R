@@ -1,5 +1,7 @@
+# Separate script for running SARIMA model for Table S1---------------------------
 # SARIMA parameters are optimized using the default auto.arima settings, which----
-###uses a stepwise search procedure. 
+# uses a stepwise search procedure------------------------------------------------
+# --------------------------------------------------------------------------------
 
 library(tidyverse)
 library(forecast)
