@@ -170,7 +170,7 @@ plot_disease_summary <- function(dts, data, labels, disease=c("RSV", "Influenza"
         # geom_boxplot(col="tomato", fill=NA, outlier.shape=NA, alpha=0.5) +
         geom_line(aes(dist, med), corr_summ, col="black") +
         stat_summary(fun.data=median_cl, geom="errorbar", width=0.4) +
-        geom_text(aes(x=dist, label=n), corr_summ, y=if (disease == "RSV") 1.1 else 1, size=2, hjust="middle") +
+        geom_text(aes(x=dist, label=n), corr_summ, y=if (disease == "RSV") 1.08 else 1, size=2.3, hjust="middle") +
         # geom_errorbar(aes(dist, ymin=l, ymax=u), corr_summ, col="black", inherit.aes=FALSE, width=0.4) +
         # stat_boxplot(aes(y=after_stat(xlower)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
         # stat_boxplot(aes(x=dist, y=after_stat(notchupper)), geom="line", linetype="dotted", col=col, linewidth=1.02) +
