@@ -29,36 +29,43 @@ flu_nat <- flu |>
     group_by(epiweek, season_week) |> 
     summarise(mean=mean(weekly_rate), .groups="drop")
 
-flu_hl_states <- c("Puerto Rico", "Arkansas", "Alaska")
+flu_pr <- flu |>
+    filter(location == "Puerto Rico", season %in% c("2022-23", "2023-24")) |> 
+    group_by(epiweek, season_week) |>
+    summarise(mean=mean(weekly_rate), .groups="drop")
 
-flu_hl <- flu |>
-    filter(
-        location %in% flu_hl_states, 
-        season %in% c("2022-23", "2023-24")
-    ) |> 
-    pivot_wider(id_cols=c(location, season_week), names_from=season, values_from=weekly_rate)
-    # group_by(location, epiweek, season_week) |>
-    # summarise(mean=mean(weekly_rate), .groups="drop")
+# ggplot(flu_nat, aes(season_week)) +
+#     geom_line(
+#         aes(season_week, weekly_rate, group=interaction(season, location)), 
+#         filter(flu, !(location %in% flu_hl_states), season %in% c("2022-23", "2023-24")), 
+#         col="gray50", alpha=0.1
+#     ) +
+#     geom_line(aes(y=mean), col="black", linewidth=1.1) +
+#     geom_ribbon(
+#         aes(ymin=`2022-23`, ymax=`2023-24`, col=location, fill=location, group=location), 
+#         data=flu_hl, 
+#         linewidth=1.1,
+#         alpha=0.3
+#     ) +
+#     labs(x="Respiratory season week", y="Flu Admits per 100k", col=NULL) +
+#     scale_x_continuous(breaks=seq(0, 50 , 5)) +
+#     scale_color_manual(values=c("#AB76DE", "darkseagreen", "#2b8cbe")) +
+#     coord_cartesian(ylim=c(0, 8)) +
+#     theme_half_open() +
+#     theme(legend.position="inside", legend.position.inside=c(0.66, 0.73))
 
-ggplot(flu_nat, aes(season_week)) +
+p1 <- ggplot(flu_nat, aes(season_week, mean)) +
     geom_line(
         aes(season_week, weekly_rate, group=interaction(season, location)), 
-        filter(flu, !(location %in% flu_hl_states), season %in% c("2022-23", "2023-24")), 
+        filter(flu, location != "Peurto Rico", season %in% c("2022-23", "2023-24")), 
         col="gray50", alpha=0.1
     ) +
-    geom_line(aes(y=mean), col="black", linewidth=1.1) +
-    geom_ribbon(
-        aes(ymin=`2022-23`, ymax=`2023-24`, col=location, fill=location, group=location), 
-        data=flu_hl, 
-        linewidth=1.1,
-        alpha=0.3
-    ) +
+    geom_line(col="black", linewidth=1.1) +
+    geom_line(data=flu_pr, col="#AB76DE", linewidth=1.1) +
     labs(x="Respiratory season week", y="Flu Admits per 100k", col=NULL) +
     scale_x_continuous(breaks=seq(0, 50 , 5)) +
-    scale_color_manual(values=c("#AB76DE", "darkseagreen", "#2b8cbe")) +
-    coord_cartesian(ylim=c(0, 8)) +
-    theme_half_open() +
-    theme(legend.position="inside", legend.position.inside=c(0.66, 0.73))
+    coord_cartesian(ylim=c(0, 5)) +
+    theme_half_open()
 
 rsv_nat <- rsv |> 
     group_by(epiweek, season_week) |> 
@@ -76,14 +83,12 @@ p2 <- ggplot(rsv_nat, aes(season_week, mean)) +
         col="gray50", alpha=0.1
     ) +
     geom_line(col="black", linewidth=1.1) +
-    geom_line(aes(col="Georgia"), data=rsv_ga, linewidth=1.1) +
+    geom_line(data=rsv_ga, linewidth=1.1, col="salmon2") +
     # annotate("text", label="Georgia", x=44, y=2, col="salmon2", size=5) +
     labs(x="Respiratory season week", y="RSV Admits per 100k", col=NULL) +
     scale_x_continuous(breaks=seq(0, 50 , 5)) +
-    scale_color_manual(values=c("salmon2")) +
     coord_cartesian(ylim=c(0, 5)) +
-    theme_half_open() +
-    theme(legend.position="inside", legend.position.inside=c(0.66, 0.73))
+    theme_half_open()
 
-plot_grid(p1, p2, labels="AUTO")
-ggsave("figs/fig-S3-v3.pdf", width=9.2, height=4.5)
+plot_grid(p1, p2, labels="auto")
+ggsave("figs/comp-seas-worst-states-retro.png", width=9.2, height=4.5, bg="white")

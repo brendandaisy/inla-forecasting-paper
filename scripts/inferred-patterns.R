@@ -127,7 +127,7 @@ theme_right_border <- function(colour = "black", size = 1, linetype = 1) {
     # use with e.g.: ggplot(...) + theme( panel.border=theme_right_border() ) + ...
     structure(
         list(colour = colour, size = size, linetype = linetype),
-        class = c("theme_right_border", "element_blank", "element")
+        class = c("theme_right_border", "element_rect", "element")
     )
 }
 element_grob.theme_right_border <- function(
@@ -293,13 +293,13 @@ legend <- get_plot_component(
 )
 
 plot_grid(
-    plot_grid(p2, p3, nrow=2, labels=c("A", "B")),
+    plot_grid(p2, p3, nrow=2, labels=c("a", "b")),
     legend,
     p1,
-    nrow=1, rel_widths=c(0.67, 0.23, 1), labels=c("", "", "C")
+    nrow=1, rel_widths=c(0.67, 0.23, 1), labels=c("", "", "c")
 )
 
-ggsave("figs/fig4-draft6.pdf", width=10.55, height=6.8)
+ggsave("figs/fig4-lowercase.pdf", width=10.55, height=6.8)
 
 # getting credible intervals for seasonal min and max-----------------------------
 post_seasonal_ci <- function(post, tag) {

@@ -70,7 +70,7 @@ p3 <- ggplot(covid_reg, aes(date, reg_rate)) +
     theme(axis.text.x=element_text(size=rel(0.9)))
 
 plot_grid(
-    plot_grid(p3 + theme(legend.position="none"), p1, p2, nrow=3, labels="AUTO", align="v", axis="l"),
+    plot_grid(p3 + theme(legend.position="none"), p1, p2, nrow=3, labels="auto", align="v", axis="l"),
     get_legend(p3),
     nrow=1, rel_widths=c(1, 0.3)
 )
@@ -85,4 +85,4 @@ plot_grid(
 #     labels=c("A", ""), nrow=2, rel_heights=c(0.36, 2/3)
 # )
 
-ggsave("figs/regional-diff-covid4.pdf", width=7, height=6.3)
+ggsave("figs/regional-diff-covid-lowercase.pdf", width=7, height=6.3)

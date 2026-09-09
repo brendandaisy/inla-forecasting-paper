@@ -199,29 +199,31 @@ dts_covid$resid_seas_corr |>
     summarise(median(r))
 
 p1 <- plot_disease_summary(
-    dts_covid, covid, c("A", "D", "G"), "COVID-19",
+    dts_covid, covid, c("a", "d", "g"), "COVID-19",
     highlights=c("California"="#AB76DE")
     # highlights=c("Kentucky"="blue4", "Michigan"="tomato")
 )
 
 dts_flu <- decompose_timeseries(flu, us_dist)
 p2 <- plot_disease_summary(
-    dts_flu, flu, c("B", "E", "H"), "Influenza",
+    dts_flu, flu, c("b", "e", "h"), "Influenza",
     highlights=c("California"="#AB76DE")
     # highlights=c("Puerto Rico"="blue4", "Oklahoma"="tomato")
 )
 
 dts_rsv <- decompose_timeseries(rsv, us_dist)
 p3 <- plot_disease_summary(
-    dts_rsv, rsv, c("C", "F", "I"), "RSV",
+    dts_rsv, rsv, c("c", "f", "i"), "RSV",
     highlights=c("California"="#AB76DE")
     # highlights=c("Georgia"="blue4", "New Mexico"="tomato")
 )
 
 plot_grid(p1, p2, p3, nrow=3)
-ggsave("figs/fig1-draft9.pdf", width=11.2, height=7.5)
+ggsave("figs/fig1-lowercase.pdf", width=11.2, height=7.5)
 
-###
+# Supplemental figure (S4 currently) highlighting three states where INFLAenza----
+# performed poorly during FluSight 2023-24----------------------------------------
+# --------------------------------------------------------------------------------
 library(gghighlight)
 
 flu_last <- filter(flu, season == "2023-24")
@@ -289,20 +291,8 @@ p2 <- ggplot(left_join(rmse_nat, corr_state), aes(med_corr, rmse_diff_nat)) +
     labs(x="Median correlation", y="RMSE", col=NULL) +
     theme_half_open()
 
-plot_grid(p1, p2, rel_widths=c(0.85, 1), nrow=1, labels="AUTO")
-ggsave("figs/fig-S3.pdf", width=8.1, height=3)
-
-cor(flu_nat$mean, select(flu_last, -c(date, season_week)))[1,] |> 
-    enframe() |> 
-    arrange(abs(value)) |> 
-    arrange(med_cor)
-
-# eh..
-flu_last |> 
-    pivot_wider(id_cols=c(date, season_week), names_from=location, values_from=weekly_rate) |> 
-    reframe(across(-c(date, season_week), ~cor(.x, lag(.x), use="complete.obs"))) |> 
-    pivot_longer(everything()) |> 
-    arrange(abs(value))
+plot_grid(p1, p2, rel_widths=c(0.85, 1), nrow=1, labels="auto")
+ggsave("figs/supp-highlight-worst-states-flusight.png", width=8.1, height=3, bg="white")
 
 # old stuff-----------------------------------------------------------------------
 
