@@ -157,12 +157,12 @@ for (i in seq_along(diseases_truth)) {
   forecast_plot <- plot_list_pb[[models_forecast[i]]]
   
   # Stack the truth plot on top of the forecast plot
-  stacked_plot <- plot_grid(truth_plot, forecast_plot, ncol = 1, align = "v", labels = "AUTO", rel_heights = c(1, 1))
+  stacked_plot <- plot_grid(truth_plot, forecast_plot, ncol = 1, align = "v", labels = "auto", rel_heights = c(1, 1))
   print(stacked_plot)
   
   # Save the stacked plot as a PNG file
-  # file_name <- paste0(i, "improvement_retro_date.png")
-  # ggsave(filename = file_name, plot = stacked_plot, path = "/Users/maya/Documents/Figures/Code_Figures/Retrospective_supplemental_figures", width = 8.8, height = 5.5, units = "in", bg = "white")
+  file_name <- paste0("figs/", i, "improvement_retro_date.png")
+  ggsave(file_name, , width = 8.8, height = 5.5, bg = "white")
 }
 
 
@@ -291,14 +291,14 @@ for (i in seq_along(diseases_truth)) {
   improve_plot <- plot_list_cov_95[[models_forecast[i]]]
   
   # Stack the plots
-  stacked_plot <- plot_grid(truth_plot, forecast_plot, improve_plot, ncol = 1, align = "v", labels = "AUTO", rel_heights = c(1, 1, 1))
+  stacked_plot <- plot_grid(truth_plot, forecast_plot, improve_plot, ncol = 1, align = "v", labels = "auto", rel_heights = c(1, 1, 1))
   
   print(stacked_plot)
   # Define file name for the PNG output
-  # file_name <- paste0(i, "_retro_coverage.png")
+  file_name <- paste0("figs/", i, "_retro_coverage.png")
   # 
   # # Save the stacked plot as a PNG file
-  # ggsave(filename = file_name, plot = stacked_plot, path = output_dir, width = 10, height = 7, units = "in", bg = "white")
+  ggsave(filename = file_name, width = 10, height = 7, bg = "white")
 }
 
 ###################
@@ -414,18 +414,15 @@ plot_cov_95 <- plot_cov_95 + theme(legend.position = "none")
 # Stack the two plots vertically
 stacked_plots <- plot_grid(
   plot_cov_50, plot_cov_95, 
-  ncol = 1, align = "v", labels = "AUTO"
+  ncol = 1, align = "v", labels = "auto"
 )
 
-final_plot <- plot_grid(
+plot_grid(
   stacked_plots, shared_legend, 
   ncol = 2, rel_widths = c(1.5, 0.2)  # Adjust width to give space for legend
 )
 
-# Display the final plot
-print(final_plot)
-
-#ggsave("PIC_Retro_location_lines2.png", plot = final_plot, width = 11, height = 10, dpi = 300, bg = "white") 
+ggsave("figs/PIC_Retro_location_lines2.png", width = 10, height = 7, bg = "white") 
 
 
 ##################
@@ -515,18 +512,15 @@ plot_cov_95 <- plot_cov_95 + theme(legend.position = "none")
 # Stack the two plots vertically
 stacked_plots <- plot_grid(
   plot_cov_50, plot_cov_95, 
-  ncol = 1, align = "v", labels = "AUTO"
+  ncol = 1, align = "v", labels = "auto"
 )
 
-final_plot <- plot_grid(
+plot_grid(
   stacked_plots, shared_legend, 
   ncol = 2, rel_widths = c(1.5, 0.2)  # Adjust width to give space for legend
 )
 
-# Display the final plot
-print(final_plot)
-
-#ggsave("PIC_Retro_horizon2.png", plot = final_plot, width = 10, height = 6, dpi = 300, bg = "white") 
+ggsave("figs/PIC_Retro_horizon2.png", width = 10, height = 6, bg = "white") 
 
 
 ################

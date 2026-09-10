@@ -317,12 +317,14 @@ combined_plot <- plot_grid(
   plotA, plotB,
   ncol = 1,              # Arrange plots in one column (stacked)
   #align = "v",           # Align vertically
-  labels = c("A", "B"),  # Add panel labels
+  labels = c("a", "b"),  # Add panel labels
   label_size = 14        # Size of the panel labels
 )
 
 # Display the combined plot
 print(combined_plot)
+
+ggsave("figs/figure-2.pdf", width=13.8, height=8.1)
 
 #ggsave("flusight_test2.png", plot = combined_plot, 
        #width = 14, height = 8.5, dpi = 300, bg = "white")

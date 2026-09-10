@@ -8,14 +8,15 @@ library(cowplot)
 library(covidHubUtils)
 library(scoringutils)
 library(usmap)
+library(sf)
 
 #############
 #Left hand panel
 #############
 
 ##############################  #read in data 
-truth_df <- read.csv("/Users/maya/Desktop/figures_paper/data/truth_df_fig3.csv")
-plot_df_all <- read.csv("/Users/maya/Desktop/figures_paper/data/plot_df_fig3.csv")
+truth_df <- read.csv("results/truth_df_fig3.csv")
+plot_df_all <- read.csv("results/plot_df_fig3.csv")
 
 plot_df_all <- plot_df_all |>
   mutate(date = as.Date(date))
@@ -110,10 +111,10 @@ generate_plots <- function(plot_df, truth_df) {
         ggtitle("RSV")
       
       # Combine the plots with shared x-axis using plot_grid
-      combined_plot <- plot_grid(covid_plot, flu_plot, rsv_plot, ncol = 1, align = "v", rel_heights = c(1, 1, 1.2))
+      # combined_plot <- plot_grid(covid_plot, flu_plot, rsv_plot, ncol = 1, align = "v", rel_heights = c(1, 1, 1.2), labels="auto")
       # Store both plots in the list with the location name as the key
       #plots_list[[curr_location]] <- list(covid_plot = covid_plot, flu_plot = flu_plot)
-      plots_list[[curr_location]] <- combined_plot
+      plots_list[[curr_location]] <- list(covid_plot, flu_plot, rsv_plot)
     })
   }
   
@@ -168,9 +169,9 @@ make_rwis <- function(df, baseline_model) {
 }
 
 ##############################  #Read in data
-score_graph_location_covid <- read_csv("/Users/maya/Desktop/figures_paper/data/score_graph_location_covid_fig3.csv")
-score_graph_location_flu <- read_csv("/Users/maya/Desktop/figures_paper/data/score_graph_location_flu_fig3.csv")
-score_graph_location_rsv <- read_csv("/Users/maya/Desktop/figures_paper/data/score_graph_location_rsv_fig3.csv")
+score_graph_location_covid <- read_csv("results/score_graph_location_covid_fig3.csv")
+score_graph_location_flu <- read_csv("results/score_graph_location_flu_fig3.csv")
+score_graph_location_rsv <- read_csv("results/score_graph_location_rsv_fig3.csv")
 
 ############################################ #
 # Prepare the US map data with FIPS codes
@@ -260,14 +261,14 @@ p_covid <- plot_loc_effect(map_data, us, us_pts_covid)
 print(p_covid)
 
 # Save the plot as a PNG
-ggsave(
-  filename = "covid_map_p.png",   # File name
-  plot = p_covid,              # Plot object
-  width = 10,                # Width in inches
-  height = 8,                # Height in inches
-  dpi = 600,                  # Resolution in dots per inch
-  bg = "white"
-)
+# ggsave(
+#   filename = "covid_map_p.png",   # File name
+#   plot = p_covid,              # Plot object
+#   width = 10,                # Width in inches
+#   height = 8,                # Height in inches
+#   dpi = 600,                  # Resolution in dots per inch
+#   bg = "white"
+# )
 
 ############################################ #Flu plot
 map_df <- score_graph_location_flu %>%
@@ -294,13 +295,13 @@ p_flu <- plot_loc_effect(map_data, us, us_pts_flu)
 print(p_flu)
 
 # Save the plot as a PNG
-ggsave(
-  filename = "flu_map_p.png",   # File name
-  plot = p_flu,              # Plot object
-  width = 10,                # Width in inches
-  height = 8,                # Height in inches
-  dpi = 300                  # Resolution in dots per inch
-)
+# ggsave(
+#   filename = "flu_map_p.png",   # File name
+#   plot = p_flu,              # Plot object
+#   width = 10,                # Width in inches
+#   height = 8,                # Height in inches
+#   dpi = 300                  # Resolution in dots per inch
+# )
 
 ############################################ #RSV plot
 map_df <- score_graph_location_rsv %>%
@@ -329,23 +330,26 @@ p_RSV <- plot_loc_effect(map_data, us, us_pts_RSV)
 print(p_RSV)
 
 # Save the plot as a PNG
-ggsave(
-  filename = "RSV_map_P.png",   # File name
-  plot = p_RSV,              # Plot object
-  width = 10,                # Width in inches
-  height = 8,                # Height in inches
-  dpi = 300                  # Resolution in dots per inch
-)
+# ggsave(
+#   filename = "RSV_map_P.png",   # File name
+#   plot = p_RSV,              # Plot object
+#   width = 10,                # Width in inches
+#   height = 8,                # Height in inches
+#   dpi = 300                  # Resolution in dots per inch
+# )
 
 ############################################ #combine and print
-object <- plot_grid(combined_plot, plot_grid(p_covid, p_flu, p_RSV, ncol = 1))
 
-save_plot(
-  "fig2_test_new2.png", 
-  object, 
-  base_width = 10,  # Try increasing width
-  base_height = 6,  # Adjust for the height aspect
-  base_asp = 1.8,  # Adjust aspect ratio to better fit content
-  bg = "white"
-)
+plot_grid(plotlist=c(plots_all[[1]], p_covid, p_flu, p_RSV), ncol=2, byrow=FALSE, labels="auto")
+# plot_grid(plots_all[[1]], plot_grid(p_covid, p_flu, p_RSV, ncol = 1)
+
+ggsave("figs/figure-3.pdf", width=15, height=11)
+# save_plot(
+#   "fig2_test_new2.png", 
+#   object, 
+#   base_width = 10,  # Try increasing width
+#   base_height = 6,  # Adjust for the height aspect
+#   base_asp = 1.8,  # Adjust aspect ratio to better fit content
+#   bg = "white"
+# )
 

@@ -35,7 +35,7 @@ truth_US_clean <- truth_US |>
 # Custom colors for each model
 model_colors <- c("FluSight-baseline" = "#2b8cbe", 
                   "FluSight-ensemble" = "coral2", 
-                  "UGA_flucast-INFLAenza" = "darkseagreen")
+                  "UGA_flucast-INFLAenza" = "#8856a7")
 
 custom_labels <- c(
   "FluSight-ensemble" = "Ensemble",
@@ -89,7 +89,7 @@ plot_cov_95 <- ggplot(data = PIC_date, aes(x = reference_date, y = coverage_95, 
   scale_y_continuous(labels = scales::percent) +
   
   theme(
-    legend.position = "right",
+    legend.position = "none",
     legend.title = element_blank(),   # Remove the legend title
     #axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5) 
   )
@@ -97,12 +97,9 @@ plot_cov_95 <- ggplot(data = PIC_date, aes(x = reference_date, y = coverage_95, 
 plot_cov_95 <- plot_cov_95 + background_grid(major = 'xy')
 
 # Stack the plots
-stacked_plots <- plot_grid(plot_counts, plot_cov_50, plot_cov_95, ncol = 1, align = "v", labels = "AUTO")
+plot_grid(plot_counts, plot_cov_50, plot_cov_95, ncol = 1, align = "v", labels = "auto")
 
-# Display the stacked plots
-print(stacked_plots)
-
-#ggsave("PIC_date_Flusight_counts.png", plot = stacked_plots, width = 10, height = 7, dpi = 300, bg = "white")
+ggsave("figs/PIC_date_Flusight_counts.png", width = 10, height = 7, bg = "white")
 
 
 ##################
@@ -124,7 +121,7 @@ PIC_location <- PIC_location |>
 # Custom colors for each model
 model_colors <- c("FluSight-baseline" = "#2b8cbe", 
                   "FluSight-ensemble" = "coral2", 
-                  "UGA_flucast-INFLAenza" = "darkseagreen")
+                  "UGA_flucast-INFLAenza" = "#8856a7")
 
 # Custom labels for key
 custom_labels <- c(
@@ -193,7 +190,7 @@ plot_cov_95 <- ggplot(data = PIC_location, aes(x = location_name, y = mean_cov_9
   scale_y_continuous(labels=scales::label_percent()) +
   theme(
     #legend.position = c(-5, 0.9),
-    legend.position = "right",
+    legend.position = "none",
     legend.title = element_blank(),
     axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
   ) +
@@ -221,16 +218,15 @@ plot_cov_95 <- plot_cov_95 + theme(legend.position = "none")
 # Stack the two plots vertically
 stacked_plots <- plot_grid(
   plot_cov_50, plot_cov_95, 
-  ncol = 1, align = "v", labels = "AUTO"
+  ncol = 1, align = "v", labels = "auto"
 )
 
-final_plot <- plot_grid(
+plot_grid(
   stacked_plots, shared_legend, 
   ncol = 2, rel_widths = c(1.5, 0.2)  # Adjust width to give space for legend
 )
 
-# Display the final plot
-print(final_plot)
+ggsave("figs/PIC_location_Flusight.png", width = 10, height = 8, bg = "white")  
 
 
 ##################
@@ -251,10 +247,6 @@ PIC_horizon <- PIC_horizon %>%
   mutate(horizon = horizon + 1)
 
 ############################## # graph 
-# Custom colors for each model
-model_colors <- c("FluSight-baseline" = "#2b8cbe", 
-                  "FluSight-ensemble" = "coral2", 
-                  "UGA_flucast-INFLAenza" = "darkseagreen")
 
 # Custom labels for key
 custom_labels <- c(
@@ -328,16 +320,14 @@ plot_cov_95 <- plot_cov_95 + theme(legend.position = "none")
 # Stack the two plots vertically
 stacked_plots <- plot_grid(
   plot_cov_50, plot_cov_95, 
-  ncol = 1, align = "v", labels = "AUTO"
+  ncol = 1, align = "v", labels = "auto"
 )
 
-final_plot <- plot_grid(
+plot_grid(
   stacked_plots, shared_legend, 
   ncol = 2, rel_widths = c(1.5, 0.2)  # Adjust width to give space for legend
 )
-
-# Display the final plot
-print(final_plot)
+ggsave("figs/PIC_horizon_Flusight.png", width = 10, height = 6, bg = "white")  
 
 ##############
 #Horizon Plot 2
@@ -448,7 +438,7 @@ plot <- ggplot(df_long, aes(x = horizon, y = percent, color = type, group = type
   )
 
 # Adding background grids to the top panel plot
-plot <- plot + background_grid(major = 'xy')
+plot + background_grid(major = 'xy')
 
 # Display the plot
 plot
